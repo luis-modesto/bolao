@@ -19,28 +19,42 @@
 		<header>
 			<nav class="navbar navbar-expand-sm bg-light navbar-dark">
 				<div class="container-fluid">
-					
-						<form class="ml-auto" style="text-align: right;" action="/homepage.html">
-					 		<div class="form-group">
-						    	<label for="cpf">CPF:</label>
-						    	<input type="cpf" id="cpf">
-							</div>
-							<div class="form-group">
-						    	<label for="senha">Senha:</label>
-						    	<input type="senha" id="senha">
-							  	<div class="linkhome"><a href="cadastrar.html">Ainda não possuo cadastro</a></div>
-							  	<div class="linkhome"><a href="esqueci_senha.html">Esqueci minha senha</a></div>
-						  	</div>
-						  	<button type="login" class="btn btn-primary">Login</button>
-						</form> 
-						
+					<ul class="nav nav-tabs nav-justified">
+					  <li class="nav-item">
+					    <a class="nav-link active" href="#">Últimos Resultados</a>
+					  </li>
+					  <li class="nav-item">
+					    <a class="nav-link" href="#">Meus Bolões</a>
+					  </li>
+					  <li class="nav-item">
+					    <a class="nav-link" href="#">Criar Novo Bolão</a>
+					  </li>
+					  <li class="nav-item dropdown">
+					    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Buscar</a>
+					    <div class="dropdown-menu">
+					      <a class="dropdown-item" href="#">Jogo</a>
+					      <a class="dropdown-item" href="#">Bolão</a>
+					    </div>
+					  </li>
+					  <li class="nav-item">
+					    <a class="nav-link" href="#">Reportar Erro</a>
+					  </li>
+					</ul> 
+				</div>
+				<div class="card" style="width:40px">
+				  <!--<img class="card-img-top" src="img_avatar1.png" alt="Card image">-->
+				  <div class="card-body">
+				    <h4 class="card-title">Fulano</h4>
+				    <p class="card-text">Dinheiros</p>
+				    <button class="btn btn-info" type="button"><i class="fa fa-envelope-o" aria-hidden="true"></i></button>
+				  </div>
 				</div>
 			</nav>
 		</header>
 		<div class="row mt-3">
 			<div class="col-8 offset-2">
 				<div class="resultados shadow">
-					<h6 class="text-center">Últimos Resultados</h6>
+					<h6 class="text-center">últimos Resultados</h6>
 					<ul class="list-group">
 						<li class="list-group-item">Bolão 1</li>
 					  	<li class="list-group-item">Bolão 2</li>
@@ -49,21 +63,6 @@
 				</div>
 			</div>
 		</div>
-
-		<!--	
-		<script type="text/javascript">
-			
-			function desabilitar() {
-				if(document.getElementById('escalonamento').value == 'fifo' || document.getElementById('escalonamento').value == 'sjf'){
-					document.getElementById('quantum').readOnly = true;
-					document.getElementById('sobrecarga').readOnly = true;
-				} else {
-					document.getElementById('quantum').readOnly = false;
-					document.getElementById('sobrecarga').readOnly = false;
-				}
-			}
-		</script>
-		-->
 
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
