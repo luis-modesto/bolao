@@ -1,8 +1,8 @@
-import "Usuario.js"
-import "Bolao.js"
-import "Aposta.js"
-import "Jogo.js"
-import "Placar.js"
+import Usuario from "./Usuario.js"
+import Bolao from "./Bolao.js"
+import Aposta from "./Aposta.js"
+import Jogo from "./Jogo.js"
+import Placar from "./Placar.js"
 
 class Apostador extends Usuario {
 

@@ -1,5 +1,5 @@
-import "Usuario.js";
-import "Bolao.js";
+import Usuario from "./Usuario.js";
+import Bolao from "./Bolao.js";
 
 class Administrador extends Usuario {
 

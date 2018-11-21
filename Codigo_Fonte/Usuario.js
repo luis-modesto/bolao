@@ -1,27 +1,28 @@
 class Usuario {
 
-	let CPF;
-	let nome;
-	let senha;
+	constructor(cpf, nome, senha){
+		this.cpf = cpf;
+		this.nome = nome;
+		this.senha = senha;
+	}
 
-	public void cria_conta() {
+	cria_conta() {
 
 	}
 
-	public void verificarResultados() {
+	verificarResultados() {
 
 	}
 
-	public void reportarBugs() {
+	reportarBugs() {
 
 	}
 
-	public void efetuarLogin() {
+	efetuarLogin() {
 
 	}
 
-	public void efetuarLogout() {
+	efetuarLogout() {
 
 	}
-
 }

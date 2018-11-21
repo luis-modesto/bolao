@@ -1,5 +1,5 @@
-import "Placar.js"
-import "Jogo.js"
+import Placar from "./Placar.js"
+import Jogo from "./Jogo.js";
 
 class Aposta {
 
@@ -9,6 +9,7 @@ class Aposta {
 	}
 	
 	isEditavel() {
+		
 	}
 
 }

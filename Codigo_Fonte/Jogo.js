@@ -1,4 +1,4 @@
-import "Placar.js"
+import Placar from "./Placar.js"
 
 class Jogo {
 
