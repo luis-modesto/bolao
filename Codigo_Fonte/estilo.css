@@ -1,0 +1,52 @@
+
+header button {
+	margin-right: 1em;
+}
+
+.titulo {
+	font-size: 0.85em;
+}
+
+.vl {
+    border-left: 2px solid white;
+    height: 3em;
+}
+
+.gerenciador-processos {
+	border-radius: 1em;
+	background-color: rgba(200, 200, 200);
+	padding: 1em;
+}
+
+.resultados {
+	border-radius: 1em;
+	background-color: rgba(200, 200, 200);
+	padding: 1em;
+	height: 25vw;
+}
+
+.scroll {
+	overflow-y: auto;
+	overflow-x: none;
+	height: 5em;
+}
+
+table, th, td {
+	font-size: 0.9em;
+	text-align: center;
+	border: 1.5px solid #696969;
+}
+
+.btn-midnight {
+	background-color: #4682B4;
+	color: white;
+}
+
+.btn-midnight:hover {
+	background-color: #6495ED;
+}
+
+.linkhome{
+	font-size: 0.8em;
+}
+
