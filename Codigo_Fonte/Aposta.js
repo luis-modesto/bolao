@@ -10,9 +10,9 @@ class Aposta {
 	
 	isEditavel() { // verifica se uma aposta pode ser editável de acordo com a data limite de edição do jogo
 		// a data limite de edição do jogo vem no formato DD/MM/YYYY, por exemplo, 01/03/2019
-		let dialimite = '' + jogo.limiteEdicaoAposta[0] + jogo.limiteEdicaoAposta[1]; // dialimite = 01
-		let meslimite = '' + jogo.limiteEdicaoAposta[3] + jogo.limiteEdicaoAposta[4]; // meslimite = 03
-		let anolimite = '' + jogo.limiteEdicaoAposta[6] + jogo.limiteEdicaoAposta[7] + jogo.limiteEdicaoAposta[8] + jogo.limiteEdicaoAposta[9]; //anolimite = 2019
+		let dialimite = jogo.limiteEdicaoAposta[0] + jogo.limiteEdicaoAposta[1]; // dialimite = 01
+		let meslimite = jogo.limiteEdicaoAposta[3] + jogo.limiteEdicaoAposta[4]; // meslimite = 03
+		let anolimite = jogo.limiteEdicaoAposta[6] + jogo.limiteEdicaoAposta[7] + jogo.limiteEdicaoAposta[8] + jogo.limiteEdicaoAposta[9]; //anolimite = 2019
 		let d = new Date(); // função que retorna a data de hoje
 		dialimite = parseInt(dialimite); // transformando as variáveis em inteiros, pois o dia, mes e ano do getDate() vêm em inteiro
 		meslimite = parseInt(meslimite);
