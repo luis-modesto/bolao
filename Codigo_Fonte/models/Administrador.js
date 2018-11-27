@@ -3,11 +3,11 @@ import Bolao from "./Bolao.js";
 
 class Administrador extends Usuario {
 
-	excluirBolao(Bolao bolao) {
+	excluirBolao(bolao) {
 
 	}
 
-	excluirContaUsuario(Usuario usuario) {
+	excluirContaUsuario(usuario) {
 
 	}
 }

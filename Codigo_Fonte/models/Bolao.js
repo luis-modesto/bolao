@@ -1,5 +1,5 @@
-import "Jogo.js"
-import "Apostador.js"
+import Jogo from "./Jogo.js"
+import Apostador from "./Apostador.js"
 
 class Bolao {
 
@@ -12,7 +12,7 @@ class Bolao {
 		this.apostadores = apostadores;
 	}
 
-	determinarVencedorJogo(Jogo jogo) {
+	determinarVencedorJogo(jogo) {
 		
 	}
 
