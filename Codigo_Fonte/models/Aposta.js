@@ -3,9 +3,9 @@ import Jogo from "./Jogo.js";
 
 class Aposta {
 
-	constructor(placarApostado, jogo){
+	constructor(placarApostado, idJogo){
 		this.placarApostado = placarApostado;
-		this.jogo = jogo;
+		this.idJogo = idJogo;
 	}
 	
 	isEditavel() { // verifica se uma aposta pode ser editável de acordo com a data limite de edição do jogo

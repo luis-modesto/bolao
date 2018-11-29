@@ -7,7 +7,7 @@ class Usuario {
 	}
 
 	cria_conta() {
-
+		
 	}
 
 	verificarResultados() {

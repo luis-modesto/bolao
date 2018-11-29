@@ -25,17 +25,16 @@ class Apostador extends Usuario {
 		// escerve bolaouser no arquivo boloes_cpfuser
 	}
 
-	criarAposta(placar, jogo, bolao) {
+	criarAposta(placar, idJogo) {
 		// procurar jogo no arquivo de jogos ./jogoidbolao
-		let idjogo;
-		let aposta = this.cpf + ';' + idjogo + ';' + placar.pontosTime1 + ';' + placar.pontosTime2;
+		let aposta = this.cpf + ';' + idJogo + ';' + placar.pontosTime1 + ';' + placar.pontosTime2;
 		// escreve no arquivo apostas_cpfuser
 	}
 
 	editarAposta(aposta, novoPlacar) {
 		if(aposta.isEditavel == true){
 			// procurar aposta no arquivo apostas_cpfuser
-			let nova_aposta = this.cpf + ';' + idjogo + ';' + novoPlacar.pontosTime1 + ';' + novoPlacar.pontosTime2po;
+			let nova_aposta = this.cpf + ';' + aposta.idJogo + ';' + novoPlacar.pontosTime1 + ';' + novoPlacar.pontosTime2po;
 			// escreve no arquivo apostas_cpfuser  
 		}
 	}
@@ -72,7 +71,7 @@ class Apostador extends Usuario {
 		// exclui solicitacao do arquivo solicitacoes_cpfuser
 	}
 
-	excluirApostadorBolao(bolao, apostador) {
+	excluirApostadorBolao(idBolao, cpfApostador) {
 		let cpf = '';
 		let j = 0;
 		// resgata cpfs dos apostadores arquivo do bolao
@@ -83,7 +82,7 @@ class Apostador extends Usuario {
 				cpf += cpfs_apostadores[i];
 			}
 			else if(cpfs_apostadores[i] == ','){ // achou virgula significa que um novo cpf esta por vir e n achamos o que procuramos ainda
-				if(cpf != apostador.cpf){
+				if(cpf != cpfApostador){
 					novo_cpfs_apostadores += cpf + ',';
 				}
 				cpf = ''; // zera o cpf atual

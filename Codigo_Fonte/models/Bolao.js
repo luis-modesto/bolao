@@ -3,7 +3,7 @@ import Apostador from "./Apostador.js"
 
 class Bolao {
 
-	constructor(nome, campeonato, esporte, jogos, apostadores){
+	constructor(id, nome, campeonato, esporte, jogos, apostadores){
 		this.id = id;
 		this.nome = nome;
 		this.campeonato = campeonato;

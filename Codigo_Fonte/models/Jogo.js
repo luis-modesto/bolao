@@ -2,7 +2,8 @@ import Placar from "./Placar.js"
 
 class Jogo {
 
-	constructor(data, limiteEdicaoAposta, time1, time2, resultado, valorAposta){
+	constructor(id, data, limiteEdicaoAposta, time1, time2, resultado, valorAposta){
+		this.id = id;
 		this.data = data;
 		this.limiteEdicaoAposta = limiteEdicaoAposta;
 		this.time1 = time1;
