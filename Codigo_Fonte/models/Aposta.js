@@ -1,14 +1,24 @@
 import Placar from "./Placar.js"
 import Jogo from "./Jogo.js";
 
+/**
+*Classe que representa uma aposta feita por um Apostador em um Jogo especifico de um Bolao especifico
+*/
 class Aposta {
 
+	/**
+	*Construtor que inicializa uma instancia de Aposta preenchendo os atributos placarApostado que deve ser um Placar e idJogo, um identificador que eh unico para cada jogo cadastrado no SisBolao
+	*/
 	constructor(placarApostado, idJogo){
 		this.placarApostado = placarApostado;
 		this.idJogo = idJogo;
 	}
 	
-	isEditavel() { // verifica se uma aposta pode ser editável de acordo com a data limite de edição do jogo
+	
+	/**
+	*Retorna true caso a aposta ainda pode ser editada, com base na data limite de edicao para apostas em um dado jogo. Retorna false caso contrario
+	*/
+	isEditavel() {
 		// a data limite de edição do jogo vem no formato DD/MM/YYYY, por exemplo, 01/03/2019
 		let dialimite = jogo.limiteEdicaoAposta[0] + jogo.limiteEdicaoAposta[1]; // dialimite = 01
 		let meslimite = jogo.limiteEdicaoAposta[3] + jogo.limiteEdicaoAposta[4]; // meslimite = 03
