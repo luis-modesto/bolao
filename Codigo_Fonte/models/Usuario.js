@@ -1,7 +1,7 @@
 /**
 *Classe que representa um usuario do SisBolao
 */
-class Usuario {
+export class Usuario {
 
 	/**
 	*Construtor que inicializa uma instancia do tipo usuario, preenchendo os atributos cpf do usuario, nome do usuario e senha de acesso do usuario ao SisBolao
@@ -60,3 +60,5 @@ class Usuario {
 
 	}
 }
+
+export {Usuario};

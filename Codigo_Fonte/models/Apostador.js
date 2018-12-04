@@ -1,10 +1,10 @@
-import Usuario from "./Usuario.js"
-import Bolao from "./Bolao.js"
-import Aposta from "./Aposta.js"
-import Jogo from "./Jogo.js"
-import Placar from "./Placar.js"
-import Convite from "./Convite.js"
-import Solicitacao from "./Solicitacao.js"
+import {Usuario} from "Usuario.js"
+import {Bolao} from "Bolao.js"
+import {Aposta} from "Aposta.js"
+import {Jogo} from "Jogo.js"
+import {Placar} from "Placar.js"
+import {Convite} from "Convite.js"
+import {Solicitacao} from "Solicitacao.js"
 
 /**
 *Classe que representa um usuario Apostador
@@ -30,22 +30,33 @@ class Apostador extends Usuario {
 	/**
 	*Instancia e registra um novo bolao, do qual o Apostador que chama a funcao sera administrador
 	*/
-	criarBolao(id, nome, campeonato, esporte) {
-		let bolao = id + ';' + this.cpf + ';' + nome + ';' + campeonato + ';' + esporte +';' + './jogos_' + id + 'bolao;';
-		let bolaouser = 'ativo;' + String(id);
+	criarBolao(bolao) {
+		let bolao = bolao.id + ';' + this.cpf + ';' + bolao.nome + ';' + bolao.campeonato + ';' + bolao.esporte +';' + './jogos_' + id + 'bolao;\n';
+		let bolaouser = 'ativo;' + String(id) + '\n';
 		// escreve bolao no arquivo bolao
+		let fs = require('fs');
+		fs.appendFile('../arquivos/bolao', bolao, function (err) {
+		  if (err) throw err;
+		});
 		// escerve bolaouser no arquivo boloes_cpfuser
+		fs.appendFile('../arquivos/boloes_' + this.cpf, bolao, function (err) {
+		  if (err) throw err;
+		});
 	}
 
 
 	/**
-	*Instancia e registra uma aposta, dado o placar de palpite e o jogo ao qual a aposta se refere
+	*Registra uma aposta, dado o placar de palpite e o jogo ao qual a aposta se refere
 	*/
-	criarAposta(placar, idJogo) {
-		// procurar jogo no arquivo de jogos ./jogoidbolao
-		let aposta = this.cpf + ';' + idJogo + ';' + placar.pontosTime1 + ';' + placar.pontosTime2;
+	criarAposta(placar, jogo) {
+		let aposta = this.cpf + ';' + jogo.id + ';' + placar.pontosTime1 + ';' + placar.pontosTime2 + '\n';
 		// escreve no arquivo apostas_cpfuser
+		let fs = require('fs');
+		fs.appendFile('../arquivos/apostas_' + String(this.cpf), aposta, function(err){
+			if (err) throw err;
+		});
 		//desconta saldo
+		this.saldo -= jogo.valorAposta;
 	}
 
 
@@ -55,8 +66,45 @@ class Apostador extends Usuario {
 	editarAposta(aposta, novoPlacar) {
 		if(aposta.isEditavel == true){
 			// procurar aposta no arquivo apostas_cpfuser
-			let nova_aposta = this.cpf + ';' + aposta.idJogo + ';' + novoPlacar.pontosTime1 + ';' + novoPlacar.pontosTime2po;
-			// escreve no arquivo apostas_cpfuser  
+			let nova_aposta = this.cpf + ';' + aposta.idJogo + ';' + novoPlacar.pontosTime1 + ';' + novoPlacar.pontosTime2po + '\n';
+			// escreve no arquivo apostas_cpfuser
+			let fs = require('fs');
+			let contents = fs.readFileSync('apostas_'+String(this.cpf), 'utf8');
+			let idAtual = "-1";
+			let i = 0;
+			let novoArquivo = "";
+			//acha aposta velha
+			while(i<contents.length){
+				idAtual = "";
+				while(contents[i]!=';'){
+					idAtual += contents[i];
+					i++;
+				}
+				if (parseInt(idAtual)!=aposta.idJogo){
+					novoArquivo += idAtual;
+					while(contents[i]!='\n'){
+						novoArquivo += contents[i];
+						i++;
+					}
+					novoArquivo += contents[i]; //pega \n
+					i++;
+				} else {
+					break;
+				}
+			} 
+			//ignora aposta velha
+			while(i<contents.length && contents[i]!='\n'){
+				i++;
+			}  
+			//salva resto do arquivo
+			while(i<contents.length){
+				i++;
+				novoArquivo += contents[i];
+			}
+			//sobrescreve arquivo
+			fs.writeFile('../arquivos/apostas_' + String(this.cpf), novoArquivo+nova_aposta, function(err){
+				if (err) throw err;
+			});
 		}
 	}
 

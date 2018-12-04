@@ -19,12 +19,14 @@ class Jogo {
 		this.valorAposta = valorAposta;
 	}
 
+
 	/**
 	*Retorna resultado do jogo para exibicao
 	*/
 	exibirResultado() {
 
 	}
+
 
 	/**
 	*Retorna true se esse jogo ainda pode ser editado, retorna false caso contrario
