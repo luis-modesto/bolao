@@ -1,10 +1,10 @@
-import Placar from "./Placar.js"
-import Jogo from "./Jogo.js";
+import {Placar} from "./Placar.js"
+import {Jogo} from "./Jogo.js";
 
 /**
 *Classe que representa uma aposta feita por um Apostador em um Jogo especifico de um Bolao especifico
 */
-class Aposta {
+export class Aposta {
 
 	/**
 	*Construtor que inicializa uma instancia de Aposta preenchendo os atributos placarApostado que deve ser um Placar e idJogo, um identificador que eh unico para cada jogo cadastrado no SisBolao

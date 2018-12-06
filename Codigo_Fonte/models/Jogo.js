@@ -1,9 +1,9 @@
-import Placar from "./Placar.js"
+import {Placar} from "./Placar.js"
 
 /**
 *Classe que representa um jogo relacionado a um bolao especifico
 */
-class Jogo {
+export class Jogo {
 
 	/**
 	*Construtor que inicializa uma instancia de Jogo preenchendo os atributos: id, um identificador unico para cada jogo resgistrado no SisBolao; data em que o jogo acontece; limiteEdicaoAposta que determina a data limite para que informacoes sobre esse jogo sejam alteradas;
@@ -24,15 +24,7 @@ class Jogo {
 	*Retorna resultado do jogo para exibicao
 	*/
 	exibirResultado() {
-
-	}
-
-
-	/**
-	*Retorna true se esse jogo ainda pode ser editado, retorna false caso contrario
-	*/
-	isEditavel() {
-	
+		return this.resultado;
 	}
 
 }

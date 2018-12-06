@@ -5,6 +5,7 @@ import {Jogo} from "Jogo.js"
 import {Placar} from "Placar.js"
 import {Convite} from "Convite.js"
 import {Solicitacao} from "Solicitacao.js"
+import {DataGetter} from "DataGetter.js"
 
 /**
 *Classe que representa um usuario Apostador
@@ -31,17 +32,16 @@ class Apostador extends Usuario {
 	*Instancia e registra um novo bolao, do qual o Apostador que chama a funcao sera administrador
 	*/
 	criarBolao(bolao) {
-		let bolao = bolao.id + ';' + this.cpf + ';' + bolao.nome + ';' + bolao.campeonato + ';' + bolao.esporte +';' + './jogos_' + id + 'bolao;\n';
-		let bolaouser = 'ativo;' + String(id) + '\n';
+		let bolao = bolao.id + ';' + this.cpf + ';' + bolao.nome + ';' + bolao.campeonato + ';' + bolao.esporte +';' + './jogos_' + id + ';'; 
+		for (i = 0; i<bolao.apostadores.length; i++){
+			bolao += bolao.apostadores[i] + ',';
+		}
+		bolao += ';';
+		let bolaouser = 'ativo;' + String(bolao.id) + ';';
 		// escreve bolao no arquivo bolao
-		let fs = require('fs');
-		fs.appendFile('../arquivos/bolao', bolao, function (err) {
-		  if (err) throw err;
-		});
+		DataGetter.getInstance().appendData('bolao', bolao);
 		// escerve bolaouser no arquivo boloes_cpfuser
-		fs.appendFile('../arquivos/boloes_' + this.cpf, bolao, function (err) {
-		  if (err) throw err;
-		});
+		DataGetter.getInstance().appendData('boloes' + this.cpf, bolaouser);
 	}
 
 
@@ -49,12 +49,9 @@ class Apostador extends Usuario {
 	*Registra uma aposta, dado o placar de palpite e o jogo ao qual a aposta se refere
 	*/
 	criarAposta(placar, jogo) {
-		let aposta = this.cpf + ';' + jogo.id + ';' + placar.pontosTime1 + ';' + placar.pontosTime2 + '\n';
+		let aposta = jogo.id + ';' + placar.pontosTime1 + ';' + placar.pontosTime2 + ';';
 		// escreve no arquivo apostas_cpfuser
-		let fs = require('fs');
-		fs.appendFile('../arquivos/apostas_' + String(this.cpf), aposta, function(err){
-			if (err) throw err;
-		});
+		DataGetter.getInstance().appendData('apostas_' + this.cpf, aposta);
 		//desconta saldo
 		this.saldo -= jogo.valorAposta;
 	}
@@ -66,46 +63,19 @@ class Apostador extends Usuario {
 	editarAposta(aposta, novoPlacar) {
 		if(aposta.isEditavel == true){
 			// procurar aposta no arquivo apostas_cpfuser
-			let nova_aposta = this.cpf + ';' + aposta.idJogo + ';' + novoPlacar.pontosTime1 + ';' + novoPlacar.pontosTime2po + '\n';
-			// escreve no arquivo apostas_cpfuser
-			let fs = require('fs');
-			let contents = fs.readFileSync('apostas_'+String(this.cpf), 'utf8');
-			let idAtual = "-1";
-			let i = 0;
-			let novoArquivo = "";
-			//acha aposta velha
-			while(i<contents.length){
-				idAtual = "";
-				while(contents[i]!=';'){
-					idAtual += contents[i];
-					i++;
-				}
-				if (parseInt(idAtual)!=aposta.idJogo){
-					novoArquivo += idAtual;
-					while(contents[i]!='\n'){
-						novoArquivo += contents[i];
-						i++;
-					}
-					novoArquivo += contents[i]; //pega \n
-					i++;
-				} else {
+			let matrizApostas = DataGetter.getInstance().getData('apostas_' + this.cpf);
+			for (i = 0; i<matrizApostas.length; i++){
+				if (parseInt(matrizApostas[i][0])==aposta.idJogo){
+					matrizApostas[i][1] = String(novoPlacar.pontosTime1);
+					matrizApostas[i][2] = String(novoPlacar.pontosTime2);
 					break;
 				}
-			} 
-			//ignora aposta velha
-			while(i<contents.length && contents[i]!='\n'){
-				i++;
-			}  
-			//salva resto do arquivo
-			while(i<contents.length){
-				i++;
-				novoArquivo += contents[i];
 			}
-			//sobrescreve arquivo
-			fs.writeFile('../arquivos/apostas_' + String(this.cpf), novoArquivo+nova_aposta, function(err){
-				if (err) throw err;
-			});
+			// escreve no arquivo apostas_cpfuser
+			DataGetter.getInstance.setData('apostas_' + this.cpf, matrizApostas);
+			return true;
 		}
+		return false;
 	}
 
 
@@ -114,9 +84,11 @@ class Apostador extends Usuario {
 	*/
 	convidarApostadores(apostadores, bolao) {
 		for(i=0; i<apostadores.length; j++){
-			// procurar bolao que recebeu como parametro no arquivo de boloes
-			let convite = this.cpf + ';' + id_bolao;
+			let convite = '1;' + this.cpf + ';' + bolao.id + ';';
 			// escreve no arquivo convites_cpfuser
+			for (i = 0; i<apostadores.length; i++){
+				DataGetter.getInstance.appendData('notificacoes_' + apostadores[i], convite);
+			}
 		}
 	}
 
@@ -125,12 +97,36 @@ class Apostador extends Usuario {
 	*Registra o Apostador que chama essa funcao como participante de um novo bolao, caso a resposta ao convite para esse bolao seja true. Exclui registros desse convite
 	*/
 	responderConviteBolao(convite, resposta) {
+		let notificacoes = DataGetter.getInstance.getData('notificacoes_' + this.cpf);
+		let novasNot = [];
+		for (i = 0; i<notificacoes.length; i++){
+			if (notificacoes[i][2]!=convite.bolao){
+				novasNot.push(notificacoes[i]);
+			}
+		}
 		if(resposta == true){
 			// procurar bolao do convite que recebeu como parametro no arquivo de boloes
-			let apostadoresBolao = cpfs_apostadores;  //variavel recebe cpf dos apostadores que ja estavam no bolao
-			apostadoresBolao += ',' + this.cpf; // e adiciona o cpf deste q aceitou o convite
+			let boloes = DataGetter.getInstance.getData('bolao');
+			for (i = 0; i<boloes.length; i++){
+				if (boloes[i][0]==convite.bolao){
+					let apostadoresBolao = "";
+					for (j = 0; j<boloes[i][6].length; j++){
+						if (boloes[i][6][j]!=';'){
+							apostadoresBolao += boloes[i][6][j];
+						} else {
+							apostadoresBolao += ',' + this.cpf + ';';
+							boloes[i][6] = apostadoresBolao;
+							break;
+						}
+					}
+					break;
+				}
+			}
+			DataGetter.getInstance.setData('bolao', boloes);
+
+			DataGetter.getInstance.appendData('boloes_' + this.cpf, 'ativo;' + String(convite.bolao)); //adiciona a boloes que participa
 		}
-		// exclui convite do arquivo convites_cpfuser
+		DataGetter.getInstance.setData('notificacoes_' + this.cpf, novasNot);
 	}
 
 
@@ -138,9 +134,9 @@ class Apostador extends Usuario {
 	*Registra uma solicitacao ao Apostador administrador para participar de um dado bolao.
 	*/
 	solicitarParticiparBolao(bolao) {
-		// procurar bolao no arquivo de boloes
-		let solicitacao = this.cpf + ';' + id_bolao;
+		let solicitacao = '2' + this.cpf + ';' + bolao.id + ';\n';
 		// escrever no arquivo solicitacoes_cpfuser do administrador do bolao
+		DataGetter.getInstance.appendData('notificacoes_' + bolao.cpfAdmin, solicitacao);
 	}
 
 
@@ -148,12 +144,36 @@ class Apostador extends Usuario {
 	*Registra o Apostador criador de uma dada solicitacao como participante de um bolao cujo Apostador que chama essa funcao eh administrador, caso a resposta para essa solicitacao seja true. Exclui registros dessa solicitacao
 	*/
 	responderSolicitacao(solicitacao, resposta) {
+		let notificacoes = DataGetter.getInstance.getData('notificacoes_' + this.cpf);
+		let novasNot = [];
+		for (i = 0; i<notificacoes.length; i++){
+			if (notificacoes[i][2]!=solicitacao.bolao){
+				novasNot.push(notificacoes[i]);
+			}
+		}
 		if(resposta == true){
 			// procurar bolao da solicitacao que recebeu como parametro no arquivo de boloes
-			let apostadoresBolao = cpfs_apostadores;  //variavel recebe cpf dos apostadores que ja estavam no bolao
-			apostadoresBolao += ',' + solicitacao.usuarioRemetente.cpf; // e adiciona o cpf deste q solicitou a entrada
+			let boloes = DataGetter.getInstance.getData('bolao');
+			for (i = 0; i<boloes.length; i++){
+				if (boloes[i][0]==solicitacao.bolao){
+					let apostadoresBolao = "";
+					for (j = 0; j<boloes[i][6].length; j++){
+						if (boloes[i][6][j]!=';'){
+							apostadoresBolao += boloes[i][6][j];
+						} else {
+							apostadoresBolao += ',' + solicitacao.usuarioRemetente.cpf + ';';
+							boloes[i][6] = apostadoresBolao;
+							break;
+						}
+					}
+					break;
+				}
+			}
+			DataGetter.getInstance.setData('bolao', boloes);
+
+			DataGetter.getInstance.appendData('boloes_' + solicitacao.usuarioRemetente.cpf, 'ativo;' + String(solicitacao.bolao)); //adiciona a boloes que participa
 		}
-		// exclui solicitacao do arquivo solicitacoes_cpfuser
+		DataGetter.getInstance.setData('notificacoes_' + this.cpf, novasNot);
 	}
 
 
@@ -161,23 +181,40 @@ class Apostador extends Usuario {
 	*Exclui um Apostador especifico da lista de Apostadores de um dado bolao cujo Apostador que chama essa funcao eh administrador. Exclui registros desse bolao da lista de boloes que o Apostador excluido participa
 	*/
 	excluirApostadorBolao(idBolao, cpfApostador) {
-		let cpf = '';
-		let j = 0;
 		// resgata cpfs dos apostadores arquivo do bolao
-		let cpfs_apostadores; // string com tds os cpfs do bolao
-		let novo_cpfs_apostadores = '';
-		for(i=0; i<cpfs_apostadores.length; i++){
-			if(cpfs_apostadores[i] != ','){
-				cpf += cpfs_apostadores[i];
-			}
-			else if(cpfs_apostadores[i] == ','){ // achou virgula significa que um novo cpf esta por vir e n achamos o que procuramos ainda
-				if(cpf != cpfApostador){
-					novo_cpfs_apostadores += cpf + ',';
+		let boloes = DataGetter.getInstance.getData('bolao');
+		for (j = 0; j<boloes.length; j++){
+			if (idBolao==boloes[j][0]){
+				let cpfs_apostadores = boloes[j][6]; // string com tds os cpfs do bolao
+				let cpf = '';
+				let novo_cpfs_apostadores = '';
+				for(i=0; i<cpfs_apostadores.length; i++){
+					if(cpfs_apostadores[i] != ','){
+						cpf += cpfs_apostadores[i];
+					}
+					else if(cpfs_apostadores[i] == ','){ // achou virgula significa que um novo cpf esta por vir e n achamos o que procuramos ainda
+						if(cpf != cpfApostador){
+							novo_cpfs_apostadores += cpf + ',';
+						}
+						cpf = ''; // zera o cpf atual
+					}
 				}
-				cpf = ''; // zera o cpf atual
+				boloes[j][6] = novo_cpfs_apostadores;
+				// substitui cpfs_apostadores no arquivo do bolao por novo_cpfs_apostadores
+				DataGetter.getInstance.setData('bolao', boloes);
+				break;
 			}
 		}
-		// substitui cpfs_apostadores no arquivo do bolao por novo_cpfs_apostadores
+
+		//resgata boloes que o usuario excluido participa
+		let boloesuser = DataGetter.getInstance.getData('boloes_' + cpfApostador);
+		let novosboloes = [];
+		for (i = 0; i<boloesuser.length; i++){
+			if (boloesuser[i][1]!=idBolao){
+				novosboloes.push(boloesuser[i]);
+			}
+		}
+		DataGetter.getInstance.setData('boloes_' + cpfApostador, novosboloes);
 	}
 
 
@@ -185,15 +222,8 @@ class Apostador extends Usuario {
 	*Instancia e registra um novo jogo referente a um dado bolao do qual o Apostador que chama essa funcao eh administrador
 	*/
 	cadastrarJogo(id, idBolao, jogo) {
-		let jogo = id + ';' + jogo.data + ';' + jogo.limiteEdicaoAposta + ';' + jogo.time1 + ';' + jogo.time2 + ';-;-;' + jogo.valorAposta;
-	}
-
-
-	/**
-	*Edita informacoes de um jogo dado, caso ele ainda seja editavel
-	*/
-	editarJogo(jogoAtualizado){
-
+		let novoJogo = id + ';' + jogo.data + ';' + jogo.limiteEdicaoAposta + ';' + jogo.time1 + ';' + jogo.time2 + ';-;-;' + jogo.valorAposta + ';';
+		DataGetter.getInstance().appendData('jogos_' + idBolao, novoJogo);
 	}
 
 
@@ -201,13 +231,32 @@ class Apostador extends Usuario {
 	*Registra o resultado de um jogo dado, pertencente a um bolao especifico do qual o Apostador que chama essa funcao eh administrador
 	*/
 	cadastrarResultados(placar, jogo, bolao) {
+		jogo.resultado = placar;
+		let jogos = DataGetter.getInstance().getData('jogos_' + bolao);
+		for (i = 0; i<jogos.length; i++){
+			if (parseInt(jogos[i][0])==jogo.id){
+				let jogoVetor = [8];
+				jogoVetor[0] = jogo.id;
+				jogoVetor[1] = jogo.data;
+				jogoVetor[2] = jogo.limiteEdicaoAposta;
+				jogoVetor[3] = jogo.time1;
+				jogoVetor[4] = jogo.time2;
+				jogoVetor[5] = jogo.resultado.pontosTime1;
+				jogoVetor[6] = jogo.resultado.pontosTime2;
+				jogoVetor[7] = jogo.valorAposta;
 
+				jogos[i] = jogoVetor;
+				break;
+			}
+		}
+		// escreve no arquivo jogos_idBolao
+		DataGetter.getInstance.setData('jogos_' + bolao, jogos);
 	}
 
 	/**
 	*Retorna todas as apostas ja feitas pelo Apostador que chama essa funcao
 	*/
 	verificarHistoricoApostas() {
-		
+		return DataGetter.getInstance().getData('apostas_' + this.cpf);
 	}
 }

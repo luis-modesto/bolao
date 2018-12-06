@@ -1,7 +1,7 @@
 /**
 *Classe que representa um placar de um jogo
 */
-class Placar {
+export class Placar {
 
 	/**
 	*Construtor que inicializa um Placar preenchendo os atributos pontosTime1, indicando quantos pontos o time 1 fez e pontosTime2, indicando quantos pontos o time 2 fez

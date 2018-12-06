@@ -1,16 +1,47 @@
-import Usuario from "./Usuario.js";
-import Bolao from "./Bolao.js";
+import {Usuario} from "./Usuario.js";
+import {Bolao} from "./Bolao.js";
 
 /**
 *Classe que representa um usario especial que tem funcoes no sistema diferentes da classe Apostador
 */
-class Administrador extends Usuario {
+export class Administrador extends Usuario {
 
 	/**
 	*Exclui um bolao dos registros do SisBolao. Apaga dados de um bolao de arquivos gerais e arquivos voltados para usuarios especificos
 	*/
 	excluirBolao(bolao) {
+		let boloes = DataGetter.getInstance.getData('bolao');
+		let novosboloes = [];
+		let apostadores = [];
+		for (j = 0; j<boloes.length; j++){
+			if (bolao.id==parseInt(boloes[j][0])){
+				let cpfs_apostadores = boloes[j][6]; // string com tds os cpfs do bolao
+				let cpf = '';
+				for(i=0; i<cpfs_apostadores.length; i++){
+					if(cpfs_apostadores[i] != ','){
+						cpf += cpfs_apostadores[i];
+					} else if(cpfs_apostadores[i] == ','){ // achou virgula significa que um novo cpf esta por vir
+						apostadores.push(cpf);
+						cpf = ''; // zera o cpf atual
+					}
+				}
+			} else {
+				novosboloes.push(boloes[j]);
+			}
+		}
+		DataGetter.getInstance.setData('bolao', novosboloes);
 
+		//resgata boloes que o usuario excluido participa
+		for (i = 0; i<apostadores.length; i++){
+			let boloesuser = DataGetter.getInstance.getData('boloes_' + apostadores[i]);
+			let novosboloesuser = [];
+			for (j = 0; j<boloesuser.length; j++){
+				if (parseInt(boloesuser[j][1])!=bolao.id){
+					novosboloesuser.push(boloesuser[j]);
+				}
+			}
+			DataGetter.getInstance.setData('boloes_' + apostadores[i], novosboloesuser);
+		}
 	}
 
 
@@ -18,6 +49,13 @@ class Administrador extends Usuario {
 	*Exclui registros de um usuario do SisBolao. Apaga dados que possibilitam login e arquivos voltados somente para esse usuario
 	*/
 	excluirContaUsuario(usuario) {
-
+		let users = DataGetter.getInstance.getData('usuarios');
+		let novosusuarios = [];
+		for (i = 0; i<users.length; i++){
+			if (usuario.cpf!=users[i][0]){
+				novosusuarios.push(users[i]);
+			}
+		}
+		DataGetter.getInstance.setData('usuarios', novosusuarios);
 	}
 }
