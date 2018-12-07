@@ -3,7 +3,7 @@ import {Apostador} from "../models/Apostador.js"
 import {Administrador} from "../models/Administrador.js"
 import {Solicitacao} from "../models/Solicitacao.js"
 import {Convite} from "../models/Convite.js"
-import {DataGetter.js} from "../models/DataGetter.js"
+import {DataGetter} from "../models/DataGetter.js"
 
 
 class Homepage{
@@ -43,5 +43,12 @@ class Homepage{
 	solicitarParticiparBolao(){
 		let user = new Apostador();
 		user.solicitarParticiparBolao(bolao);
+	}
+	visualizarBolao(){
+		let id = document.getElementById('idBolao');
+		// export id para o html de exibição de bolão	
+	}
+	visualizarApostas(){
+		//exporta cpf do usuario para tela de historico de apostas
 	}
 }

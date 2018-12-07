@@ -21,6 +21,11 @@ h1, .main-title{
 	color: black;
 }
 
+#cabecalho{
+	text-decoration: none;
+	color: black;
+}
+
 table, th, td {
 	font-size: 0.9em;
 	text-align: center;
@@ -72,12 +77,6 @@ table, th, td {
 .vl {
     border-left: 2px solid white;
     height: 3em;
-}
-
-.gerenciador-processos {
-	border-radius: 1em;
-	background-color: rgba(200, 200, 200);
-	padding: 1em;
 }
 
 .resultados {

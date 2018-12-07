@@ -14,28 +14,33 @@
 	</head>
 
 	<body style="background-color: #f0f0f0;">
-		<header>
-			User01
-		</header>
-		<h1 class='main-title'>Bolão</h1>
-		<div class='new-game'>
-				<form style="text-align: center;" action="./newBolao.html">
-					<Button> Criar novo bolão</Button>
-				</form>
-			<Button> Meus bolões</Button>
-		</div>
-		<div class="row mt-3">
-			<div class="col-8 offset-2">
-				<div class="resultados shadow">
-                    <h6 class="text-center">Bolão 1</h6>
-                    <button>Criar jogo</button>
-					<ul class="list-group">
-                        <li class="list-group-item" href='./bolao'>Bolão 1</li>
-                        <li class="list-group-item">Campeonato: Copa do Mundo</li>
-                        <li class="list-group-item">Esporte: Futebol</li>
-                        <li class="list-group-item">Apostadores: </li>
-                        <li class="list-group-item">Jogos: </li>
-					</ul>
+	    <div class = "container" style = "background-color: #f0f0f0;">
+	        <header>
+	            User01
+	        </header>
+	        <div class = "row">
+	            <a class = "ml-auto" href = "./login.html"> Sair </a>
+	        </div>
+			<h1 class='main-title'><a id = "cabecalho" href = "./homepage.html"> Bolão</a></h1>
+			<div class='new-game'>
+					<form style="text-align: center;" action="./newBolao.html">
+						<button class = "btn btn-info"> Criar novo bolão</button class = "btn btn-info">
+					</form>
+				<button class = "ml-3 btn btn-info"> Meus bolões</button class = "btn btn-info">
+			</div>
+			<div class="row mt-3">
+				<div class="col-8 offset-2">
+					<div class="resultados shadow">
+	                    <h6 class="text-center">Bolão 1</h6>
+	                    <button class = "btn btn-primary">Criar jogo</button>
+						<ul class="list-group">
+	                        <li class="list-group-item" href='./bolao'>Bolão 1</li>
+	                        <li class="list-group-item">Campeonato: Copa do Mundo</li>
+	                        <li class="list-group-item">Esporte: Futebol</li>
+	                        <li class="list-group-item">Apostadores: </li>
+	                        <li class="list-group-item">Jogos: </li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
