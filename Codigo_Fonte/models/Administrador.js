@@ -1,5 +1,6 @@
 import {Usuario} from "./Usuario.js";
 import {Bolao} from "./Bolao.js";
+import {DataGetter} from "./DataGetter.js";
 
 /**
 *Classe que representa um usario especial que tem funcoes no sistema diferentes da classe Apostador
@@ -15,7 +16,7 @@ export class Administrador extends Usuario {
 		let apostadores = [];
 		for (j = 0; j<boloes.length; j++){
 			if (bolao.id==parseInt(boloes[j][0])){
-				let cpfs_apostadores = boloes[j][6]; // string com tds os cpfs do bolao
+				let cpfs_apostadores = boloes[j][5]; // string com tds os cpfs do bolao
 				let cpf = '';
 				for(i=0; i<cpfs_apostadores.length; i++){
 					if(cpfs_apostadores[i] != ','){

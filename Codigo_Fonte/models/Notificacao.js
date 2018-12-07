@@ -1,5 +1,5 @@
-import Apostador from "./Apostador.js"
-import Bolao from "./Bolao.js"
+import {Apostador} from "./Apostador.js"
+import {Bolao} from "./Bolao.js"
 
 /**
 *Classe que representa uma notificacao a um usuario

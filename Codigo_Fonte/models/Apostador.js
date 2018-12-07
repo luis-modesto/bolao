@@ -108,14 +108,14 @@ class Apostador extends Usuario {
 			// procurar bolao do convite que recebeu como parametro no arquivo de boloes
 			let boloes = DataGetter.getInstance.getData('bolao');
 			for (i = 0; i<boloes.length; i++){
-				if (boloes[i][0]==convite.bolao){
+				if (parseInt(boloes[i][0])==convite.bolao){
 					let apostadoresBolao = "";
-					for (j = 0; j<boloes[i][6].length; j++){
-						if (boloes[i][6][j]!=';'){
-							apostadoresBolao += boloes[i][6][j];
+					for (j = 0; j<boloes[i][5].length; j++){
+						if (boloes[i][5][j]!=';'){
+							apostadoresBolao += boloes[i][5][j];
 						} else {
 							apostadoresBolao += ',' + this.cpf + ';';
-							boloes[i][6] = apostadoresBolao;
+							boloes[i][5] = apostadoresBolao;
 							break;
 						}
 					}
@@ -155,14 +155,14 @@ class Apostador extends Usuario {
 			// procurar bolao da solicitacao que recebeu como parametro no arquivo de boloes
 			let boloes = DataGetter.getInstance.getData('bolao');
 			for (i = 0; i<boloes.length; i++){
-				if (boloes[i][0]==solicitacao.bolao){
+				if (parseInt(boloes[i][0])==solicitacao.bolao){
 					let apostadoresBolao = "";
-					for (j = 0; j<boloes[i][6].length; j++){
-						if (boloes[i][6][j]!=';'){
-							apostadoresBolao += boloes[i][6][j];
+					for (j = 0; j<boloes[i][5].length; j++){
+						if (boloes[i][5][j]!=';'){
+							apostadoresBolao += boloes[i][5][j];
 						} else {
 							apostadoresBolao += ',' + solicitacao.usuarioRemetente.cpf + ';';
-							boloes[i][6] = apostadoresBolao;
+							boloes[i][5] = apostadoresBolao;
 							break;
 						}
 					}
@@ -185,7 +185,7 @@ class Apostador extends Usuario {
 		let boloes = DataGetter.getInstance.getData('bolao');
 		for (j = 0; j<boloes.length; j++){
 			if (idBolao==boloes[j][0]){
-				let cpfs_apostadores = boloes[j][6]; // string com tds os cpfs do bolao
+				let cpfs_apostadores = boloes[j][5]; // string com tds os cpfs do bolao
 				let cpf = '';
 				let novo_cpfs_apostadores = '';
 				for(i=0; i<cpfs_apostadores.length; i++){
@@ -199,7 +199,7 @@ class Apostador extends Usuario {
 						cpf = ''; // zera o cpf atual
 					}
 				}
-				boloes[j][6] = novo_cpfs_apostadores;
+				boloes[j][5] = novo_cpfs_apostadores;
 				// substitui cpfs_apostadores no arquivo do bolao por novo_cpfs_apostadores
 				DataGetter.getInstance.setData('bolao', boloes);
 				break;
@@ -210,7 +210,7 @@ class Apostador extends Usuario {
 		let boloesuser = DataGetter.getInstance.getData('boloes_' + cpfApostador);
 		let novosboloes = [];
 		for (i = 0; i<boloesuser.length; i++){
-			if (boloesuser[i][1]!=idBolao){
+			if (parseInt(boloesuser[i][1])!=idBolao){
 				novosboloes.push(boloesuser[i]);
 			}
 		}

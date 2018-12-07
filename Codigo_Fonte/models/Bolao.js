@@ -34,15 +34,26 @@ export class Bolao {
 			for (j = 0; j<apostas.length; j++){
 				if (parseInt(apostas[j][0])==jogo.id){
 					if (parseInt(apostas[j][1])==jogo.resultado.pontosTime1 && parseInt(apostas[j][2])==jogo.resultado.pontosTime2){
-						this.pontApostador[i] += 150;
+						this.pontApostador[i] += this.ptsAcertarPlacar;
 					} else if ((parseInt(apostas[j][1]) == parseInt(apostas[j][2]) && jogo.resultado.pontosTime1 == jogo.resultado.pontosTime2) || (parseInt(apostas[j][1]) > parseInt(apostas[j][2]) && jogo.resultado.pontosTime1 > jogo.resultado.pontosTime2) || (parseInt(apostas[j][1]) < parseInt(apostas[j][2]) && jogo.resultado.pontosTime1 < jogo.resultado.pontosTime2)){
-						this.pontApostador[i] += 50;
+						this.pontApostador[i] += this.ptsAcertarVencedor;
 					}
 				}
 			}
 		}
 		//atualiza esse bolao no arquivo
-		let novobolao = this.id + ';';
+		let pt = "";
+		for (i = 0; i<pontApostador.length; i++){
+			pt += String(pontApostador[i]) + ',';
+		}
+		let boloes = DataGetter.getInstance.getData('boloes');
+		for (i = 0; i<boloes.length; i++){
+			if (this.id==parseInt(boloes[i][0])){
+				boloes[i][6] = pt;
+				break;
+			}
+		}
+		DataGetter.getInstance.setData('boloes', boloes);
 	}
 
 
@@ -58,6 +69,18 @@ export class Bolao {
 				ganhador = apostadores[i];
 			}
 		}
+
+		let users = DataGetter.getInstance.getData('usuarios');
+		for (i = 0; i<users.length; i++){
+			if (users[i][0]==ganhador){
+				let saldo = parseInt(users[i][4]);
+				saldo += premio;
+				users[i][4] = String(saldo);
+				break;
+			}
+		}
+		DataGetter.getInstance.setData('usuarios', users);
+
 		return ganhador;
 	}
 

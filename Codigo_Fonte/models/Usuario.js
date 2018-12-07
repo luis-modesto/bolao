@@ -1,3 +1,5 @@
+import {DataGetter} from "./DataGetter.js";
+
 /**
 *Classe que representa um usuario do SisBolao
 */
@@ -23,24 +25,24 @@ export class Usuario {
 	/**
 	*Registra informacoes necessarias para login - cpf, nome, senha e resposta de seguranca.
 	*/
-	cria_conta(cpf, nome, senha, respostaSeguranca) {
+	criarConta(cpf, nome, senha, respostaSeguranca) {
 		let user = cpf + ';' + senha + ';' + nome + ';0;500;' + respostaSeguranca + ';'; 
 		DataGetter.getInstance().appendData('usuarios', user);
 	}
 
 
 	/**
-	*Retorna informacoes de jogos finalizados para exibicao
+	*Retorna informacoes de boloes finalizados para exibicao
 	*/
 	verificarResultados() {
 		let boloes = DataGetter.getInstance.getData('bolao');
-		let boloesativos = [];
+		let boloesinativos = [];
 		for (i = 0; i<boloes.length; i++){
-			if (parseInt(boloes[i][11])==1){
-				boloesativos.push(boloes[i]);
+			if (parseInt(boloes[i][10])==0){
+				boloesinativos.push(boloes[i]);
 			}
 		}
-		return boloesativos;
+		return boloesinativos;
 	}
 
 
@@ -60,6 +62,7 @@ export class Usuario {
 		let users = DataGetter.getInstance.getData('usuarios');
 		for (i = 0; i<users.length; i++){
 			if (cpf==users[i][0] && senha==users[i][1]){
+				this.nome = users[i][2];
 				return true;
 			}
 		}
@@ -85,5 +88,3 @@ export class Usuario {
 		return "";
 	}
 }
-
-export {Usuario};

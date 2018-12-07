@@ -1,1 +1,1 @@
-idbolao;cpf_administrador;nome;campeonato;esporte;arq_jogos;cpfs_apostadores(lista de cpf separados por vírgula); pontos_postador(lista de pontos separados por vírgula);pts_acertar_placar;pts_acertar_vencedor;premio;ativo
+idbolao;cpf_administrador;nome;campeonato;esporte;cpfs_apostadores(lista de cpf separados por vírgula);pontos_postador(lista de pontos separados por vírgula);pts_acertar_placar;pts_acertar_vencedor;premio;ativo
