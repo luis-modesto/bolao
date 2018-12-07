@@ -1,4 +1,4 @@
-import {DataGetter} from "./DataGetter.js";
+import DataGetter from "./DataGetter.js";
 
 /**
 *Classe que representa um usuario do SisBolao
@@ -12,13 +12,13 @@ export class Usuario {
 		this.cpf = cpf;
 		this.nome = nome;
 		this.senha = senha;
-		let usuarios = DataGetter.getInstance.getData('usuarios');
+		/*let usuarios = DataGetter.getInstance.getData('usuarios');
 		for (i = 0; i<users.length; i++){
 			if (this.cpf==users[i][0] && this.senha==users[i][1]){
-				respostaSeguranca = users[i][5];
+				this.respostaSeguranca = users[i][5];
 				break;
 			}
-		}
+		}*/
 	}
 
 
@@ -88,3 +88,5 @@ export class Usuario {
 		return "";
 	}
 }
+
+//module.exports = Usuario;

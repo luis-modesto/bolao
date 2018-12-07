@@ -3,20 +3,16 @@
 */
 export class DataGetter {
 
-	private instance;
-
-	private constructor(){
-
-	}
+	//this.instance = null;
 
 
 	/**
 	*Garante que a classe DataGetter so vai ter uma instancia. Se a classe nao tiver sido instanciada, cria uma nova instancia, se ja tiver sido instanciada, retorna essa instancia.
 	*/
-	public static getInstance(){
-		if (instance==null){
-			instance = new DataGetter();
-		}
+	getInstance(){
+		//if (instance==null){
+			let instance = new DataGetter();
+		//}
 		return instance;
 	}
 

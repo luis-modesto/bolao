@@ -1,23 +1,27 @@
-import {Usuario} from "Usuario.js"
-import {Bolao} from "Bolao.js"
-import {Aposta} from "Aposta.js"
-import {Jogo} from "Jogo.js"
-import {Placar} from "Placar.js"
-import {Convite} from "Convite.js"
-import {Solicitacao} from "Solicitacao.js"
-import {DataGetter} from "DataGetter.js"
+import Usuario from "./Usuario.js"
+import Bolao from "./Bolao.js"
+import Aposta from "./Aposta.js"
+import Jogo from "./Jogo.js"
+import Placar from "./Placar.js"
+import Convite from "./Convite.js"
+import Solicitacao from "./Solicitacao.js"
+import DataGetter from "./DataGetter.js"
 
 /**
 *Classe que representa um usuario Apostador
 */
-class Apostador extends Usuario {
+class Apostador {
 
 	/**
 	*Construtor que inicializa uma instancia de Apostador, preenchendo os atributos: boloesCriados, que contem informacoes dos boloes que esse apostador criou; boloesParticipa que contem informacoes dos boloes que esse apostador participa;
 	*boloesEncerrados, que contem informacoes dos boloes que esse Apostador participou mas que ja se finalizaram todos os jogos e o vencedor geral ja foi declarado; saldo, que representa o quanto de cash o Apostador tem disponivel para fazer apostas;
 	*apostas, que contem informacoes de todas as apostas que o Apostador ja fez; convites, que contem os convites que o Apostador recebeu e ainda nao respondeu; e solicitacoes, que contem as solicitacoes que o Apostador recebeu e ainda nao respondeu.
 	*/
-	constructor(boloesCriados, boloesParticipa, boloesEncerrados, saldo, apostas, convites, solicitacoes){
+	constructor(cpf, nome, senha, boloesCriados, boloesParticipa, boloesEncerrados, saldo, apostas, convites, solicitacoes){
+		//super(cpf, nome, senha);
+		this.cpf = cpf;
+		this.nome = nome;
+		this.senha = senha;
 		this.boloesCriados = boloesCriados;
 		this.boloesParticipa = boloesParticipa;
 		this.boloesEncerrados = boloesEncerrados;
@@ -32,14 +36,14 @@ class Apostador extends Usuario {
 	*Instancia e registra um novo bolao, do qual o Apostador que chama a funcao sera administrador
 	*/
 	criarBolao(bolao) {
-		let bolao = bolao.id + ';' + this.cpf + ';' + bolao.nome + ';' + bolao.campeonato + ';' + bolao.esporte +';' + './jogos_' + id + ';'; 
+		let novoBolao = bolao.id + ';' + this.cpf + ';' + bolao.nome + ';' + bolao.campeonato + ';' + bolao.esporte +';' + './jogos_' + id + ';'; 
 		for (i = 0; i<bolao.apostadores.length; i++){
-			bolao += bolao.apostadores[i] + ',';
+			novoBolao += bolao.apostadores[i] + ',';
 		}
-		bolao += ';';
+		novoBolao += ';';
 		let bolaouser = 'ativo;' + String(bolao.id) + ';';
 		// escreve bolao no arquivo bolao
-		DataGetter.getInstance().appendData('bolao', bolao);
+		DataGetter.getInstance().appendData('bolao', novoBolao);
 		// escerve bolaouser no arquivo boloes_cpfuser
 		DataGetter.getInstance().appendData('boloes' + this.cpf, bolaouser);
 	}
@@ -49,6 +53,7 @@ class Apostador extends Usuario {
 	*Registra uma aposta, dado o placar de palpite e o jogo ao qual a aposta se refere
 	*/
 	criarAposta(placar, jogo) {
+		console.log("chamou");
 		let aposta = jogo.id + ';' + placar.pontosTime1 + ';' + placar.pontosTime2 + ';';
 		// escreve no arquivo apostas_cpfuser
 		DataGetter.getInstance().appendData('apostas_' + this.cpf, aposta);
@@ -260,3 +265,10 @@ class Apostador extends Usuario {
 		return DataGetter.getInstance().getData('apostas_' + this.cpf);
 	}
 }
+
+let p = new Placar(1, 2);
+let j = new Jogo(1, "data", "limite", "time1", "time2", p, 50);
+
+let a = new Apostador("0123", "nome", "123", "boloesCriados", "boloesParticipa", "boloesEncerrados", 500, "apostas", "convites", "solicitacoes");
+
+a.criarAposta(p, j);
