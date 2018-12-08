@@ -4,44 +4,56 @@ import {Administrador} from "../models/Administrador.js"
 import {Solicitacao} from "../models/Solicitacao.js"
 import {Convite} from "../models/Convite.js"
 import {DataGetter} from "../models/DataGetter.js"
+import {Bolao} from "../models/Bolao.js"
 
 
-class Homepage{
+export class Homepage{
 
 	visualizarNotificacao(){
 		// recuperar lista de notificações do usuario 
 	}
 
-	aceitarNotificacao(){
-		let user = new Apostador();
-		if(notificacao é solicitacao){
-			let solicitacao = new Solicitacao();
-			user.responderSolicitacao(true, solicitacao);
+	aceitarNotificacao(notificacao){
+		let user = new Apostador("cpf", "nome", "senha", "boloesCriados", "boloesParticipa", "boloesEncerrados", "saldo", "apostas", "convites", "solicitacoes"); //global
+		if(notificacao instanceof Solicitacao){
+			//let solicitacao = new Solicitacao();
+			user.responderSolicitacao(true, notificacao);
 		}
 		else{
-			let convite = new Convite();
-			user.responderConvite(true, solicitacao);
+			//let convite = new Convite();
+			user.responderConvite(true, notificacao);
 		}
 	}
 
-	recusarNotificacao(){
-		let user = new Apostador();
-		if(notificacao é solicitacao){
-			let solicitacao = new Solicitacao();
-			user.responderSolicitacao(false, solicitacao);
+	recusarNotificacao(notificacao){
+		let user = new Apostador("cpfuser", "nome", "senha", "boloesCriados", "boloesParticipa", "boloesEncerrados", "saldo", "apostas", "convites", "solicitacoes"); //global
+		if(notificacao instanceof Solicitacao){
+			//let solicitacao = new Solicitacao();
+			user.responderSolicitacao(false, notificacao);
 		}
 		else{
-			let convite = new Convite();
-			user.responderConvite(false, solicitacao);
+			//let convite = new Convite();
+			user.responderConvite(false, notificacao);
 		}
 	}                 
 
 	exibirBoloes(){
-		// recuperar lista de bolões 
+		//recuperar lista de bolões 
+		let boloes = DataGetter.prototype.getInstance().getData('bolao');
+		for (let i = 0; i<boloes.length; i++){
+			if (parseInt(boloes[i][10])==1){
+				//acrescentar boloes[i] no html
+			}
+		}
+		for (let i = 0; i<boloes.length; i++){
+			if (parseInt(boloes[i][10])==0){
+				//acrescentar boloes[i] no html
+			}
+		}
 	}
 
 	solicitarParticiparBolao(){
-		let user = new Apostador();
+		let user = new Apostador(); //global
 		user.solicitarParticiparBolao(bolao);
 	}
 	visualizarBolao(){
@@ -52,3 +64,10 @@ class Homepage{
 		//exporta cpf do usuario para tela de historico de apostas
 	}
 }
+
+/*let h = new Homepage();
+let user = new Apostador("cpfuser", "nome", "senha", "boloesCriados", "boloesParticipa", "boloesEncerrados", "saldo", "apostas", "convites", "solicitacoes");
+let b = new Bolao(1, "nome", "campeonato", "esporte", "jogos", "cpfuser", "apostadores", "pontApostador", "ptsAcertarPlacar", "ptsAcertarVencedor", "premio", 1);
+user.criarBolao(b);
+let s = new Solicitacao("usuarioRemetente", 1);
+h.recusarNotificacao(s);*/

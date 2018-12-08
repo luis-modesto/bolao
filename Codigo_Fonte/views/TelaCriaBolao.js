@@ -3,9 +3,9 @@ function addBolaoToDB(nome, campeonato, esporte) {
 	novoBolao += ';';
 	let bolaouser = 'ativo;'
 	// escreve bolao no arquivo bolao
-	DataGetter.getInstance().appendData('bolao', novoBolao);
+	DataGetter.prototype.getInstance().appendData('bolao', novoBolao);
 	// escerve bolaouser no arquivo boloes_cpfuser
-	DataGetter.getInstance().appendData('boloes', bolaouser);
+	DataGetter.prototype.getInstance().appendData('boloes', bolaouser);
 }
 
 function createNewBolao(){
