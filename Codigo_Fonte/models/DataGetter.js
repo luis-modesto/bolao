@@ -13,6 +13,7 @@ export class DataGetter {
 	*/
 	getInstance(){
 		if (this.instance==null){
+			console.log("instanciou");
 			this.instance = new DataGetter();
 		}
 		return this.instance;
