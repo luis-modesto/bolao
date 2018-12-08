@@ -1,4 +1,4 @@
-import DataGetter from "./DataGetter.js";
+import {DataGetter} from "./DataGetter.js";
 
 /**
 *Classe que representa um usuario do SisBolao
@@ -12,13 +12,13 @@ export class Usuario {
 		this.cpf = cpf;
 		this.nome = nome;
 		this.senha = senha;
-		/*let usuarios = DataGetter.getInstance.getData('usuarios');
-		for (i = 0; i<users.length; i++){
+		let users = DataGetter.prototype.getInstance().getData('usuarios');
+		for (let i = 0; i<users.length; i++){
 			if (this.cpf==users[i][0] && this.senha==users[i][1]){
 				this.respostaSeguranca = users[i][5];
 				break;
 			}
-		}*/
+		}
 	}
 
 
@@ -27,7 +27,7 @@ export class Usuario {
 	*/
 	criarConta(cpf, nome, senha, respostaSeguranca) {
 		let user = cpf + ';' + senha + ';' + nome + ';0;500;' + respostaSeguranca + ';'; 
-		DataGetter.getInstance().appendData('usuarios', user);
+		DataGetter.prototype.getInstance().appendData('usuarios', user);
 	}
 
 
@@ -35,9 +35,9 @@ export class Usuario {
 	*Retorna informacoes de boloes finalizados para exibicao
 	*/
 	verificarResultados() {
-		let boloes = DataGetter.getInstance.getData('bolao');
+		let boloes = DataGetter.prototype.getInstance().getData('bolao');
 		let boloesinativos = [];
-		for (i = 0; i<boloes.length; i++){
+		for (let i = 0; i<boloes.length; i++){
 			if (parseInt(boloes[i][10])==0){
 				boloesinativos.push(boloes[i]);
 			}
@@ -51,7 +51,7 @@ export class Usuario {
 	*/
 	reportarBugs(texto) {
 		let b = this.cpf + ';' + texto + ';'; 
-		DataGetter.getInstance().appendData('bugs', b);
+		DataGetter.prototype.getInstance().appendData('bugs', b);
 	}
 
 
@@ -59,8 +59,8 @@ export class Usuario {
 	*Efetua login no sistema, criando uma instancia de Apostador ou Administrador, caso as informacoes de login estejam corretas
 	*/
 	efetuarLogin(cpf, senha) {
-		let users = DataGetter.getInstance.getData('usuarios');
-		for (i = 0; i<users.length; i++){
+		let users = DataGetter.prototype.getInstance().getData('usuarios');
+		for (let i = 0; i<users.length; i++){
 			if (cpf==users[i][0] && senha==users[i][1]){
 				this.nome = users[i][2];
 				return true;

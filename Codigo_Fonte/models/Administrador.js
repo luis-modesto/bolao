@@ -8,10 +8,17 @@ import {DataGetter} from "./DataGetter.js";
 export class Administrador extends Usuario {
 
 	/**
+	*Construtor que inicializa uma instancia de Administrador, preenchendo os atributos cpf, nome e senha do usuario
+	*/
+    constructor(cpf, nome, senha){
+        super(cpf, nome, senha);
+    }
+
+	/**
 	*Exclui um bolao dos registros do SisBolao. Apaga dados de um bolao de arquivos gerais e arquivos voltados para usuarios especificos
 	*/
 	excluirBolao(bolao) {
-		let boloes = DataGetter.getInstance.getData('bolao');
+		let boloes = DataGetter.prototype.getInstance().getData('bolao');
 		let novosboloes = [];
 		let apostadores = [];
 		for (j = 0; j<boloes.length; j++){
@@ -30,18 +37,18 @@ export class Administrador extends Usuario {
 				novosboloes.push(boloes[j]);
 			}
 		}
-		DataGetter.getInstance.setData('bolao', novosboloes);
+		DataGetter.prototype.getInstance().setData('bolao', novosboloes);
 
 		//resgata boloes que o usuario excluido participa
 		for (i = 0; i<apostadores.length; i++){
-			let boloesuser = DataGetter.getInstance.getData('boloes_' + apostadores[i]);
+			let boloesuser = DataGetter.prototype.getInstance().getData('boloes_' + apostadores[i]);
 			let novosboloesuser = [];
 			for (j = 0; j<boloesuser.length; j++){
 				if (parseInt(boloesuser[j][1])!=bolao.id){
 					novosboloesuser.push(boloesuser[j]);
 				}
 			}
-			DataGetter.getInstance.setData('boloes_' + apostadores[i], novosboloesuser);
+			DataGetter.prototype.getInstance().setData('boloes_' + apostadores[i], novosboloesuser);
 		}
 	}
 
@@ -50,13 +57,13 @@ export class Administrador extends Usuario {
 	*Exclui registros de um usuario do SisBolao. Apaga dados que possibilitam login e arquivos voltados somente para esse usuario
 	*/
 	excluirContaUsuario(usuario) {
-		let users = DataGetter.getInstance.getData('usuarios');
+		let users = DataGetter.prototype.getInstance().getData('usuarios');
 		let novosusuarios = [];
 		for (i = 0; i<users.length; i++){
 			if (usuario.cpf!=users[i][0]){
 				novosusuarios.push(users[i]);
 			}
 		}
-		DataGetter.getInstance.setData('usuarios', novosusuarios);
+		DataGetter.prototype.getInstance().setData('usuarios', novosusuarios);
 	}
 }

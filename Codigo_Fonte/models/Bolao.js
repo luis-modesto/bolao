@@ -30,7 +30,7 @@ export class Bolao {
 	*/
 	distribuirPontos(jogo) {
 		for (i = 0; i<this.apostadores.length; i++){
-			let apostas = DataGetter.getInstance.getData('apostas_' + apostadores[i]);
+			let apostas = DataGetter.prototype.getInstance().getData('apostas_' + apostadores[i]);
 			for (j = 0; j<apostas.length; j++){
 				if (parseInt(apostas[j][0])==jogo.id){
 					if (parseInt(apostas[j][1])==jogo.resultado.pontosTime1 && parseInt(apostas[j][2])==jogo.resultado.pontosTime2){
@@ -46,14 +46,14 @@ export class Bolao {
 		for (i = 0; i<pontApostador.length; i++){
 			pt += String(pontApostador[i]) + ',';
 		}
-		let boloes = DataGetter.getInstance.getData('boloes');
+		let boloes = DataGetter.prototype.getInstance().getData('boloes');
 		for (i = 0; i<boloes.length; i++){
 			if (this.id==parseInt(boloes[i][0])){
 				boloes[i][6] = pt;
 				break;
 			}
 		}
-		DataGetter.getInstance.setData('boloes', boloes);
+		DataGetter.prototype.getInstance().setData('boloes', boloes);
 	}
 
 
@@ -70,7 +70,7 @@ export class Bolao {
 			}
 		}
 
-		let users = DataGetter.getInstance.getData('usuarios');
+		let users = DataGetter.prototype.getInstance().getData('usuarios');
 		for (i = 0; i<users.length; i++){
 			if (users[i][0]==ganhador){
 				let saldo = parseInt(users[i][4]);
@@ -79,7 +79,7 @@ export class Bolao {
 				break;
 			}
 		}
-		DataGetter.getInstance.setData('usuarios', users);
+		DataGetter.prototype.getInstance().setData('usuarios', users);
 
 		return ganhador;
 	}

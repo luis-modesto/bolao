@@ -1,16 +1,16 @@
-import Usuario from "./Usuario.js"
-import Bolao from "./Bolao.js"
-import Aposta from "./Aposta.js"
-import Jogo from "./Jogo.js"
-import Placar from "./Placar.js"
-import Convite from "./Convite.js"
-import Solicitacao from "./Solicitacao.js"
-import DataGetter from "./DataGetter.js"
+import {Usuario} from "./Usuario.js"
+import {Bolao} from "./Bolao.js"
+import {Aposta} from "./Aposta.js"
+import {Jogo} from "./Jogo.js"
+import {Placar} from "./Placar.js"
+import {Convite} from "./Convite.js"
+import {Solicitacao} from "./Solicitacao.js"
+import {DataGetter} from "./DataGetter.js"
 
 /**
 *Classe que representa um usuario Apostador
 */
-class Apostador {
+class Apostador extends Usuario{
 
 	/**
 	*Construtor que inicializa uma instancia de Apostador, preenchendo os atributos: boloesCriados, que contem informacoes dos boloes que esse apostador criou; boloesParticipa que contem informacoes dos boloes que esse apostador participa;
@@ -18,10 +18,7 @@ class Apostador {
 	*apostas, que contem informacoes de todas as apostas que o Apostador ja fez; convites, que contem os convites que o Apostador recebeu e ainda nao respondeu; e solicitacoes, que contem as solicitacoes que o Apostador recebeu e ainda nao respondeu.
 	*/
 	constructor(cpf, nome, senha, boloesCriados, boloesParticipa, boloesEncerrados, saldo, apostas, convites, solicitacoes){
-		//super(cpf, nome, senha);
-		this.cpf = cpf;
-		this.nome = nome;
-		this.senha = senha;
+		super(cpf, nome, senha);
 		this.boloesCriados = boloesCriados;
 		this.boloesParticipa = boloesParticipa;
 		this.boloesEncerrados = boloesEncerrados;
@@ -36,16 +33,22 @@ class Apostador {
 	*Instancia e registra um novo bolao, do qual o Apostador que chama a funcao sera administrador
 	*/
 	criarBolao(bolao) {
-		let novoBolao = bolao.id + ';' + this.cpf + ';' + bolao.nome + ';' + bolao.campeonato + ';' + bolao.esporte +';' + './jogos_' + id + ';'; 
+		let novoBolao = bolao.id + ';' + this.cpf + ';' + bolao.nome + ';' + bolao.campeonato + ';' + bolao.esporte +';'; 
 		for (i = 0; i<bolao.apostadores.length; i++){
 			novoBolao += bolao.apostadores[i] + ',';
 		}
 		novoBolao += ';';
+		for (i = 0; i<bolao.pontApostador.length; i++){
+			novoBolao += bolao.pontApostador[i] + ',';
+		}
+		novoBolao += ';';
+		novoBolao += bolao.ptsAcertarPlacar + ';' + bolao.ptsAcertarVencedor + ';' + bolao.premio + ';' + bolao.ativo + ';';
+
 		let bolaouser = 'ativo;' + String(bolao.id) + ';';
 		// escreve bolao no arquivo bolao
-		DataGetter.getInstance().appendData('bolao', novoBolao);
+		DataGetter.prototype.getInstance().appendData('bolao', novoBolao);
 		// escerve bolaouser no arquivo boloes_cpfuser
-		DataGetter.getInstance().appendData('boloes' + this.cpf, bolaouser);
+		DataGetter.prototype.getInstance().appendData('boloes' + this.cpf, bolaouser);
 	}
 
 
@@ -56,7 +59,7 @@ class Apostador {
 		console.log("chamou");
 		let aposta = jogo.id + ';' + placar.pontosTime1 + ';' + placar.pontosTime2 + ';';
 		// escreve no arquivo apostas_cpfuser
-		DataGetter.getInstance().appendData('apostas_' + this.cpf, aposta);
+		DataGetter.prototype.getInstance().appendData('apostas_' + this.cpf, aposta);
 		//desconta saldo
 		this.saldo -= jogo.valorAposta;
 	}
@@ -68,7 +71,7 @@ class Apostador {
 	editarAposta(aposta, novoPlacar) {
 		if(aposta.isEditavel == true){
 			// procurar aposta no arquivo apostas_cpfuser
-			let matrizApostas = DataGetter.getInstance().getData('apostas_' + this.cpf);
+			let matrizApostas = DataGetter.prototype.getInstance().getData('apostas_' + this.cpf);
 			for (i = 0; i<matrizApostas.length; i++){
 				if (parseInt(matrizApostas[i][0])==aposta.idJogo){
 					matrizApostas[i][1] = String(novoPlacar.pontosTime1);
@@ -77,7 +80,7 @@ class Apostador {
 				}
 			}
 			// escreve no arquivo apostas_cpfuser
-			DataGetter.getInstance.setData('apostas_' + this.cpf, matrizApostas);
+			DataGetter.prototype.getInstance().setData('apostas_' + this.cpf, matrizApostas);
 			return true;
 		}
 		return false;
@@ -92,7 +95,7 @@ class Apostador {
 			let convite = '1;' + this.cpf + ';' + bolao.id + ';';
 			// escreve no arquivo convites_cpfuser
 			for (i = 0; i<apostadores.length; i++){
-				DataGetter.getInstance.appendData('notificacoes_' + apostadores[i], convite);
+				DataGetter.prototype.getInstance().appendData('notificacoes_' + apostadores[i], convite);
 			}
 		}
 	}
@@ -102,20 +105,20 @@ class Apostador {
 	*Registra o Apostador que chama essa funcao como participante de um novo bolao, caso a resposta ao convite para esse bolao seja true. Exclui registros desse convite
 	*/
 	responderConviteBolao(convite, resposta) {
-		let notificacoes = DataGetter.getInstance.getData('notificacoes_' + this.cpf);
+		let notificacoes = DataGetter.prototype.getInstance().getData('notificacoes_' + this.cpf);
 		let novasNot = [];
-		for (i = 0; i<notificacoes.length; i++){
+		for (let i = 0; i<notificacoes.length; i++){
 			if (notificacoes[i][2]!=convite.bolao){
 				novasNot.push(notificacoes[i]);
 			}
 		}
 		if(resposta == true){
 			// procurar bolao do convite que recebeu como parametro no arquivo de boloes
-			let boloes = DataGetter.getInstance.getData('bolao');
-			for (i = 0; i<boloes.length; i++){
+			let boloes = DataGetter.prototype.getInstance().getData('bolao');
+			for (let i = 0; i<boloes.length; i++){
 				if (parseInt(boloes[i][0])==convite.bolao){
 					let apostadoresBolao = "";
-					for (j = 0; j<boloes[i][5].length; j++){
+					for (let j = 0; j<boloes[i][5].length; j++){
 						if (boloes[i][5][j]!=';'){
 							apostadoresBolao += boloes[i][5][j];
 						} else {
@@ -127,11 +130,11 @@ class Apostador {
 					break;
 				}
 			}
-			DataGetter.getInstance.setData('bolao', boloes);
+			DataGetter.prototype.getInstance().setData('bolao', boloes);
 
-			DataGetter.getInstance.appendData('boloes_' + this.cpf, 'ativo;' + String(convite.bolao)); //adiciona a boloes que participa
+			DataGetter.prototype.getInstance().appendData('boloes_' + this.cpf, 'ativo;' + String(convite.bolao)); //adiciona a boloes que participa
 		}
-		DataGetter.getInstance.setData('notificacoes_' + this.cpf, novasNot);
+		DataGetter.prototype.getInstance().setData('notificacoes_' + this.cpf, novasNot);
 	}
 
 
@@ -141,7 +144,7 @@ class Apostador {
 	solicitarParticiparBolao(bolao) {
 		let solicitacao = '2' + this.cpf + ';' + bolao.id + ';\n';
 		// escrever no arquivo solicitacoes_cpfuser do administrador do bolao
-		DataGetter.getInstance.appendData('notificacoes_' + bolao.cpfAdmin, solicitacao);
+		DataGetter.prototype.getInstance().appendData('notificacoes_' + bolao.cpfAdmin, solicitacao);
 	}
 
 
@@ -149,16 +152,16 @@ class Apostador {
 	*Registra o Apostador criador de uma dada solicitacao como participante de um bolao cujo Apostador que chama essa funcao eh administrador, caso a resposta para essa solicitacao seja true. Exclui registros dessa solicitacao
 	*/
 	responderSolicitacao(solicitacao, resposta) {
-		let notificacoes = DataGetter.getInstance.getData('notificacoes_' + this.cpf);
+		let notificacoes = DataGetter.prototype.getInstance().getData('notificacoes_' + this.cpf);
 		let novasNot = [];
-		for (i = 0; i<notificacoes.length; i++){
+		for (let i = 0; i<notificacoes.length; i++){
 			if (notificacoes[i][2]!=solicitacao.bolao){
 				novasNot.push(notificacoes[i]);
 			}
 		}
 		if(resposta == true){
 			// procurar bolao da solicitacao que recebeu como parametro no arquivo de boloes
-			let boloes = DataGetter.getInstance.getData('bolao');
+			let boloes = DataGetter.prototype.getInstance().getData('bolao');
 			for (i = 0; i<boloes.length; i++){
 				if (parseInt(boloes[i][0])==solicitacao.bolao){
 					let apostadoresBolao = "";
@@ -174,11 +177,11 @@ class Apostador {
 					break;
 				}
 			}
-			DataGetter.getInstance.setData('bolao', boloes);
+			DataGetter.prototype.getInstance().setData('bolao', boloes);
 
-			DataGetter.getInstance.appendData('boloes_' + solicitacao.usuarioRemetente.cpf, 'ativo;' + String(solicitacao.bolao)); //adiciona a boloes que participa
+			DataGetter.prototype.getInstance().appendData('boloes_' + solicitacao.usuarioRemetente.cpf, 'ativo;' + String(solicitacao.bolao)); //adiciona a boloes que participa
 		}
-		DataGetter.getInstance.setData('notificacoes_' + this.cpf, novasNot);
+		DataGetter.prototype.getInstance().setData('notificacoes_' + this.cpf, novasNot);
 	}
 
 
@@ -187,7 +190,7 @@ class Apostador {
 	*/
 	excluirApostadorBolao(idBolao, cpfApostador) {
 		// resgata cpfs dos apostadores arquivo do bolao
-		let boloes = DataGetter.getInstance.getData('bolao');
+		let boloes = DataGetter.prototype.getInstance().getData('bolao');
 		for (j = 0; j<boloes.length; j++){
 			if (idBolao==boloes[j][0]){
 				let cpfs_apostadores = boloes[j][5]; // string com tds os cpfs do bolao
@@ -206,20 +209,20 @@ class Apostador {
 				}
 				boloes[j][5] = novo_cpfs_apostadores;
 				// substitui cpfs_apostadores no arquivo do bolao por novo_cpfs_apostadores
-				DataGetter.getInstance.setData('bolao', boloes);
+				DataGetter.prototype.getInstance().setData('bolao', boloes);
 				break;
 			}
 		}
 
 		//resgata boloes que o usuario excluido participa
-		let boloesuser = DataGetter.getInstance.getData('boloes_' + cpfApostador);
+		let boloesuser = DataGetter.prototype.getInstance().getData('boloes_' + cpfApostador);
 		let novosboloes = [];
 		for (i = 0; i<boloesuser.length; i++){
 			if (parseInt(boloesuser[i][1])!=idBolao){
 				novosboloes.push(boloesuser[i]);
 			}
 		}
-		DataGetter.getInstance.setData('boloes_' + cpfApostador, novosboloes);
+		DataGetter.prototype.getInstance().setData('boloes_' + cpfApostador, novosboloes);
 	}
 
 
@@ -228,7 +231,7 @@ class Apostador {
 	*/
 	cadastrarJogo(id, idBolao, jogo) {
 		let novoJogo = id + ';' + jogo.data + ';' + jogo.limiteEdicaoAposta + ';' + jogo.time1 + ';' + jogo.time2 + ';-;-;' + jogo.valorAposta + ';';
-		DataGetter.getInstance().appendData('jogos_' + idBolao, novoJogo);
+		DataGetter.prototype.getInstance().appendData('jogos_' + idBolao, novoJogo);
 	}
 
 
@@ -237,7 +240,7 @@ class Apostador {
 	*/
 	cadastrarResultados(placar, jogo, bolao) {
 		jogo.resultado = placar;
-		let jogos = DataGetter.getInstance().getData('jogos_' + bolao);
+		let jogos = DataGetter.prototype.getInstance().getData('jogos_' + bolao);
 		for (i = 0; i<jogos.length; i++){
 			if (parseInt(jogos[i][0])==jogo.id){
 				let jogoVetor = [8];
@@ -255,20 +258,17 @@ class Apostador {
 			}
 		}
 		// escreve no arquivo jogos_idBolao
-		DataGetter.getInstance.setData('jogos_' + bolao, jogos);
+		DataGetter.prototype.getInstance().setData('jogos_' + bolao, jogos);
 	}
 
 	/**
 	*Retorna todas as apostas ja feitas pelo Apostador que chama essa funcao
 	*/
 	verificarHistoricoApostas() {
-		return DataGetter.getInstance().getData('apostas_' + this.cpf);
+		return DataGetter.prototype.getInstance().getData('apostas_' + this.cpf);
 	}
 }
 
-let p = new Placar(1, 2);
-let j = new Jogo(1, "data", "limite", "time1", "time2", p, 50);
-
-let a = new Apostador("0123", "nome", "123", "boloesCriados", "boloesParticipa", "boloesEncerrados", 500, "apostas", "convites", "solicitacoes");
-
-a.criarAposta(p, j);
+/*let a = new Apostador("cpfuser", "nome", "senha", "boloesCriados", "boloesParticipa", "boloesEncerrados", "saldo", "apostas", "convites", "solicitacoes");
+let c = new Convite("eu mesmo", 1);
+a.responderConviteBolao(c, true);*/

@@ -3,17 +3,19 @@
 */
 export class DataGetter {
 
-	//this.instance = null;
+	/*constructor(){
+		this.instance = null;
+	}*/
 
 
 	/**
 	*Garante que a classe DataGetter so vai ter uma instancia. Se a classe nao tiver sido instanciada, cria uma nova instancia, se ja tiver sido instanciada, retorna essa instancia.
 	*/
 	getInstance(){
-		//if (instance==null){
-			let instance = new DataGetter();
-		//}
-		return instance;
+		if (this.instance==null){
+			this.instance = new DataGetter();
+		}
+		return this.instance;
 	}
 
 
@@ -28,7 +30,7 @@ export class DataGetter {
 		let linha = [];
 		let campo = "";
 
-		for(i = 0; i<contents.length; i++){
+		for(let i = 0; i<contents.length; i++){
 			if (contents[i]=='\n'){
 				retorno.push(linha);
 				linha = [];
@@ -53,7 +55,7 @@ export class DataGetter {
 				fs.writeFile('../arquivos/' + arquivo, data[0][0] + ';', function(err){
 					if (err) throw err;
 				});
-				for (j = 1; j<data[0].length; j++){
+				for (let j = 1; j<data[0].length; j++){
 					fs.appendFile('../arquivos/' + arquivo, data[0][j] + ';', function(err){
 						if (err) throw err;
 					});
@@ -62,8 +64,8 @@ export class DataGetter {
 					if (err) throw err;
 				});
 			}
-			for (i = 1; i<data.length; i++){
-				for (j = 0; j<data[i].length; j++){
+			for (let i = 1; i<data.length; i++){
+				for (let j = 0; j<data[i].length; j++){
 					fs.appendFile('../arquivos/' + arquivo, data[i][j] + ';', function(err){
 						if (err) throw err;
 					});
