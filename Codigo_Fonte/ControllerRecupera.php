@@ -1,11 +1,11 @@
 <?php
-require_once "./models/Apostador.php";
-require_once "./models/Administrador.php";
-require_once "TelaRecuperaSenha.php";
+require_once "./Apostador.php";
+require_once "./Administrador.php";
+require_once "ClasseTelaRecuperaSenha.php";
 
 $cpf = $_POST['cpf'];
 
-if ($cpf=="06721598566"){
+if ($cpf=="06721598567"){
 	$user = new Administrador($cpf, '', '');
 } else {
 	$user = new Apostador($cpf, '', '', array(), array(), array(), 500, array(), array(), array());

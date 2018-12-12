@@ -14,18 +14,18 @@
 </head>
 
 <body style="background-color: #f0f0f0;">
-	<h1><a id = "cabecalho" href = "./login.html"> Bolão </a></h1>
+	<h1><a id = "cabecalho" href = "./index.php"> Bolão </a></h1>
 	<div class="container-fluid">
-		<form class="ml-auto" style="text-align: center;">
+		<form class="ml-auto" style="text-align: center;" method = "post" action = "ControllerRecupera.php">
 			<div class="form-group">
                 <label for="cpf"> CPF:</label>
                 <div class='rightTab'>
-                    <input type="text" id="cpf">
+                    <input type="text" name = "cpf" id="cpf">
                 </div>
                 <br>
                 <label for="Respota de segurança"> Resposta de Segurança:</label>
                 <div class='rightTab'>
-                    <input type="text" id="respostaSeguranca">
+                    <input type="text" name = "resposta" id="respostaSeguranca">
                 </div>
 			</div>
 			<button type="submit" class="btn btn-primary" >Recuperar senha</button>
@@ -39,7 +39,6 @@
 	 crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 	 crossorigin="anonymous"></script>
-	 <script src = "./TelaRecuperaSenha.js"> </script>
 </body>
 
 </html>

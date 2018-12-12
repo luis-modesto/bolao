@@ -1,5 +1,5 @@
 <?php
-require_once "TelaCriaJogo.php";
+require_once "ClasseTelaCriaJogo.php";
 
 $dataJogo = $_POST['dataJogo'];
 $dataLimite = $_POST['dataLimite'];

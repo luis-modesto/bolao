@@ -6,10 +6,11 @@ class DataGetter {
 
 	private static $instance;
 
+	/**
+	*Evitam que DataGetter seja instanciado fora da classe
+	*/
 	private function __constructor(){}
-
 	private function __clone(){}
-
 	private function __wakeup(){}
 
 	/**
@@ -27,7 +28,7 @@ class DataGetter {
 	*Retorna o conteudo do arquivo cujo nome eh passado como parametro em forma de matriz
 	*/
 	public function getData($nomearquivo){
-		$arquivo = fopen('../arquivos/' . $nomearquivo, 'r');
+		$arquivo = fopen($nomearquivo, 'r');
  		$retorno = array();
  		
 		while(($linha = fgets($arquivo)) !== false){
@@ -44,7 +45,7 @@ class DataGetter {
 	*Substitui os dados do arquivo cujo nome eh recebido como parametro com o conteudo em data
 	*/
 	public function setData($nomearquivo, $data){
-		$arquivo = fopen('../arquivos/' . $nomearquivo, 'w');
+		$arquivo = fopen($nomearquivo, 'w');
 
 		for ($i = 0; $i<count($data); $i++){
 			for ($j = 0; $j<count($data[$i]); $j++){
@@ -61,7 +62,7 @@ class DataGetter {
 	*Incrementa o conteudo do arquivo cujo nome eh recebido como parametro com o conteudo em data
 	*/
 	public function appendData($nomearquivo, $data){
-		$arquivo = fopen('../arquivos/' . $nomearquivo, 'a');
+		$arquivo = fopen($nomearquivo, 'a');
 		fwrite($arquivo, $data . PHP_EOL);
 		fclose($arquivo);
 	}

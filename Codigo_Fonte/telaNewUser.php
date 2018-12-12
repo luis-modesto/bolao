@@ -14,31 +14,31 @@
 </head>
 
 <body style="background-color: #f0f0f0;">
-    <h1><a id = "cabecalho" href = "./login.html"> Bolão </a></h1>
+    <h1><a id = "cabecalho" href = "./index.php"> Bolão </a></h1>
 	<div class="container-fluid">
-		<form class="ml-auto" style="text-align: center;" action="./homepage.html">
+		<form class="ml-auto" style="text-align: center;" method = "post" action="ControllerCadastro.php">
 			<div class="form-group">
                 <label for="cpf"> CPF:</label>
                 <div class='rightTab'>
-                    <input type="text" id="cpf">
+                    <input required type="text" name = "cpf" id="cpf">
                 </div>
                 <br>
                 <label for="nome"> Nome:</label>
                 <div class='rightTab'>
-				    <input type="text" id="nome">
+				    <input required type="text" name = "nome" id="nome">
                 </div>
                 <br>
 				<label for="senha">Senha:</label>
                 <div class='rightTab'>
-                    <input type="password" id="senha">
+                    <input required type="password" name = "senha" id="senha">
                 </div>
                 <br>    
 				<label placeholder='Digite aqui sua Resposta Segura'for="senha">Nome do seu melhor amigo de infância:</label>
                 <div class='rightTab'>
-                    <input type="text" id="respostaSeguranca">
+                    <input required type="text" name = "resposta" id="respostaSeguranca">
                 </div>
 			</div>
-			<button type="submit" class="btn btn-primary" href='bolao.html'>Criar Cadastro</button>
+			<button type="submit" class="btn btn-primary">Criar Cadastro</button>
 		</form>
 
 	</div>

@@ -18,14 +18,18 @@
 <body style="background-color: #f0f0f0;">
 	<div class="container" style="background-color: #f0f0f0;">
 		<header>
-			User01
+			<?php
+            	//session_start();
+            	//$user = $_SESSION["globalUser"];
+            	//echo $user->nome;
+            ?>
 		</header>
 		<div class="row">
-			<a class="ml-auto" href="./login.html"> Sair </a>
+			<a class="ml-auto" href="./index.php"> Sair </a>
 		</div>
-		<h1 class='main-title'><a id="cabecalho" href="./homepage.html">Bolão</a></h1>
+		<h1 class='main-title'><a id="cabecalho" href="./telaHomepage.php">Bolão</a></h1>
 		<div class='new-game'>
-			<form style="text-align: center;" action="./newBolao.html">
+			<form style="text-align: center;" action="./telaNewBolao.php">
 				<button class="btn btn-info"> Criar novo bolão</button class="btn btn-info">
 			</form>
 			<button class="ml-3 btn btn-info"> Meus bolões</button class="btn btn-info">
@@ -35,29 +39,33 @@
 				<div class="resultados shadow">
 					<h6 class="text-center">Novo Jogo</h6>
                         <div class="container-fluid">
-                                <form class="ml-auto" style="text-align: center;" action="./homepage.html">
+                                <form class="ml-auto" style="text-align: center;" method = "post" action="ControllerCriaJogo.php">
                                     <div class="form-group">
-                                        <label for="nome"> Time A:</label>
+                                        <label for="timea"> Time A:</label>
                                         <div class='rightTab'>
-                                            <input type="text" id="nome">
+                                            <input type="text" name = "time1" id="time1">
                                         </div>
                                         <br>
-                                        <label for="campeonato"> Time B:</label>
+                                        <label for="timeb"> Time B:</label>
                                         <div class='rightTab'>
-                                            <input type="text" id="campeonato">
+                                            <input type="text" name = "time2" id="time2">
                                         </div>
                                         <br>
-                                        <label for="esporte">Valor da Aposta</label>
+                                        <label for="aposta">Valor da Aposta: </label>
                                         <div class='rightTab'>
-                                            <input type="text" id="esporte">
+                                            <input type="text" name = "aposta" id="aposta">
 										</div>
 										<br>
-										<label for="esporte">Data Limite</label>
+										<label for="dataJogo">Data do Jogo: </label>
                                         <div class='rightTab'>
-                                            <input type="text" id="esporte">
+                                            <input type="text" name = "dataJogo" id="dataJogo">
                                         </div>
+										<label for="dataLimite">Data Limite para Editar Aposta: </label>
+                                        <div class='rightTab'>
+                                            <input type="text" name = "dataLimite" id="dataLimite">
+                                        </div>                                        
                                     </div>
-                                    <button type="submit" class="btn btn-primary" href='bolao.html'>Criar Jogo</button>
+                                    <button type="submit" class="btn btn-primary">Criar Jogo</button>
                                 </form>
 				</div>
 			</div>

@@ -1,13 +1,12 @@
 <?php
-require_once "TelaLogin.php";
-require_once "./models/Administrador.php";
-require_once "./models/Apostador.php";
+require_once "ClasseTelaLogin.php";
+require_once "./Administrador.php";
+require_once "./Apostador.php";
 
-echo "oi\n";
 $cpf = $_POST['cpf'];
 $senha = $_POST['senha'];
 
-if ($cpf=="06721598566"){
+if ($cpf=="06721598567"){
 	$user = new Administrador($cpf, '', $senha);
 } else {
 	$user = new Apostador($cpf, '', $senha, array(), array(), array(), 500, array(), array(), array());

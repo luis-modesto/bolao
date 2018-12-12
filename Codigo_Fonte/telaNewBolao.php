@@ -17,12 +17,16 @@
 <body style="background-color: #f0f0f0;">
     <div class = "container" style = "background-color: #f0f0f0;">
         <header>
-            User01
+            <?php
+                //session_start();
+                //$user = $_SESSION["globalUser"];
+                //echo $user->nome;
+            ?>
         </header>
         <div class = "row">
-            <a class = "ml-auto" href = "./login.html"> Sair </a>
+            <a class = "ml-auto" href = "./index.php"> Sair </a>
         </div>
-        <h1><a href = "./homepage.html" id = "cabecalho"> Bolão </a></h1>
+        <h1><a href = "./telaHomepage.php" id = "cabecalho"> Bolão </a></h1>
         <div class='new-game'>
             <button class = "btn btn-info" disabled> Criar novo bolão</button class = "btn btn-info">
             <button class = "ml-3 btn btn-info"> Meus bolões</button class = "btn btn-info">
@@ -32,24 +36,34 @@
     				<div class="resultados shadow">
     					<h6 class="text-center">Novo Bolão</h6>
                         <div class="container-fluid">
-                                <form class="ml-auto" style="text-align: center;" action="./homepage.html">
+                                <form class="ml-auto" style="text-align: center;" method = "post" action="ControllerCriaBolao.php">
                                     <div class="form-group">
                                         <label for="nome"> Nome:</label>
                                         <div class='rightTab'>
-                                            <input type="text" id="nome">
+                                            <input type="text" name = "nome" id="nome">
                                         </div>
                                         <br>
                                         <label for="campeonato"> Campeonato:</label>
                                         <div class='rightTab'>
-                                            <input type="text" id="campeonato">
+                                            <input type="text" name = "campeonato" id="campeonato">
                                         </div>
                                         <br>
                                         <label for="esporte">Esporte:</label>
                                         <div class='rightTab'>
-                                            <input type="text" id="esporte">
+                                            <input type="text" name = "esporte" id="esporte">
+                                        </div>
+                                        <br>
+                                        <label for="ptsAcertarPlacar">Pontos por acertar placar:</label>
+                                        <div class='rightTab'>
+                                            <input type="text" name = "pontosPlacar" id="pontosPlacar">
+                                        </div>
+                                        <br>
+                                        <label for="ptsAcertarVencedor">Pontos por acertar o vencedor do jogo:</label>
+                                        <div class='rightTab'>
+                                            <input type="text" name = "pontosVencedor" id="pontosVencedor">
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary" href='bolao.html' onclick="createNewBolao();">Criar Bolão</button>
+                                    <button type="submit" class="btn btn-primary";">Criar Bolão</button>
                                 </form>
                         </div>
     				</div>

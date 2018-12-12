@@ -1,5 +1,5 @@
 <?php
-require_once "TelaCriaBolao.php";
+require_once "ClasseTelaCriaBolao.php";
 
 $nome = $_POST['nome'];
 $campeonato = $_POST['campeonato'];
