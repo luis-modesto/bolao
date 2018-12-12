@@ -10,7 +10,6 @@ class TelaLogin{
 			header('Location: ./telaHomepage.php');
 		}
 		else{
-			echo "CPF ou senha inválido";
 			header('Location: ./index.php');
 		}
 	}

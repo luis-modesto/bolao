@@ -18,6 +18,9 @@ abstract class Usuario {
 		$dg = DataGetter::getInstance();
 		$user = $cpf . ';' . $senha . ';' . $nome . ';0;500;' . $respostaSeguranca . ';'; 
 		$dg->appendData('usuarios', $user);
+		$dg->setData('apostas_' . $this->cpf, array());
+		$dg->setData('notificacoes_' . $this->cpf, array());
+		$dg->setData('boloes_' . $this->cpf, array());
 	}
 
 

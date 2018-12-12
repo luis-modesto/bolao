@@ -2,6 +2,7 @@
 require_once "./Apostador.php";
 require_once "./Administrador.php";
 require_once "ClasseTelaRecuperaSenha.php";
+require_once "ClasseTelaLogin.php";
 
 $cpf = $_POST['cpf'];
 
@@ -12,7 +13,10 @@ if ($cpf=="06721598567"){
 }
 $resposta = $_POST['resposta'];
 $telaSenha = new TelaRecuperaSenha();
-$telaSenha->recuperaSenha($user, $resposta);
+if ($telaSenha->recuperaSenha($user, $resposta)){
+	$telaLogin = new TelaLogin();
+	$telaLogin->login($user);
+}
 
 
 ?>

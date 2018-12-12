@@ -19,13 +19,17 @@
 	    <div class = "container" style = "background-color: #f0f0f0;">
 	        <header>
 	            <?php
-	            	//session_start();
-	            	//$user = $_SESSION["globalUser"];
-	            	//echo $user->nome;
+	            	session_start();
+	            	$user = $_SESSION["globalUser"];
+	            	echo $user->nome;
 	            ?>
 	        </header>
 	        <div class = "row">
-	            <a class = "ml-auto" href = "./index.php"> Sair </a>
+	        	<div class="col-1 offset-11">
+		        	<form style="text-align: right;"  action="./ControllerSair.php">
+		            	<button type="submit" class = "btn"> Sair </button>
+		            </form>
+		        </div>
 	        </div>
 			<h1 class='main-title'><a id = "cabecalho" href = "./telaHomepage.php"> Bolão</a></h1>
 			<div class='new-game'>

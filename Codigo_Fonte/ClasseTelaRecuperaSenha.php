@@ -7,7 +7,7 @@ class TelaRecuperaSenha{
 	function recuperaSenha($user, $resposta){
 		$senha = $user->recuperarSenha($resposta);
 		if ($senha!=''){
-			$user->efetuarLogin($user->cpf, $senha);
+			return $user->efetuarLogin($user->cpf, $senha);
 		}
 	}
 }

@@ -132,7 +132,8 @@ class Apostador extends Usuario{
 		// escreve bolao no arquivo bolao
 		$dg->appendData('bolao', $novoBolao);
 		// escerve bolaouser no arquivo boloes_cpfuser
-		$dg->appendData('boloes' . $this->cpf, $bolaouser);
+		$dg->appendData('boloes_' . $this->cpf, $bolaouser);
+		$dg->setData('jogos_' . $bolao->id, array()); //cria arquivo de jogos
 	}
 
 
