@@ -117,7 +117,7 @@ class Apostador extends Usuario{
 	*/
 	function criarBolao($bolao) {
 		$dg = DataGetter::getInstance();
-		$novoBolao = $bolao->id . ';' . $this->$cpf . ';' . $bolao->nome . ';' . $bolao->campeonato . ';' . $bolao->esporte . ';'; 
+		$novoBolao = $bolao->id . ';' . $this->cpf . ';' . $bolao->nome . ';' . $bolao->campeonato . ';' . $bolao->esporte . ';'; 
 		for ($i = 0; $i<count($bolao->apostadores); $i++){
 			$novoBolao = $novoBolao . $bolao->apostadores[$i] . ',';
 		}

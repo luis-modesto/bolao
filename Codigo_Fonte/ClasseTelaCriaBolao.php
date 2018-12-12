@@ -1,21 +1,23 @@
 <?php
 
 require_once "./Apostador.php";
+require_once "./Bolao.php";
 
 
-class TelaCriaBolao(){
+class TelaCriaBolao{
 	function confirmarCriacaoBolao($nome, $campeonato, $esporte, $pontosPlacar, $pontosVencedor){
 		session_start();
 		$user = $_SESSION['globalUser'];
-		if($_SESSION['globalIdBolao'] >=1){
-			$_SESSION['globalIdBolao']++;
+		$id = $_SESSION['globalIdBolao'];
+		if($id >=1){
+			$id++;
 		} 
 		else{
-			$_SESSION['globalIdBolao'] = 1;
+			$id = 1;
 		}
-		$id = $_SESSION['globalIdBolao'];
 		$_SESSION['idBolaoEscolhido'] = $id;
-		$user->criarBolao($id, $nome, $campeonato, $esporte, array(), $user->cpf, array(), array(), $pontosPlacar, $pontosVencedor, 0, true);
+		$b = new Bolao($id, $nome, $campeonato, $esporte, array(), $user->cpf, array(), array(), $pontosPlacar, $pontosVencedor, 0, 1);
+		$user->criarBolao($b);
 	}
 }
 ?>
