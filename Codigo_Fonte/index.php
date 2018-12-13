@@ -15,6 +15,12 @@
 
 <body style="background-color: #f0f0f0;">
 	<h1>Bolão</h1>
+	<?php
+		session_start();
+		if (isset($_SESSION['message'])) {
+				echo '<div class = "alert alert-danger"> <strong> ' . $_SESSION['message'] . '<\strong> <\div>';
+			}
+	?>
 	<div class="container-fluid">
 		<form class="ml-auto" style="text-align: center;" method = "post" action = "ControllerLogin.php">
 			<div class="form-group">
