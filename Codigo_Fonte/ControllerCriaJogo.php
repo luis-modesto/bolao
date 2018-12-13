@@ -10,5 +10,6 @@ $aposta = $_POST['aposta'];
 
 $telaJogo = new TelaCriaJogo();
 $telaJogo->confirmarCriacaoJogo($dataJogo, $dataLimite, $time1, $time2, $aposta);
+header('Location: ./telaBolao.html');
 
 ?>

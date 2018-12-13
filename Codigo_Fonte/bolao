@@ -1,1 +1,5 @@
 idbolao;cpf_administrador;nome;campeonato;esporte;cpfs_apostadores(lista de cpf separados por vírgula);pontos_postador(lista de pontos separados por vírgula);pts_acertar_placar;pts_acertar_vencedor;premio;ativo
+3;1234567;meubolas;camp;esp;;;3;10;0;1;
+2;1234;outrobolao;Copa do Brasil;Futebol;;;5;15;0;1;
+5;1234567;bolaoinativo;camp;esp;;;5;15;0;0;
+10;1234;Bolao de tal grupo;Brasileirão;Futebol;;;5;15;0;1;

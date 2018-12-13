@@ -2,22 +2,26 @@
 
 require_once "./Apostador.php";
 require_once "./Bolao.php";
+require_once "./DataGetter.php";
 
 
 class TelaCriaBolao{
 	function confirmarCriacaoBolao($nome, $campeonato, $esporte, $pontosPlacar, $pontosVencedor){
 		session_start();
 		$user = $_SESSION['globalUser'];
-		$id = $_SESSION['globalIdBolao'];
-		if($id >=1){
-			$id++;
-		} 
-		else{
-			$id = 1;
-		}
+		$id = rand(); // randomiza um id pro bolao 
+		$dg = DataGetter::getInstance(); 
+		$boloesuser = $dg->getData('boloes_'.$user->cpf); //instancia o vetor de boloes do usuario
+		for($i=0; $i<count($boloesuser); $i++){ // começa a percorrer o vetor de boloes
+			if($boloesuser[$i][1] == $id){ // se encontrar o id que tinha randomizado antes
+				$id = rand(); //randomiza de novo
+				$i = 0; //começa a procurar do começo
+			} 
+		} //sai do for quando percorrer o vetor todinho e n encontrar o id que tinha antes
 		$_SESSION['idBolaoEscolhido'] = $id;
 		$b = new Bolao($id, $nome, $campeonato, $esporte, array(), $user->cpf, array(), array(), $pontosPlacar, $pontosVencedor, 0, 1);
 		$user->criarBolao($b);
+		header('Location: ./telaHomepage.php');
 	}
 }
 ?>

@@ -231,9 +231,10 @@ class Apostador extends Usuario{
 	*/
 	function solicitarParticiparBolao($bolao) {
 		$dg = DataGetter::getInstance();
-		$solicitacao = '2' . $this->cpf . ';' . $bolao->id . ';' . PHP_EOL;
+		$solicitacao = '2;' . $this->cpf . ';' . $bolao->id . ';' . PHP_EOL;
 		// escrever no arquivo solicitacoes_cpfuser do administrador do bolao
 		$dg->appendData('notificacoes_' . $bolao->cpfAdmin, $solicitacao);
+		$dg->appendData('solicitacoesfeitas_' . $this->cpf, $bolao->id . ';');
 	}
 
 
@@ -244,6 +245,14 @@ class Apostador extends Usuario{
 		$dg = DataGetter::getInstance();
 		$notificacoes = $dg->getData('notificacoes_' . $this->cpf);
 		$novasNot = array();
+		for ($i = 0; $i<count($notificacoes); $i++){
+			if ($notificacoes[$i][2]!=$solicitacao->bolao){
+				array_push($novasNot, $notificacoes[$i]);
+			}
+		}
+		$remetente = $solicitacao->usuarioRemetente;
+		$solicitacoesF = $dg->getData('solicitacoesfeitas_' . $remetente->cpf);
+		$novasSoli = array();
 		for ($i = 0; $i<count($notificacoes); $i++){
 			if ($notificacoes[$i][2]!=$solicitacao->bolao){
 				array_push($novasNot, $notificacoes[$i]);
@@ -273,6 +282,7 @@ class Apostador extends Usuario{
 			$dg->appendData('boloes_' . $u->cpf, 'ativo;' . $solicitacao->bolao); //adiciona a boloes que participa
 		}
 		$dg->setData('notificacoes_' . $this->cpf, $novasNot);
+		$dg->setData('solicitacoesfeitas_' . $remetente->cpf, $novasSoli);
 	}
 
 

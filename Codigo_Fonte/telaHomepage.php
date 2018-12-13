@@ -19,9 +19,11 @@
 	    <div class = "container" style = "background-color: #f0f0f0;">
 	        <header>
 	            <?php
+					require_once "./Apostador.php";
+					require_once "./Administrador.php";
 	            	session_start();
 	            	$user = $_SESSION["globalUser"];
-	            	echo $user->nome;
+	            	echo '<br>' . $user->nome;
 	            ?>
 	        </header>
 	        <div class = "row">
@@ -41,15 +43,30 @@
 			<div class="row mt-3">
 				<div class="col-8 offset-2">
 					<div class="resultados shadow">
-						<h6 id="titulo-lista-boloes" class="text-center">Bolões</h6>
+						<h5 id="titulo-lista-boloes" class="text-center">Bolões</h5>
 						<ul id="lista-boloes" class="list-group">
-						
-							<li class="list-group-item" onclick = "pegarIdBolao()">Bolão 1</li>
+							<?php
+								require_once "ClasseTelaHomepage.php";
+
+								$home = new Homepage();
+								echo $home->exibirBoloes();
+							?>
+
 						</ul>
-						<form style ="text-align: left;" method = "post" action = "ControllerExibeBolao.php">
-							<input type = "hidden" name = "bolaoEscolhido" id = "bolaoEscolhido"	> 
-							<button disabled type = "submit" class = "btn btn-success" id = "exibir"> Exibir Bolão </button>
-						</form>
+						<div class="row">
+							<div class="col-3">
+								<form style ="text-align: left;" method = "post" action = "ControllerExibeBolao.php">
+									<input type = "hidden" name = "bolaoEscolhido" id = "bolaoEscolhido"> 
+									<button disabled type = "submit" class = "btn btn-success" id = "exibir"> Exibir Bolão </button>
+								</form>
+							</div>
+							<div class="col-2 offset-7">
+								<form method = "post" action="ControllerParticipar.php">
+									<input type = "hidden" name = "bolaoParticipar" id = "bolaoParticipar"> 
+									<button disabled type="submit" class="btn btn-success" id = "participar">Participar</button>
+								</form>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -57,7 +74,9 @@
 		<script type = "text/javascript">
 			function pegarIdBolao(idEscolhido){
 				document.getElementById('exibir').disabled = false;
+				document.getElementById('participar').disabled = false;
 				document.getElementById('bolaoEscolhido').value = idEscolhido; 
+				document.getElementById('bolaoParticipar').value = idEscolhido; 
 			}
 
 			function exibirMeusBoloes(){

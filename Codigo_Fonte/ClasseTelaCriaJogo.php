@@ -1,6 +1,7 @@
 <?php
 
 require_once "./Apostador.php";
+require_once "./Jogo.php";
 
 class TelaCriaJogo{
 
@@ -8,7 +9,16 @@ class TelaCriaJogo{
 		session_start();
 		$user = $_SESSION['globalUser']; //global 
 		// id do bolao vai estar armazenado em idBolaoEscolhido, pq se for num bolao que a pessoa acabou de criar, o id dele eh armazenado la na classe de criar bolao e se for um q ela escolheu pra colocar o id eh armazenado no controller de exibiçao do bolao
-		$user->cadastrarJogo($_SESSION['idBolaoEscolhido'], $idjogo, $_POST['dataJogo'], $_POST['dataLimite'], $_POST['time1'], $_POST['time2'], '', $_POST['aposta']); //idjogo depende de quantos jogos tem no bolao, tem q recuperar disso
+		$idjogo = rand();
+		$jogosbolao = $dg->getData('jogos_'.$_SESSION['idBolaoEscolhido']); //instancia o vetor de boloes do usuario
+		for($i=0; $i<count($jogosbolao); $i++){ // começa a percorrer o vetor de jogos do bolao
+			if($jogosbolao[$i][1] == $idjogo){ // se encontrar o id que tinha randomizado antes
+				$idjogo = rand(); //randomiza de novo
+				$i = 0; //começa a procurar do começo
+			} 
+		} //sai do for quando percorrer o vetor todinho e n encontrar o id que tinha antes		
+		$jogo = new Jogo($idjogo, $datajogo, $datalimite, $time1, $time2, '', $aposta);
+		$user->cadastrarJogo($idjogo, $_SESSION['idBolaoEscolhido'], $jogo); 
 	}
 }
 

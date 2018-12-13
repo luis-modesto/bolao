@@ -16,11 +16,24 @@ abstract class Usuario {
 	*/
 	function criarConta($cpf, $nome, $senha, $respostaSeguranca) {
 		$dg = DataGetter::getInstance();
-		$user = $cpf . ';' . $senha . ';' . $nome . ';0;500;' . $respostaSeguranca . ';'; 
-		$dg->appendData('usuarios', $user);
-		$dg->setData('apostas_' . $this->cpf, array());
-		$dg->setData('notificacoes_' . $this->cpf, array());
-		$dg->setData('boloes_' . $this->cpf, array());
+		$user = $cpf . ';' . $senha . ';' . $nome . ';0;500;' . $respostaSeguranca . ';';
+		$usersCadastrados = $dg->getData('usuarios');
+		$jaTem = false;
+		for($i=0; $i<count($usersCadastrados); $i++){
+			if($cpf == $usersCadastrados[$i][0]){
+				$jatem = true;
+				break;
+			}
+		}
+		if($jatem == false){
+			$dg->appendData('usuarios', $user);
+			$dg->setData('apostas_' . $this->cpf, array());
+			$dg->setData('notificacoes_' . $this->cpf, array());
+			$dg->setData('boloes_' . $this->cpf, array());
+			$dg->setData('solicitacoesfeitas_' . $this->cpf, array());
+			return true;		
+		}
+		return false;
 	}
 
 
