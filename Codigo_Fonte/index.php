@@ -15,14 +15,15 @@
 
 <body style="background-color: #f0f0f0;">
 	<h1>Bolão</h1>
-	<?php
-		session_start();
-		if (isset($_SESSION['message'])) {
-				echo '<div class = "alert alert-danger"> <strong> ' . $_SESSION['message'] . '<\strong> <\div>';
-			}
-	?>
 	<div class="container-fluid">
-		<form class="ml-auto" style="text-align: center;" method = "post" action = "ControllerLogin.php">
+		<?php
+			session_start();
+			if (isset($_SESSION['message'])) {
+					echo '<div class = "text-center alert alert-danger" style = "background-color: #f0f0f0;"> <strong> ' . $_SESSION['message'] . '<\strong> <\div>';
+					unset($_SESSION['message']);
+				}
+		?>
+		<form class="ml-auto" style="text-align: center;" method = "post" action = "index.php">
 			<div class="form-group">
 				<label for="cpf">CPF:</label>
 				<div class='rightTab'>
@@ -47,6 +48,27 @@
 	 crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 	 crossorigin="anonymous"></script>	
+
+	 <?php
+	 	require_once "ControllerLogin.php";
+		require_once "./Administrador.php";
+		require_once "./Apostador.php";
+
+		if(isset($_POST['cpf']) && isset($_POST['senha'])){
+			$cpf = $_POST['cpf'];
+			$senha = $_POST['senha'];
+			unset($_POST['cpf']);
+			unset($_POST['senha']);
+
+			if ($cpf=="06721598567"){
+				$user = new Administrador($cpf, '', $senha);
+			} else {
+				$user = new Apostador($cpf, '', $senha, array(), array(), array(), 500, array(), array(), array());
+			}
+			$telaLogin = new ControllerLogin();
+			$telaLogin->login($user);
+		}
+	?>
 </body>
 
 </html>

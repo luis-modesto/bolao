@@ -1,10 +1,21 @@
 <?php
-require_once "Apostador.php";
-require_once "ClasseTelaCadastro.php";
 
-$user = new Apostador($_POST['cpf'], $_POST['nome'], $_POST['senha'], array(), array(), array(), 500, '', '', '');
-$resposta = $_POST['resposta'];
-$telaCadastro = new TelaCadastro();
-$telaCadastro->criaConta($user, $resposta);
+require_once "./Usuario.php";
+require_once "./Apostador.php";
+
+class ControllerCadastro{
+
+	function criaConta($user, $resposta){
+		session_start();
+		if($user->criarConta($user->cpf, $user->nome, $user->senha, $resposta) == true){
+			$_SESSION['globalUser'] = $user;
+			header('Location: ./telaHomepage.php');
+		}
+		else{
+			$_SESSION['message'] = "CPF ja cadastrado no sistema";
+			header('Location: ./index.php');
+		}
+	}
+}
 
 ?>

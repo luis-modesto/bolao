@@ -2,8 +2,9 @@
 
 require_once "./Aposta.php";
 require_once "./Apostador.php";
+require_once "TelaUsuario.php";
 
-class TelaHistoricoApostas(){
+class ControllerHistoricoApostas extends TelaUsuario{
 
 	function exibirApostas(){
 		//recuperar lista de apostas do usuario

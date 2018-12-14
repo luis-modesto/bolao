@@ -16,7 +16,7 @@
 <body style="background-color: #f0f0f0;">
     <h1><a id = "cabecalho" href = "./index.php"> Bolão </a></h1>
 	<div class="container-fluid">
-		<form class="ml-auto" style="text-align: center;" method = "post" action="ControllerCadastro.php">
+		<form class="ml-auto" style="text-align: center;" method = "post" action="telaNewUser.php">
 			<div class="form-group">
                 <label for="cpf"> CPF:</label>
                 <div class='rightTab'>
@@ -42,6 +42,20 @@
 		</form>
 
 	</div>
+    <?php
+    require_once "Apostador.php";
+    require_once "ControllerCadastro.php";
+    if(isset($_POST['cpf']) && isset($_POST['nome']) && isset($_POST['senha']) && isset($_POST['resposta'])){
+        $user = new Apostador($_POST['cpf'], $_POST['nome'], $_POST['senha'], array(), array(), array(), 500, '', '', '');
+        $resposta = $_POST['resposta'];
+        unset($_POST['cpf']);
+        unset($_POST['nome']);
+        unset($_POST['senha']);
+        unset($_POST['resposta']);
+        $telaCadastro = new ControllerCadastro();
+        $telaCadastro->criaConta($user, $resposta);
+    }
+    ?>
 </body>
 
 </html>

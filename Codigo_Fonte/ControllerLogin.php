@@ -1,18 +1,22 @@
-<?php
-require_once "ClasseTelaLogin.php";
-require_once "./Administrador.php";
-require_once "./Apostador.php";
+<?php 
 
-$cpf = $_POST['cpf'];
-$senha = $_POST['senha'];
+require_once "./Usuario.php";
 
-if ($cpf=="06721598567"){
-	$user = new Administrador($cpf, '', $senha);
-} else {
-	$user = new Apostador($cpf, '', $senha, array(), array(), array(), 500, array(), array(), array());
+class ControllerLogin{
+	function login($user){
+		session_start();
+		if($user->cpf == '' || $user->senha == ''){
+			$_SESSION['message'] = "Preencha os campos de CPF e senha";
+		}
+		else if($user->efetuarLogin($user->cpf, $user->senha) == true){
+			$_SESSION['globalUser'] = $user;
+			header('Location: ./telaHomepage.php');
+		}
+		else{
+			$_SESSION['message'] = "Combinacao de CPF e senha invalida";
+			header('Location: ./index.php');
+		}
+	}
 }
-$telaLogin = new TelaLogin();
-$telaLogin->login($user);
-
 
 ?>

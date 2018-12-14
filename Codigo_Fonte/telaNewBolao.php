@@ -18,13 +18,18 @@
     <div class = "container" style = "background-color: #f0f0f0;">
         <header>
             <?php
-                //session_start();
-                //$user = $_SESSION["globalUser"];
-                //echo $user->nome;
+                session_start();
+                $user = $_SESSION["globalUser"];
+                echo $user->nome;
             ?>
         </header>
         <div class = "row">
-            <a class = "ml-auto" href = "./index.php"> Sair </a>
+            <div class="col-1 offset-11">
+                <form style="text-align: right;"  method = "post" action="./telaNewBolao.php">
+                    <input value = "1" type = "hidden" name = "sair" id = "sair"> 
+                    <button type="submit" class = "btn"> Sair </button>
+                </form>
+            </div>
         </div>
         <h1><a href = "./telaHomepage.php" id = "cabecalho"> Bolão </a></h1>
         <div class='new-game'>
@@ -36,7 +41,7 @@
     				<div class="resultados shadow">
     					<h6 class="text-center">Novo Bolão</h6>
                         <div class="container-fluid">
-                                <form class="ml-auto" style="text-align: center;" method = "post" action="ControllerCriaBolao.php">
+                                <form class="ml-auto" style="text-align: center;" method = "post" action="telaNewBolao.php">
                                     <div class="form-group">
                                         <label for="nome"> Nome:</label>
                                         <div class='rightTab'>
@@ -70,6 +75,28 @@
     			</div>
     	</div>
     </div>
+    <?php
+    require_once "ControllerCriaBolao.php";
+    
+    $telaBolao = new ControllerCriaBolao();
+    if(isset($_POST['nome']) && isset($_POST['campeonato']) && isset($_POST['esporte']) && isset($_POST['pontosPlacar']) && isset($_POST['pontosVencedor'])){
+        $nome = $_POST['nome'];
+        $campeonato = $_POST['campeonato'];
+        $esporte = $_POST['esporte'];
+        $pontosPlacar = $_POST['pontosPlacar'];
+        $pontosVencedor = $_POST['pontosVencedor'];
+        unset($_POST['nome']);
+        unset($_POST['campeonato']);
+        unset($_POST['esporte']);
+        unset($_POST['pontosPlacar']);
+        unset($_POST['pontosVencedor']);        
+        $telaBolao->confirmarCriacaoBolao($nome, $campeonato, $esporte, $pontosPlacar, $pontosVencedor);
+    }
+    else if(isset($_POST['sair'])){
+        unset($_POST['sair']);
+        $telaBolao->sair();
+    }
+    ?>
 </body>
 
 </html>

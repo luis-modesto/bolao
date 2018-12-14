@@ -19,21 +19,20 @@
 	<div class="container" style="background-color: #f0f0f0;">
 		<header>
 			<?php
-            	//session_start();
-            	//$user = $_SESSION["globalUser"];
-            	//echo $user->nome;
+            	session_start();
+            	$user = $_SESSION["globalUser"];
+            	echo $user->nome;
             ?>
 		</header>
 		<div class="row">
-			<a class="ml-auto" href="./index.php"> Sair </a>
+        	<div class="col-1 offset-11">
+	        	<form style="text-align: right;"  method = "post" action="./telaBolao.php">
+	        		<input value = "1" type = "hidden" name = "sair" id = "sair"> 
+	            	<button type="submit" class = "btn"> Sair </button>
+	            </form>
+	        </div>
 		</div>
 		<h1 class='main-title'><a id="cabecalho" href="./telaHomepage.php"> Bolão</a></h1>
-		<div class='new-game'>
-			<form style="text-align: center;" action="./telaNewBolao.php">
-				<button class="btn btn-info"> Criar novo bolão</button class="btn btn-info">
-			</form>
-			<button class="ml-3 btn btn-info"> Meus bolões</button class="btn btn-info">
-		</div>
 		<div class="row mt-3">
 			<div class="col-8 offset-2">
 				<div class="resultados shadow">
@@ -41,7 +40,6 @@
 					<form style="text-align: center;" action="./telaNewGame.php">
 						<button class="btn btn-info">Criar jogo</button>
 					</form>
-					
 					<ul class="list-group">
 						<li class="list-group-item" href='./bolao'>Bolão 1</li>
 						<li class="list-group-item">Campeonato: Copa do Mundo</li>
@@ -57,6 +55,15 @@
 			</div>
 		</div>
 	</div>
+	<?php
+		require_once "ControllerExibeBolao.php";
+		$telaExibeBolao = new ControllerExibeBolao();
+
+		if(isset($_POST['sair'])){
+			unset($_POST['sair']);
+			$telaExibeBolao->sair();
+		}
+	?>
 </body>
 
 </html>

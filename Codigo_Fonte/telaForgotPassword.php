@@ -16,7 +16,7 @@
 <body style="background-color: #f0f0f0;">
 	<h1><a id = "cabecalho" href = "./index.php"> Bolão </a></h1>
 	<div class="container-fluid">
-		<form class="ml-auto" style="text-align: center;" method = "post" action = "ControllerRecupera.php">
+		<form class="ml-auto" style="text-align: center;" method = "post" action = "telaForgotPassword.php">
 			<div class="form-group">
                 <label for="cpf"> CPF:</label>
                 <div class='rightTab'>
@@ -39,6 +39,29 @@
 	 crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 	 crossorigin="anonymous"></script>
+	<?php
+	require_once "Apostador.php";
+	require_once "Administrador.php";
+	require_once "ControllerRecupera.php";
+	require_once "ControllerLogin.php";
+
+	if(isset($_POST['cpf']) && isset($_POST['resposta'])){
+		$cpf = $_POST['cpf'];
+		if ($cpf=="06721598567"){
+			$user = new Administrador($cpf, '', '');
+		} else {
+			$user = new Apostador($cpf, '', '', array(), array(), array(), 500, array(), array(), array());
+		}
+		$resposta = $_POST['resposta'];
+		$telaSenha = new ControllerRecupera();
+		unset($_POST['cpf']);
+		unset($_POST['resposta']);
+		if ($telaSenha->recuperaSenha($user, $resposta)){
+			$telaLogin = new ControllerLogin();
+			$telaLogin->login($user);
+		}
+	}
+	?>	 
 </body>
 
 </html>

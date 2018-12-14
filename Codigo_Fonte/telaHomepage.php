@@ -28,7 +28,8 @@
 	        </header>
 	        <div class = "row">
 	        	<div class="col-1 offset-11">
-		        	<form style="text-align: right;"  action="./ControllerSair.php">
+		        	<form style="text-align: right;"  method = "post" action="./telaHomepage.php">
+		        		<input value = "1" type = "hidden" name = "sair" id = "sair"> 
 		            	<button type="submit" class = "btn"> Sair </button>
 		            </form>
 		        </div>
@@ -46,22 +47,22 @@
 						<h5 id="titulo-lista-boloes" class="text-center">Bolões</h5>
 						<ul id="lista-boloes" class="list-group">
 							<?php
-								require_once "ClasseTelaHomepage.php";
+								require_once "ControllerHomepage.php";
 
-								$home = new Homepage();
+								$home = new ControllerHomepage();
 								echo $home->exibirBoloes();
 							?>
 
 						</ul>
 						<div class="row">
 							<div class="col-3">
-								<form style ="text-align: left;" method = "post" action = "ControllerExibeBolao.php">
+								<form style ="text-align: left;" method = "post" action = "telaHomepage.php">
 									<input type = "hidden" name = "bolaoEscolhido" id = "bolaoEscolhido"> 
 									<button disabled type = "submit" class = "btn btn-success" id = "exibir"> Exibir Bolão </button>
 								</form>
 							</div>
 							<div class="col-2 offset-7">
-								<form method = "post" action="ControllerParticipar.php">
+								<form method = "post" action="telaHomepage.php">
 									<input type = "hidden" name = "bolaoParticipar" id = "bolaoParticipar"> 
 									<button disabled type="submit" class="btn btn-success" id = "participar">Participar</button>
 								</form>
@@ -84,6 +85,29 @@
 
 			}
 		</script>
+		<?php
+		require_once "ControllerHomepage.php";
+		session_start();
+		$homepage = new ControllerHomepage();
+
+		if(isset($_POST['bolaoEscolhido'])){
+			$_SESSION['idBolaoEscolhido'] = $_POST['bolaoEscolhido'];
+			unset($_POST['bolaoEscolhido']);
+			$idbolao = $_SESSION['idBolaoEscolhido'];
+			echo $idbolao;
+		}
+		else if(isset($_POST['bolaoParticipar'])){
+			$_SESSION['idBolaoEscolhido'] = $_POST['bolaoParticipar'];
+			unset($_POST['bolaoParticipar']);
+			$idbolao = $_SESSION['idBolaoEscolhido'];
+			$homepage->solicitarParticiparBolao($idbolao);
+			header('Location: ./telaHomepage.php');
+		}
+		else if(isset($_POST['sair'])){
+			unset($_POST['sair']);
+			$homepage->sair();
+		}
+		?>		
 	</body>
 
 </html>

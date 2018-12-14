@@ -2,12 +2,14 @@
 
 require_once "./Apostador.php";
 require_once "./Administrador.php";
+require_once "TelaUsuario.php";
 
-class TelaConsultaBoloes{
+class ControllerConsultaBoloes extends TelaUsuario{
 	
 	function exibirBoloes(){
-		//recuperar lista de bolões 
-		$boloes = DataGetter.prototype.getInstance().getData('bolao');
+		//recuperar lista de bolões
+		$dg = DataGetter::getInstance();
+		$boloes = $dg->getData('bolao');
 		for ($i = 0; $i<count($boloes); $i++){
 			if (intvalue($boloes[$i][10])==1){
 				//acrescentar boloes[i] no html

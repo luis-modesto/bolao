@@ -7,8 +7,9 @@ require_once "./Solicitacao.php";
 require_once "./Convite.php";
 require_once "./DataGetter.php";
 require_once "./Bolao.php";
+require_once "TelaUsuario.php";
 
-class Homepage{
+class ControllerHomepage extends TelaUsuario{
 
 	function visualizarNotificacao(){
 		// recuperar lista de notificações do usuario 
