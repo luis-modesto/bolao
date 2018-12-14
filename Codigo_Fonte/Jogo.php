@@ -1,5 +1,5 @@
 <?php
-require_once "Placar.php";
+require_once "./Placar.php";
 
 /**
 *Classe que representa um jogo relacionado a um bolao especifico

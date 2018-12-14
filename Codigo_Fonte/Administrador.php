@@ -1,7 +1,7 @@
 <?php
-require_once "Usuario.php";
-require_once "Bolao.php";
-require_once "DataGetter.php";
+require_once "./Usuario.php";
+require_once "./Bolao.php";
+require_once "./DataGetter.php";
 
 /**
 *Classe que representa um usario especial que tem funcoes no sistema diferentes da classe Apostador

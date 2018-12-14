@@ -3,7 +3,7 @@
 require_once "./Apostador.php";
 require_once "./Bolao.php";
 require_once "./DataGetter.php";
-require_once "TelaUsuario.php";
+require_once "./TelaUsuario.php";
 
 
 class ControllerCriaBolao extends TelaUsuario{

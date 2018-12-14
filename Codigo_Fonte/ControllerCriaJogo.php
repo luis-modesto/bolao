@@ -2,7 +2,7 @@
 
 require_once "./Apostador.php";
 require_once "./Jogo.php";
-require_once "TelaUsuario.php";
+require_once "./TelaUsuario.php";
 
 class ControllerCriaJogo extends TelaUsuario{
 

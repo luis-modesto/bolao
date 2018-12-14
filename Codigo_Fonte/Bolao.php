@@ -1,7 +1,7 @@
 <?php
-require_once "Jogo.php";
-require_once "Apostador.php";
-require_once "DataGetter.php";
+require_once "./Jogo.php";
+require_once "./Apostador.php";
+require_once "./DataGetter.php";
 
 /**
 *Classe que representa um bolao. Contem jogos relacionados a ele, apostadores e um Apostador administrador

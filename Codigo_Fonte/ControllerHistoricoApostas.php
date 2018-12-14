@@ -2,7 +2,7 @@
 
 require_once "./Aposta.php";
 require_once "./Apostador.php";
-require_once "TelaUsuario.php";
+require_once "./TelaUsuario.php";
 
 class ControllerHistoricoApostas extends TelaUsuario{
 

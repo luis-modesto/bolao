@@ -1,5 +1,5 @@
 <?php
-require_once "ClasseTelaLogin.php";
+require_once "./ControllerLogin.php";
 require_once "./Administrador.php";
 require_once "./Apostador.php";
 
@@ -24,8 +24,6 @@ class TelaUsuario{
 		$user->senha = "";
 
 		$_SESSION["globalUser"] = $user;
-
-		header('Location: ./index.php');
 	}
 }
 

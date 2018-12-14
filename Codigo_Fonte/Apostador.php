@@ -1,12 +1,12 @@
 <?php
-require_once "Usuario.php";
-require_once "Bolao.php";
-require_once "DataGetter.php";
-require_once "Aposta.php";
-require_once "Jogo.php";
-require_once "Placar.php";
-require_once "Convite.php";
-require_once "Solicitacao.php";
+require_once "./Usuario.php";
+require_once "./Bolao.php";
+require_once "./DataGetter.php";
+require_once "./Aposta.php";
+require_once "./Jogo.php";
+require_once "./Placar.php";
+require_once "./Convite.php";
+require_once "./Solicitacao.php";
 
 /**
 *Classe que representa um usuario Apostador

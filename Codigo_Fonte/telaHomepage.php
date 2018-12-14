@@ -27,9 +27,29 @@
 	            ?>
 	        </header>
 	        <div class = "row">
-	        	<div class="col-1 offset-11">
+		        <div class="col-1 offset-8">
+		        	<button data-target="#notificacoes"><i class="fas fa-bell"></i></button>
+		        	<div id="notificacoes" class="modal fade" role="dialog">
+					  	<div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <button type="button" class="close" data-dismiss="modal">&times;</button>
+					        <h4 class="modal-title">Modal Header</h4>
+					      </div>
+					      <div class="modal-body">
+					        <p>Some text in the modal.</p>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					      </div>
+					    </div>
+
+					  </div>
+					</div>
+		        </div>
+	        	<div class="col-1 offset-2">
 		        	<form style="text-align: right;"  method = "post" action="./telaHomepage.php">
-		        		<input value = "1" type = "hidden" name = "sair" id = "sair"> 
+		        		<input type = "hidden" value = "1"  name = "sair" id = "sair"> 
 		            	<button type="submit" class = "btn"> Sair </button>
 		            </form>
 		        </div>
@@ -47,8 +67,7 @@
 						<h5 id="titulo-lista-boloes" class="text-center">Bolões</h5>
 						<ul id="lista-boloes" class="list-group">
 							<?php
-								require_once "ControllerHomepage.php";
-
+								require_once "./ControllerHomepage.php";
 								$home = new ControllerHomepage();
 								echo $home->exibirBoloes();
 							?>
@@ -56,7 +75,7 @@
 						</ul>
 						<div class="row">
 							<div class="col-3">
-								<form style ="text-align: left;" method = "post" action = "telaHomepage.php">
+								<form style ="text-align: left;" method = "post" action = "./telaHomepage.php">
 									<input type = "hidden" name = "bolaoEscolhido" id = "bolaoEscolhido"> 
 									<button disabled type = "submit" class = "btn btn-success" id = "exibir"> Exibir Bolão </button>
 								</form>
@@ -85,29 +104,29 @@
 
 			}
 		</script>
-		<?php
-		require_once "ControllerHomepage.php";
-		session_start();
-		$homepage = new ControllerHomepage();
 
-		if(isset($_POST['bolaoEscolhido'])){
-			$_SESSION['idBolaoEscolhido'] = $_POST['bolaoEscolhido'];
-			unset($_POST['bolaoEscolhido']);
-			$idbolao = $_SESSION['idBolaoEscolhido'];
-			echo $idbolao;
-		}
-		else if(isset($_POST['bolaoParticipar'])){
-			$_SESSION['idBolaoEscolhido'] = $_POST['bolaoParticipar'];
-			unset($_POST['bolaoParticipar']);
-			$idbolao = $_SESSION['idBolaoEscolhido'];
-			$homepage->solicitarParticiparBolao($idbolao);
-			header('Location: ./telaHomepage.php');
-		}
-		else if(isset($_POST['sair'])){
-			unset($_POST['sair']);
-			$homepage->sair();
-		}
-		?>		
+		<?php
+			require_once "./ControllerHomepage.php";
+			require_once "./TelaUsuario.php";
+			session_start();
+			$homepage = new ControllerHomepage();
+
+			if(isset($_POST['bolaoEscolhido'])){
+				$_SESSION['idBolaoEscolhido'] = $_POST['bolaoEscolhido'];
+				$idbolao = $_SESSION['idBolaoEscolhido'];
+				header('Location: ./telaBolao.php');
+			}
+			else if(isset($_POST['bolaoParticipar'])){
+				$_SESSION['idBolaoEscolhido'] = $_POST['bolaoParticipar'];
+				$idbolao = $_SESSION['idBolaoEscolhido'];
+				$homepage->solicitarParticiparBolao($idbolao);
+				header('Location: ./telaHomepage.php');
+			}
+			if(isset($_POST['sair'])){
+				$homepage->sair();
+				header('Location: ./index.php');
+			}
+		?>	
 	</body>
 
 </html>

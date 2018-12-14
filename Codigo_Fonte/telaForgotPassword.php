@@ -40,10 +40,10 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 	 crossorigin="anonymous"></script>
 	<?php
-	require_once "Apostador.php";
-	require_once "Administrador.php";
-	require_once "ControllerRecupera.php";
-	require_once "ControllerLogin.php";
+	require_once "./Apostador.php";
+	require_once "./Administrador.php";
+	require_once "./ControllerRecupera.php";
+	require_once "./ControllerLogin.php";
 
 	if(isset($_POST['cpf']) && isset($_POST['resposta'])){
 		$cpf = $_POST['cpf'];
@@ -54,8 +54,6 @@
 		}
 		$resposta = $_POST['resposta'];
 		$telaSenha = new ControllerRecupera();
-		unset($_POST['cpf']);
-		unset($_POST['resposta']);
 		if ($telaSenha->recuperaSenha($user, $resposta)){
 			$telaLogin = new ControllerLogin();
 			$telaLogin->login($user);

@@ -1,5 +1,5 @@
 <?php
-require_once "DataGetter.php";
+require_once "./DataGetter.php";
 
 /**
 *Classe que representa um usuario do SisBolao

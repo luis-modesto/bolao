@@ -19,9 +19,9 @@
 		<?php
 			session_start();
 			if (isset($_SESSION['message'])) {
-					echo '<div class = "text-center alert alert-danger" style = "background-color: #f0f0f0;"> <strong> ' . $_SESSION['message'] . '<\strong> <\div>';
-					unset($_SESSION['message']);
-				}
+				echo '<div class = "container-fluid" style = "background-color: #f0f0f0;"> <div class = "text-center alert alert-danger" > <strong> ' . $_SESSION['message'] . '</strong> </div> </div>';
+				unset($_SESSION['message']);
+			}
 		?>
 		<form class="ml-auto" style="text-align: center;" method = "post" action = "index.php">
 			<div class="form-group">
@@ -50,15 +50,13 @@
 	 crossorigin="anonymous"></script>	
 
 	 <?php
-	 	require_once "ControllerLogin.php";
+	 	require_once "./ControllerLogin.php";
 		require_once "./Administrador.php";
 		require_once "./Apostador.php";
 
 		if(isset($_POST['cpf']) && isset($_POST['senha'])){
 			$cpf = $_POST['cpf'];
 			$senha = $_POST['senha'];
-			unset($_POST['cpf']);
-			unset($_POST['senha']);
 
 			if ($cpf=="06721598567"){
 				$user = new Administrador($cpf, '', $senha);

@@ -19,6 +19,8 @@
 	<div class="container" style="background-color: #f0f0f0;">
 		<header>
 			<?php
+				require_once "./Apostador.php";
+				require_once "./Administrador.php";
             	session_start();
             	$user = $_SESSION["globalUser"];
             	echo $user->nome;
@@ -41,26 +43,22 @@
 						<button class="btn btn-info">Criar jogo</button>
 					</form>
 					<ul class="list-group">
-						<li class="list-group-item" href='./bolao'>Bolão 1</li>
-						<li class="list-group-item">Campeonato: Copa do Mundo</li>
-						<li class="list-group-item">Esporte: Futebol</li>
-						<li class="list-group-item" style="font-weight:bold;">Apostadores: </li>
-						<li class='list-group-item'>João</li>
-						<li class='list-group-item' >Maria</li>
+						<?php
+							require_once "./ControllerExibeBolao.php";
 
-						<li class="list-group-item" style="font-weight:bold;">Jogos: </li>
-						<li class='list-group-item'>Brasil x Argentina</li>
+							$exibe = new ControllerExibeBolao();
+							$exibe->exibirInfosBolao();
+						?>
 					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
 	<?php
-		require_once "ControllerExibeBolao.php";
+		require_once "./ControllerExibeBolao.php";
 		$telaExibeBolao = new ControllerExibeBolao();
 
 		if(isset($_POST['sair'])){
-			unset($_POST['sair']);
 			$telaExibeBolao->sair();
 		}
 	?>

@@ -19,6 +19,8 @@
 	<div class="container" style="background-color: #f0f0f0;">
 		<header>
 			<?php
+				require_once "./Apostador.php";
+				require_once "./Administrador.php";			
             	session_start();
             	$user = $_SESSION["globalUser"];
             	echo $user->nome;
@@ -77,7 +79,7 @@
 		</div>
 	</div>
 	<?php
-	require_once "ControllerCriaJogo.php";
+	require_once "./ControllerCriaJogo.php";
 
 	$telaJogo = new ControllerCriaJogo();
 	if(isset($_POST['dataJogo']) && isset($_POST['dataLimite']) && isset($_POST['time1']) && isset($_POST['time2']) && isset($_POST['aposta'])){
@@ -87,17 +89,11 @@
 		$time1 = $_POST['time1'];
 		$time2 = $_POST['time2'];
 		$aposta = $_POST['aposta'];
-		unset($_POST['dataJogo']);
-		unset($_POST['dataLimite']);
-		unset($_POST['time1']);
-		unset($_POST['time2']);
-		unset($_POST['aposta']);
 		$telaJogo->confirmarCriacaoJogo($dataJogo, $dataLimite, $time1, $time2, $aposta);
 		header('Location: ./telaBolao.html');
 	}
 
 	else if(isset($_POST['sair'])){
-		unset($_POST['sair']);
 		$telaJogo->sair();
 	}
 

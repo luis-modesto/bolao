@@ -2,7 +2,7 @@
 
 require_once "./Apostador.php";
 require_once "./Aposta.php";
-require_once "TelaUsuario.php";
+require_once "./TelaUsuario.php";
 
 session_start();
 
@@ -30,16 +30,20 @@ class ControllerExibeBolao extends TelaUsuario{
 		$user = $_SESSION['globalUser'];
 		$user->cadastrarResultados($placar, $jogo, $bolao); //placar vai vir de um form, o id do jogo deve dar pra pegar da tela prq no momento que essa funcao eh chamada, o jogo ja foi selecionado
 	}
-	function exibirInfosBolao($idBolao){
+	function exibirInfosBolao(){
+		$idBolao = $_SESSION['idBolaoEscolhido'];
 		// recupera informaçoes do bolao
 		$dg = DataGetter::getInstance();
 		$boloes = $dg->getData('bolao');
+		$retorno = "";
 		for ($i = 0; $i<count($boloes); $i++){
-			if (intval($boloes[$i][0])==$idBolao){
+			if (intval($boloes[$i][0])==intval($idBolao)){
 				//acrescentar informacoes de boloes[i] no html
+				$retorno = $retorno . '';
 				break;
 			}
 		}
+		return $retorno;
 	}
 }
 ?>

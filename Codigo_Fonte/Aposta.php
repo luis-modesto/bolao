@@ -1,6 +1,6 @@
 <?php
-require_once "Placar.php";
-require_once "Jogo.php";
+require_once "./Placar.php";
+require_once "./Jogo.php";
 
 /**
 *Classe que representa uma aposta feita por um Apostador em um Jogo especifico de um Bolao especifico

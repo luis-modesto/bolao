@@ -1,5 +1,5 @@
 <?php
-require_once "Notificacao.php";
+require_once "./Notificacao.php";
 
 /**
 *Classe que representa uma notificacao do tipo convite. Um convite a participar de um bolao
