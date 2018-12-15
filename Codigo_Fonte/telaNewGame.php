@@ -16,16 +16,13 @@
 </head>
 
 <body style="background-color: #f0f0f0;">
+	<?php
+    	require_once "./TelaUsuario.php";
+
+    	$tela = new TelaUsuario();
+    	echo $tela->exibirNavBar();
+    ?>
 	<div class="container" style="background-color: #f0f0f0;">
-		<header>
-			<?php
-				require_once "./Apostador.php";
-				require_once "./Administrador.php";			
-            	session_start();
-            	$user = $_SESSION["globalUser"];
-            	echo $user->nome;
-            ?>
-		</header>
 		<div class="row">
         <div class="col-1 offset-11">
             <form style="text-align: right;"  method = "post" action="./telaNewGame.php">
@@ -34,7 +31,6 @@
             </form>
         </div>
 		</div>
-		<h1 class='main-title'><a id="cabecalho" href="./telaHomepage.php">Bolão</a></h1>
 		<div class='new-game'>
 			<form style="text-align: center;" action="./telaNewBolao.php">
 				<button class="btn btn-info"> Criar novo bolão</button class="btn btn-info">

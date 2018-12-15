@@ -16,50 +16,18 @@
 	</head>
 
 	<body style="background-color: #f0f0f0;">
-	    <div class = "container" style = "background-color: #f0f0f0;">
-	        <header>
-	            <?php
-					require_once "./Apostador.php";
-					require_once "./Administrador.php";
-	            	session_start();
-	            	$user = $_SESSION["globalUser"];
-	            	echo '<br>' . $user->nome;
-	            ?>
-	        </header>
-	        <div class = "row">
-		        <div class="col-1 offset-8">
-		        	<button data-target="#notificacoes"><i class="fas fa-bell"></i></button>
-		        	<div id="notificacoes" class="modal fade" role="dialog">
-					  	<div class="modal-dialog">
-					    <div class="modal-content">
-					      <div class="modal-header">
-					        <button type="button" class="close" data-dismiss="modal">&times;</button>
-					        <h4 class="modal-title">Modal Header</h4>
-					      </div>
-					      <div class="modal-body">
-					        <p>Some text in the modal.</p>
-					      </div>
-					      <div class="modal-footer">
-					        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					      </div>
-					    </div>
+	    <?php
+	    	require_once "./TelaUsuario.php";
 
-					  </div>
-					</div>
-		        </div>
-	        	<div class="col-1 offset-2">
-		        	<form style="text-align: right;"  method = "post" action="./telaHomepage.php">
-		        		<input type = "hidden" value = "1"  name = "sair" id = "sair"> 
-		            	<button type="submit" class = "btn"> Sair </button>
-		            </form>
-		        </div>
-	        </div>
-			<h1 class='main-title'><a id = "cabecalho" href = "./telaHomepage.php"> Bolão</a></h1>
-			<div class='new-game'>
+	    	$tela = new TelaUsuario();
+	    	echo $tela->exibirNavBar();
+	    ?>
+	    <div class = "container" style = "background-color: #f0f0f0;">
+			<div class='mt-5 new-game'>
 					<form style="text-align: center;" action="./telaNewBolao.php">
-						<button class = "btn btn-info"> Criar novo bolão</button>
+						<button class = "mt-5 btn btn-info"> Criar novo bolão</button>
 					</form>
-				<button id="btn-meus-boloes"  class = "ml-3 btn btn-info" onclick = "exibirMeusBoloes()"> Meus bolões</button>
+				<button id="btn-meus-boloes"  class = "ml-3 mt-5 btn btn-info" onclick = "exibirMeusBoloes()"> Meus bolões</button>
 			</div>
 			<div class="row mt-3">
 				<div class="col-8 offset-2">
@@ -108,7 +76,7 @@
 		<?php
 			require_once "./ControllerHomepage.php";
 			require_once "./TelaUsuario.php";
-			session_start();
+			//session_start();
 			$homepage = new ControllerHomepage();
 
 			if(isset($_POST['bolaoEscolhido'])){

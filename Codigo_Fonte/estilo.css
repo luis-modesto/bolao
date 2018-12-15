@@ -1,6 +1,10 @@
-header {
-	position: absolute;
-	margin-left: 30px;
+@font-face {
+  font-family: robotoBold;
+  src: url(Roboto-Bold.ttf);
+}
+
+header nav ul {
+  font-family: robotoBold;
 }
 
 label {
@@ -18,11 +22,6 @@ h1, .main-title{
 	font-family: 'Open Sans Condensed', sans-serif;
 	font-size: 60px;
 	font-weight: bold;
-	color: black;
-}
-
-#cabecalho{
-	text-decoration: none;
 	color: black;
 }
 
