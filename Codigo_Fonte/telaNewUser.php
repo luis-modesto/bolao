@@ -14,8 +14,8 @@
 </head>
 
 <body style="background-color: #f0f0f0;">
-    <h1><a id = "cabecalho" href = "./index.php"> Bolão </a></h1>
-	<div class="container-fluid">
+	<div class="mt-5 container-fluid" style="border-style: solid; border-width: 1px; border-color: #C0C0C0; border-radius: 7px;">
+    	<h1><a style = "color: black; text-decoration: none;" href = "./index.php"> Bolão </a></h1>
 		<form class="ml-auto" style="text-align: center;" method = "post" action="telaNewUser.php">
 			<div class="form-group">
                 <label for="cpf"> CPF:</label>
@@ -38,7 +38,7 @@
                     <input required type="text" name = "resposta" id="respostaSeguranca">
                 </div>
 			</div>
-			<button type="submit" class="btn btn-primary">Criar Cadastro</button>
+			<button type="submit" class="mb-3 btn btn-midnight">Criar Cadastro</button>
 		</form>
 
 	</div>

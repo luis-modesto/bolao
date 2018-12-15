@@ -40,8 +40,9 @@ class Apostador extends Usuario{
 		$dg = DataGetter::getInstance();
 		$users = $dg->getData('usuarios');
 		for ($i = 0; $i<count($users); $i++){
-			if ($this->cpf==$users[$i][0] && $this->senha==$users[$i][1]){
+			if ($this->cpf==$users[$i][0]){
 				$this->respostaSeguranca = $users[$i][5];
+				$this->senha = $users[$i][1];
 				break;
 			}
 		}

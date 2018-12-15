@@ -16,7 +16,7 @@ class TelaUsuario{
                     	'.$user->saldo.'
                     </div>';
                 }
-			    $retorno = $retorno . '<a class="ml-auto" style="color: #C0C0C0; font-size: 2.5em;" id = "cabecalho" href = "./telaHomepage.php">SisBolão</a>
+			    $retorno = $retorno . '<a class="ml-auto" style="color: #C0C0C0; text-decoration: none; font-size: 2.5em;" id = "cabecalho" href = "./telaHomepage.php">SisBolão</a>
 
 			    <button style="font-size: 1.5em;" class="text-primary btn ml-auto mr-4 bg-dark" type="buttom" id="btn-notificacoes" data-target="#notificacoes"><i class="fas fa-bell"></i></button>
 

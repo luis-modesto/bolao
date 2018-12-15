@@ -14,12 +14,12 @@
 </head>
 
 <body style="background-color: #f0f0f0;">
-	<h1>Bolão</h1>
-	<div class="container-fluid">
+	<div class="mt-5 container-fluid" style="border-style: solid; border-width: 1px; border-color: #C0C0C0; border-radius: 7px;">
+		<h1>Bolão</h1>
 		<?php
 			session_start();
 			if (isset($_SESSION['message'])) {
-				echo '<div class = "container-fluid" style = "background-color: #f0f0f0;"> <div class = "text-center alert alert-danger" > <strong> ' . $_SESSION['message'] . '</strong> </div> </div>';
+				echo '<div class = "container-fluid" style = "background-color: white;"> <div class = "text-center alert alert-danger" > <strong> ' . $_SESSION['message'] . '</strong> </div> </div>';
 				unset($_SESSION['message']);
 			}
 		?>
@@ -37,7 +37,7 @@
 				<div class="linkhome"><a href="./telaNewUser.php">Ainda não possuo cadastro</a></div>
 				<div class="linkhome"><a href="./telaForgotPassword.php">Esqueci minha senha</a></div>
 			</div>
-			<button type="submit" class="btn btn-primary">Login</button>
+			<button type="submit" class="mb-3 btn btn-midnight">Login</button>
 		</form>
 
 	</div>
