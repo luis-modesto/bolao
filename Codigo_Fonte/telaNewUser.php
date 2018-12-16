@@ -42,16 +42,16 @@
 		</form>
 
 	</div>
-    <?php
+<?php
     require_once "./Apostador.php";
     require_once "./ControllerCadastro.php";
     if(isset($_POST['cpf']) && isset($_POST['nome']) && isset($_POST['senha']) && isset($_POST['resposta'])){
-        $user = new Apostador($_POST['cpf'], $_POST['nome'], $_POST['senha'], array(), array(), array(), 500, '', '', '');
+        $user = new Apostador($_POST['cpf'], $_POST['nome'], $_POST['senha'], array(), array(), array(), 500, array(), array(), array());
         $resposta = $_POST['resposta'];
         $telaCadastro = new ControllerCadastro();
         $telaCadastro->criaConta($user, $resposta);
     }
-    ?>
+?>
 </body>
 
 </html>

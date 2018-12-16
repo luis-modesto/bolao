@@ -76,10 +76,22 @@ class Apostador extends Usuario{
 					}
 				}
 
-				$boloes = $dg->getData('boloes_' . $cpf);
-				for ($j = 0; $j<count($boloes); $j++){
-					$b = new Bolao($boloes[$j][0], $boloes[$j][2], $boloes[$j][3], $boloes[$j][4], $jogos,$boloes[$j][1], explode(',', $boloes[$j][5]), explode(',', $boloes[$j][6]), intval($boloes[$j][7]), intval($boloes[$j][8]), intval($boloes[$j][9]), intval($boloes[$j][10]));
-					if ($boloes[$j][0]=="ativo"){
+				$meusboloes = $dg->getData('boloes_' . $cpf);
+				for ($j = 0; $j<count($meusboloes); $j++){
+					for ($k = 0; $k<count($boloes); $k++){
+						if ($meusboloes[$j][1]==$boloes[$k][0]){
+							$jogos = array();
+							$jogosBolao = $dg->getData('jogos_' . $boloes[$k][0]);
+							for ($l = 0; $l<count($jogosBolao); $l++){
+								$placar = new Placar($jogosBolao[$l][5], $jogosBolao[$l][6]);
+								$jg = new Jogo($jogosBolao[$l][0], $jogosBolao[$l][1], $jogosBolao[$l][2], $jogosBolao[$l][3], $jogosBolao[$l][4], $placar, intval($jogosBolao[$l][7]));
+								array_push($jogos, $jg); 
+							}
+							$b = new Bolao($boloes[$k][0], $boloes[$k][2], $boloes[$k][3], $boloes[$k][4], $jogos,$boloes[$k][1], explode(',', $boloes[$k][5]), explode(',', $boloes[$k][6]), intval($boloes[$k][7]), intval($boloes[$k][8]), intval($boloes[$k][9]), intval($boloes[$k][10]));
+							break;
+						}
+					}
+					if ($meusboloes[$j][0]=="ativo"){
 						array_push($this->boloesParticipa, $b);
 					} else {
 						array_push($this->boloesEncerrados, $b);
@@ -95,11 +107,23 @@ class Apostador extends Usuario{
 
 				$notificacoes = $dg->getData('notificacoes_' . $cpf);
 				for ($j = 0; $j<count($notificacoes); $j++){
+					for ($k = 0; $k<count($users); $k++){
+						if ($users[$k][0]==$notificacoes[$j][1]){
+							$remetente = new Apostador($users[$k][0], '', $users[$k][2], array(), array(), array(), 0, array(), array(), array());
+							break;
+						}
+					}
+					for ($k = 0; $k<count($boloes); $k++){
+						if ($boloes[$k][0]==$notificacoes[$j][2]){
+							$bolao = new Bolao($boloes[$k][0], $boloes[$k][2], $boloes[$k][3], $boloes[$k][4], array(),$boloes[$k][1], explode(',', $boloes[$k][5]), explode(',', $boloes[$k][6]), intval($boloes[$k][7]), intval($boloes[$k][8]), intval($boloes[$k][9]), intval($boloes[$k][10]));
+							break;
+						}
+					}
 					if (intval($notificacoes[$j][0])==1){
-						$c = new Convite($notificacoes[$j][1], intval($notificacoes[$j][2]));
+						$c = new Convite($remetente, $bolao);
 						array_push($this->convites, $c);
 					} else {
-						$s = new Solicitacao($notificacoes[$j][1], intval($notificacoes[$j][2]));
+						$s = new Solicitacao($remetente, $bolao);
 						array_push($this->solicitacoes, $s);
 					}
 				}
@@ -232,7 +256,7 @@ class Apostador extends Usuario{
 	*/
 	function solicitarParticiparBolao($bolao) {
 		$dg = DataGetter::getInstance();
-		$solicitacao = '2;' . $this->cpf . ';' . $bolao->id . ';' . PHP_EOL;
+		$solicitacao = '2;' . $this->cpf . ';' . $bolao->id . ';';
 		// escrever no arquivo solicitacoes_cpfuser do administrador do bolao
 		$dg->appendData('notificacoes_' . $bolao->cpfAdmin, $solicitacao);
 		$dg->appendData('solicitacoesfeitas_' . $this->cpf, $bolao->id . ';');
@@ -254,9 +278,9 @@ class Apostador extends Usuario{
 		$remetente = $solicitacao->usuarioRemetente;
 		$solicitacoesF = $dg->getData('solicitacoesfeitas_' . $remetente->cpf);
 		$novasSoli = array();
-		for ($i = 0; $i<count($notificacoes); $i++){
-			if ($notificacoes[$i][2]!=$solicitacao->bolao){
-				array_push($novasNot, $notificacoes[$i]);
+		for ($i = 0; $i<count($solicitacoesF); $i++){
+			if ($solicitacoesF[$i][0]!=$solicitacao->bolao){
+				array_push($novasSoli, $solicitacoesF[$i]);
 			}
 		}
 		if($resposta == true){

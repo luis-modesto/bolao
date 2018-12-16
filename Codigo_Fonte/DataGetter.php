@@ -30,10 +30,11 @@ class DataGetter {
 	public function getData($nomearquivo){
 		$arquivo = fopen($nomearquivo, 'r');
  		$retorno = array();
- 		
 		while(($linha = fgets($arquivo)) !== false){
 			array_push($retorno, explode(';', $linha));
 		}
+
+		//array_pop($retorno); //a linha vazia
 		
 		fclose($arquivo);
 

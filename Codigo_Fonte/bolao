@@ -1,2 +1,5 @@
 idbolao;cpf_administrador;nome;campeonato;esporte;cpfs_apostadores(lista de cpf separados por vírgula);pontos_postador(lista de pontos separados por vírgula);pts_acertar_placar;pts_acertar_vencedor;premio;ativo
-10324;1234567;meubolas;camp;esp;;;3;15;0;1;
+18866;1234567;meubolas;camp;esp;;;10;3;0;1;
+7272;1234567;outrobolao;camp;esp;;;10;3;0;1;
+30849;1234567;mais um bolao;camp;esp;;;30;15;0;1;
+19750;1234567;la se vai;camp;esp;;;30;10;0;1;

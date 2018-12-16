@@ -4,7 +4,7 @@ require_once "./Usuario.php";
 
 class ControllerLogin{
 	function login($user){
-		else if($user->efetuarLogin($user->cpf, $user->senha) == true){
+		if($user->efetuarLogin($user->cpf, $user->senha) == true){
 			$_SESSION['globalUser'] = $user;
 			header('Location: ./telaHomepage.php');
 		}

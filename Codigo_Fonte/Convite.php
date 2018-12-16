@@ -10,7 +10,8 @@ class Convite extends Notificacao{
 	*Construtor que inicializa uma instancia de Convite, preenchendo os atributos usuarioRemetente indicando qual usuario enviou o convite e o bolao ao qual o Apostador esta sendo convidado
 	*/
     function __construct($usuarioRemetente, $bolao){
-        parent::Notificacao($usuarioRemetente, $bolao);
+        $this->usuarioRemetente = $usuarioRemetente;
+        $this->bolao = $bolao;
     }
 
 
@@ -18,7 +19,10 @@ class Convite extends Notificacao{
     *Retorna as informacoes desse convite para exibicao
     */
     function exibirNotificacao(){
-        echo "Convite";   
+        $user = $this->usuarioRemetente;
+        $bolao = $this->bolao;
+        $retorno = '<strong>'.$user->cpf.'</strong> te convidou para o bolão <strong>'.$bolao->nome.'</strong>'.PHP_EOL;
+        return $retorno;   
     }
 }
 ?>

@@ -11,10 +11,6 @@ require_once "./TelaUsuario.php";
 
 class ControllerHomepage extends TelaUsuario{
 
-	function visualizarNotificacao(){
-		// recuperar lista de notificações do usuario 
-	}
-
 	function aceitarNotificacao($notificacao){
 		$user = $_SESSION['globalUser'];
 		if($notificacao instanceof Solicitacao){

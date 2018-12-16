@@ -15,12 +15,28 @@
 </head>
 
 <body style = "background-image: url('stadium2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center;">
-    <?php
+<?php
         require_once "./TelaUsuario.php";
+        require_once "./ControllerCriaBolao.php";
 
         $tela = new TelaUsuario();
-        echo $tela->exibirNavBar();
-    ?>
+        echo $tela->exibirNavBar('telaNewBolao');
+        
+        $telaBolao = new ControllerCriaBolao();
+        if(isset($_POST['nome']) && isset($_POST['campeonato']) && isset($_POST['esporte']) && isset($_POST['pontosPlacar']) && isset($_POST['pontosVencedor'])){
+            $nome = $_POST['nome'];
+            $campeonato = $_POST['campeonato'];
+            $esporte = $_POST['esporte'];
+            $pontosPlacar = $_POST['pontosPlacar'];
+            $pontosVencedor = $_POST['pontosVencedor'];     
+            $telaBolao->confirmarCriacaoBolao($nome, $campeonato, $esporte, $pontosPlacar, $pontosVencedor);
+            header('Location: ./telaBolao.php');
+        }
+        else if(isset($_POST['sair'])){
+            $telaBolao->sair();
+            header('Location: ./index.php');
+        }
+?>
         <div class = "mt-5 container" style = "max-width: 900px; background-color: #f0f0f0; position: relative; bottom: -40px;">
         <div class='mt-5 new-game'>
             <button class = "mt-2 btn btn-info" disabled> Criar novo bolão</button>
@@ -65,22 +81,9 @@
     			</div>
     	</div>
     </div>
-    <?php
-    require_once "./ControllerCriaBolao.php";
-    
-    $telaBolao = new ControllerCriaBolao();
-    if(isset($_POST['nome']) && isset($_POST['campeonato']) && isset($_POST['esporte']) && isset($_POST['pontosPlacar']) && isset($_POST['pontosVencedor'])){
-        $nome = $_POST['nome'];
-        $campeonato = $_POST['campeonato'];
-        $esporte = $_POST['esporte'];
-        $pontosPlacar = $_POST['pontosPlacar'];
-        $pontosVencedor = $_POST['pontosVencedor'];     
-        $telaBolao->confirmarCriacaoBolao($nome, $campeonato, $esporte, $pontosPlacar, $pontosVencedor);
-    }
-    else if(isset($_POST['sair'])){
-        $telaBolao->sair();
-    }
-    ?>
+     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 
 </html>
