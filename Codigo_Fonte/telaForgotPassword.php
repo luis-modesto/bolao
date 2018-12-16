@@ -13,17 +13,17 @@
 	<link rel="stylesheet" type="text/css" href="./estilo.css">
 </head>
 
-<body style="background-color: #f0f0f0;">
-	<div class="mt-5 container-fluid" style="border-style: solid; border-width: 1px; border-color: #C0C0C0; border-radius: 7px;">
+<body style = "background-image: url('stadium2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center;">
+	<div class="mt-5 container" style =	"background-color: #f0f0f0; opacity: 0.9; position: relative; bottom: -40px; max-width: 500px; border-style: solid; border-radius: 7px; border-color: #C0C0C0;">
     	<h1><a style = "color: black; text-decoration: none;" href = "./index.php"> Bolão </a></h1>
     	<?php
 			session_start();
 			if(isset($_SESSION['message'])){
-				if ($_SESSION['message'] == "Essa nao foi a resposta que voce colocou no cadastro" || $_SESSION['message'] == "Este cpf nao foi cadastrado no sistema") {
-					echo '<div class = "container-fluid" style = "background-color: white;"> <div class = "text-center alert alert-danger" > <strong> ' . $_SESSION['message'] . '</strong> </div> </div>';
+				if ($_SESSION['message'] == "Essa não foi a resposta que voce colocou no cadastro." || $_SESSION['message'] == "Esse cpf não está cadastrado no sistema.") {
+					echo '<div class = "container-fluid"> <div class = "text-center alert alert-danger" > <strong> ' . $_SESSION['message'] . '</strong> </div> </div>';
 				}
 				else{
-					echo '<div class = "container-fluid" style = "background-color: white;"> <div class = "text-center alert alert-success" > <strong> ' . $_SESSION['message'] . '</strong> </div> </div>';					
+					echo '<div class = "container-fluid"> <div class = "text-center alert alert-success" > <strong> ' . $_SESSION['message'] . '</strong> </div> </div>';					
 				}
 				unset($_SESSION['message']);				
 			}

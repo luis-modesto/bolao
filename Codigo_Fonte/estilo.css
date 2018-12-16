@@ -25,10 +25,14 @@ h1, .main-title{
 	color: black;
 }
 
-table, th, td {
-	font-size: 0.9em;
-	text-align: center;
-	border: 1.5px solid #696969;
+
+#principal{
+	width: 90%;
+	max-width: 500px;
+	border-style: solid;
+	border-radius: 7px;
+	border-color: #C0C0C0;
+	align-content: center;
 }
 
 .secret-answer{
@@ -39,7 +43,7 @@ table, th, td {
 	display: inline-block;
 	text-align: left;
 	vertical-align: middle;
-	padding: 3px;
+	padding: 2px;
 	margin-top: 5px;
 	resize:vertical;
 }

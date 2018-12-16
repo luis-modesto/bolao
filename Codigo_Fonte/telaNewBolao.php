@@ -14,17 +14,17 @@
     <link rel="stylesheet" type="text/css" href="./estilo.css">
 </head>
 
-<body style="background-color: #f0f0f0;">
+<body style = "background-image: url('stadium2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center;">
     <?php
         require_once "./TelaUsuario.php";
 
         $tela = new TelaUsuario();
         echo $tela->exibirNavBar();
     ?>
-    <div class = "container" style = "background-color: #f0f0f0;">
+        <div class = "mt-5 container" style = "max-width: 900px; background-color: #f0f0f0; position: relative; bottom: -40px;">
         <div class='mt-5 new-game'>
-            <button class = "mt-5 btn btn-info" disabled> Criar novo bolão</button>
-            <button class = "ml-3 mt-5 btn btn-info"> Meus bolões</button>
+            <button class = "mt-2 btn btn-info" disabled> Criar novo bolão</button>
+            <button class = "ml-3 mt-2 btn btn-info"> Meus bolões</button>
         </div>
         <div class="row mt-3">
     			<div class="col-8 offset-2">
@@ -58,7 +58,7 @@
                                             <input type="text" name = "pontosVencedor" id="pontosVencedor">
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Criar Bolão</button>
+                                    <button type="submit" class="btn btn-success">Criar Bolão</button>
                                 </form>
                         </div>
     				</div>

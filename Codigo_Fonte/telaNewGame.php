@@ -15,7 +15,7 @@
 	 crossorigin="anonymous">
 </head>
 
-<body style="background-color: #f0f0f0;">
+<body style = "background-image: url('stadium2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center;">
 	<?php
     	require_once "./TelaUsuario.php";
 

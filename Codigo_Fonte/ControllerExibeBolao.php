@@ -4,8 +4,6 @@ require_once "./Apostador.php";
 require_once "./Aposta.php";
 require_once "./TelaUsuario.php";
 
-session_start();
-
 class ControllerExibeBolao extends TelaUsuario{
 	function confirmarAposta(){
 		$user = $_SESSION['globalUser']; //global

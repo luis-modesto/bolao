@@ -15,22 +15,22 @@
         crossorigin="anonymous">
 	</head>
 
-	<body style="background-color: #f0f0f0;">
+<body style = "background-image: url('stadium2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: 0% 30%;">
 	    <?php
 	    	require_once "./TelaUsuario.php";
 
 	    	$tela = new TelaUsuario();
 	    	echo $tela->exibirNavBar();
 	    ?>
-	    <div class = "container" style = "background-color: #f0f0f0;">
+	    <div class = "mt-5 container" style = "max-width: 900px; background-color: #f0f0f0; position: relative; bottom: -50px;">
 			<div class='mt-5 new-game'>
 					<form style="text-align: center;" action="./telaNewBolao.php">
-						<button class = "mt-5 btn btn-info"> Criar novo bolão</button>
+						<button class = "mt-3 btn btn-info"> Criar novo bolão</button>
 					</form>
-				<button id="btn-meus-boloes"  class = "ml-3 mt-5 btn btn-info" onclick = "exibirMeusBoloes()"> Meus bolões</button>
+				<button id="btn-meus-boloes"  class = "ml-3 mt-3 btn btn-info" onclick = "exibirMeusBoloes()"> Meus bolões</button>
 			</div>
 			<div class="row mt-3">
-				<div class="col-8 offset-2">
+				<div class="mb-5 col-8 offset-2">
 					<div class="resultados shadow">
 						<h5 id="titulo-lista-boloes" class="text-center">Bolões</h5>
 						<ul id="lista-boloes" class="list-group">
@@ -51,7 +51,7 @@
 							<div class="col-2 offset-7">
 								<form method = "post" action="telaHomepage.php">
 									<input type = "hidden" name = "bolaoParticipar" id = "bolaoParticipar"> 
-									<button disabled type="submit" class="btn btn-success" id = "participar">Participar</button>
+									<button style="position: relative; right: 26px;"disabled type="submit" class="btn btn-success" id = "participar">Participar</button>
 								</form>
 							</div>
 						</div>
