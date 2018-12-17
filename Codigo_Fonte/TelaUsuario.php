@@ -15,6 +15,8 @@ class TelaUsuario{
 		$retorno = '<ul class="list-group">'.PHP_EOL;
 			for ($i=0; $i<count($user->convites); $i++){
 				$c = $user->convites[$i];
+				$b = $c->bolao;
+				$idBolao = $b->id;
 				$retorno = $retorno . '<li class="bg-light list-group-item">'.PHP_EOL.
 					'<div class="row">
 						<div class="col-12">'.
@@ -43,8 +45,8 @@ class TelaUsuario{
 					</div>
 					<div class="row">
 						<div class="col-4 offset-8">
-							<button onclick="aceitarNotificacao(sol'.$idBolao.')" class="bg-light btn"><i style="font-size: 1.5em;" class="text-success far fa-check-circle"></i></button> 
-							<button onclick="rejeitarNotificacao(sol'.$idBolao.')" class="btn bg-light"><i style="font-size: 1.5em;" class="text-danger far fa-times-circle"></i></button>
+							<button type="button" onclick="aceitarNotificacao(\'sol'.$idBolao.'\')" class="bg-light btn"><i style="font-size: 1.5em;" class="text-success far fa-check-circle"></i></button> 
+							<button type="button" onclick="rejeitarNotificacao(\'sol'.$idBolao.'\')" class="btn bg-light"><i style="font-size: 1.5em;" class="text-danger far fa-times-circle"></i></button>
 						</div>
 					</div>
 					</li>'.PHP_EOL;
@@ -89,7 +91,7 @@ class TelaUsuario{
 								$this->inputsNotific . PHP_EOL .
 								'
 	        				<input type = "hidden" value = "1"  name = "responderNotificacoes" id = "responderNotificacoes"> 
-	        				<button type="submit" class="btn btn-success" data-dismiss="modal">Submeter</button>
+	        				<button type="submit" class="btn btn-success">Submeter</button>
 							</form>
 						</div>
 					</div>

@@ -14,20 +14,20 @@ class ControllerHomepage extends TelaUsuario{
 	function aceitarNotificacao($notificacao){
 		$user = $_SESSION['globalUser'];
 		if($notificacao instanceof Solicitacao){
-			$user->responderSolicitacao(true, $notificacao);
+			$user->responderSolicitacao($notificacao, true);
 		}
 		else{
-			$user->responderConvite(true, $notificacao);
+			$user->responderConvite($notificacao, true);
 		}
 	}
 
 	function recusarNotificacao($notificacao){
 		$user = $_SESSION['globalUser'];
 		if($notificacao instanceof Solicitacao){
-			$user->responderSolicitacao(false, $notificacao);
+			$user->responderSolicitacao($notificacao, false);
 		}
 		else{
-			$user->responderConvite(false, $notificacao);
+			$user->responderConvite($notificacao, false);
 		}
 	}                 
 
@@ -40,9 +40,19 @@ class ControllerHomepage extends TelaUsuario{
 				$user = $_SESSION["globalUser"];
 				$meusboloes = $dg->getData('boloes_'.$user->cpf);
 				$participo = false;
+				$apostadores = explode(',', $boloes[$i][5]);
 				for ($j = 0; $j<count($meusboloes); $j++){
 					if ($meusboloes[$j][1]==$boloes[$i][0]){
 						$participo = true;
+						break;
+					}
+					for ($k = 0; $k<count($apostadores); $k++){
+						if ($user->cpf==$apostadores[$k]){
+							$participo = true;
+							break;
+						}
+					}
+					if ($participo){
 						break;
 					}
 				}

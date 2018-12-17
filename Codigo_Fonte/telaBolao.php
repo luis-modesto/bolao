@@ -14,7 +14,7 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 
-<body style = "background-image: url('stadium2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center;">
+<body style = "background-image: url('stadium2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: 0% 30%;">
 <?php
     	require_once "./TelaUsuario.php";
 		require_once "./ControllerExibeBolao.php";
@@ -30,9 +30,9 @@
 		}
 	
 ?>
-	<div class="container" style="background-color: #f0f0f0;">
+	<div class="container mt-5">
 		<div class="row mt-5">
-			<div class="col-8 offset-2">
+			<div class="col-8 offset-2 mt-5">
 				<div class="resultados shadow">
 					<h6 class="text-center">Bolão 1</h6>
 					<form style="text-align: center;" action="./telaNewGame.php">

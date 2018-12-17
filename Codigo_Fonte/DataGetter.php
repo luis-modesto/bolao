@@ -49,7 +49,7 @@ class DataGetter {
 		$arquivo = fopen($nomearquivo, 'w');
 
 		for ($i = 0; $i<count($data); $i++){
-			for ($j = 0; $j<count($data[$i]); $j++){
+			for ($j = 0; $j<count($data[$i])-1; $j++){
 				fwrite($arquivo, $data[$i][$j] . ';');
 			}
 			fwrite($arquivo, PHP_EOL);

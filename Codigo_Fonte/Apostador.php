@@ -217,11 +217,13 @@ class Apostador extends Usuario{
 	*Registra o Apostador que chama essa funcao como participante de um novo bolao, caso a resposta ao convite para esse bolao seja true. Exclui registros desse convite
 	*/
 	function responderConviteBolao($convite, $resposta) {
+		$bol = $convite->bolao;
+		$idBolao = $bol->id;
 		$dg = DataGetter::getInstance();
 		$notificacoes = $dg->getData('notificacoes_' . $this->cpf);
 		$novasNot = array();
 		for ($i = 0; $i<count($notificacoes); $i++){
-			if ($notificacoes[$i][2]!=$convite->bolao){
+			if ($notificacoes[$i][2]!=$idBolao){
 				array_push($novasNot, $notificacoes[$i]);
 			}
 		}
@@ -229,23 +231,16 @@ class Apostador extends Usuario{
 			// procurar bolao do convite que recebeu como parametro no arquivo de boloes
 			$boloes = $dg->getData('bolao');
 			for ($i = 0; $i<count($boloes); $i++){
-				if (intval($boloes[$i][0])==$convite->bolao){
-					$apostadoresBolao = "";
-					for ($j = 0; $j<count($boloes[$i][5]); $j++){
-						if ($boloes[$i][5][$j]!=';'){
-							$apostadoresBolao =$apostadoresBolao . $boloes[$i][5][$j];
-						} else {
-							$apostadoresBolao = $apostadoresBolao . ',' . $this->cpf . ';';
-							$boloes[$i][5] = $apostadoresBolao;
-							break;
-						}
-					}
+				if (intval($boloes[$i][0])==$idBolao){
+					$apostadores = explode(',', $boloes[$i][5]);
+					array_push($apostadores, $remetente->cpf);
+					$boloes[$i][5] = implode(',', $apostadores);
 					break;
 				}
 			}
 			$dg->setData('bolao', $boloes);
 
-			$dg->appendData('boloes_' . $this->cpf, 'ativo;' . $convite->bolao); //adiciona a boloes que participa
+			$dg->appendData('boloes_' . $this->cpf, 'ativo;' . $idBolao); //adiciona a boloes que participa
 		}
 		$dg->setData('notificacoes_' . $this->cpf, $novasNot);
 	}
@@ -267,11 +262,13 @@ class Apostador extends Usuario{
 	*Registra o Apostador criador de uma dada solicitacao como participante de um bolao cujo Apostador que chama essa funcao eh administrador, caso a resposta para essa solicitacao seja true. Exclui registros dessa solicitacao
 	*/
 	function responderSolicitacao($solicitacao, $resposta) {
+		$bol = $solicitacao->bolao;
+		$idBolao = $bol->id;
 		$dg = DataGetter::getInstance();
 		$notificacoes = $dg->getData('notificacoes_' . $this->cpf);
 		$novasNot = array();
 		for ($i = 0; $i<count($notificacoes); $i++){
-			if ($notificacoes[$i][2]!=$solicitacao->bolao){
+			if (intval($notificacoes[$i][2])!=$idBolao){
 				array_push($novasNot, $notificacoes[$i]);
 			}
 		}
@@ -279,32 +276,33 @@ class Apostador extends Usuario{
 		$solicitacoesF = $dg->getData('solicitacoesfeitas_' . $remetente->cpf);
 		$novasSoli = array();
 		for ($i = 0; $i<count($solicitacoesF); $i++){
-			if ($solicitacoesF[$i][0]!=$solicitacao->bolao){
+			if (intval($solicitacoesF[$i][0])!=$idBolao){
 				array_push($novasSoli, $solicitacoesF[$i]);
 			}
 		}
+		for ($i = 0; $i<count($this->solicitacoes); $i++){
+			$s = $this->solicitacoes[$i];
+			$bol = $s->bolao;
+			if ($idBolao==$bol->id){
+				$pos = $i;
+				break;
+			}
+		}
+		unset($this->solicitacoes[$pos]);
 		if($resposta == true){
 			// procurar bolao da solicitacao que recebeu como parametro no arquivo de boloes
 			$boloes = $dg->getData('bolao');
 			for ($i = 0; $i<count($boloes); $i++){
-				if (intval($boloes[$i][0])==$solicitacao->bolao){
-					$apostadoresBolao = "";
-					for ($j = 0; $j<count($boloes[$i][5]); $j++){
-						if ($boloes[$i][5][$j]!=';'){
-							$apostadoresBolao = $apostadoresBolao . $boloes[$i][5][$j];
-						} else {
-							$u = $solicitacao->usuarioRemetente;
-							$apostadoresBolao = $apostadoresBolao . ',' . $u->cpf . ';';
-							$boloes[$i][5] = $apostadoresBolao;
-							break;
-						}
-					}
+				if (intval($boloes[$i][0])==$idBolao){
+					$apostadores = explode(',', $boloes[$i][5]);
+					array_push($apostadores, $remetente->cpf);
+					$boloes[$i][5] = implode(',', $apostadores);
 					break;
 				}
 			}
 			$dg->setData('bolao', $boloes);
 			$u = $solicitacao->usuarioRemetente;
-			$dg->appendData('boloes_' . $u->cpf, 'ativo;' . $solicitacao->bolao); //adiciona a boloes que participa
+			$dg->appendData('boloes_' . $u->cpf, 'ativo;' . $idBolao); //adiciona a boloes que participa
 		}
 		$dg->setData('notificacoes_' . $this->cpf, $novasNot);
 		$dg->setData('solicitacoesfeitas_' . $remetente->cpf, $novasSoli);

@@ -115,6 +115,7 @@
 
 			function aceitarNotificacao(id){
 				document.getElementById(id).value = 1;
+				console.log(id + ': ' + document.getElementById(id).value);
 			}
 
 			function rejeitarNotificacao(id){

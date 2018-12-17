@@ -37,13 +37,9 @@
             header('Location: ./index.php');
         }
 ?>
-        <div class = "mt-5 container" style = "max-width: 900px; background-color: #f0f0f0; position: relative; bottom: -40px;">
-        <div class='mt-5 new-game'>
-            <button class = "mt-2 btn btn-info" disabled> Criar novo bolão</button>
-            <button class = "ml-3 mt-2 btn btn-info"> Meus bolões</button>
-        </div>
-        <div class="row mt-3">
-    			<div class="col-8 offset-2">
+        <div class = "mt-5 container" style = " position: relative; bottom: -40px;">
+        <div class="row">
+    			<div class="my-4 col-8 offset-2">
     				<div class="resultados shadow">
     					<h6 class="text-center">Novo Bolão</h6>
                         <div class="container-fluid">
