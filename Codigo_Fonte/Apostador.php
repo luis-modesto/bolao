@@ -61,7 +61,7 @@ class Apostador extends Usuario{
 		$users = $dg->getData('usuarios');
 		for ($i = 0; $i<count($users); $i++){
 			if ($username==$users[$i][6] && $senha==$users[$i][1]){
-				$this->cpf =$users[$i][0];
+				$this->cpf = $users[$i][0];
 				$cpf = $this->cpf;
 				$this->nome = $users[$i][2];
 				$this->saldo = intval($users[$i][4]);
@@ -104,18 +104,18 @@ class Apostador extends Usuario{
 					}
 				}
 
-				$matrizApostas = $dg->getData('apostas_' . $cpf);
+				$matrizApostas = $dg->getData('apostas_' . $this->cpf);
 				for ($j = 0; $j<count($matrizApostas); $j++){
 					$placar = new Placar($matrizApostas[$j][1], $matrizApostas[$j][2]);
 					$a = new Aposta($placar, $matrizApostas[$j][0]);
 					array_push($this->apostas, $a);
 				}
 
-				$notificacoes = $dg->getData('notificacoes_' . $cpf);
+				$notificacoes = $dg->getData('notificacoes_' . $this->cpf);
 				for ($j = 0; $j<count($notificacoes); $j++){
 					for ($k = 0; $k<count($users); $k++){
 						if ($users[$k][0]==$notificacoes[$j][1]){
-							$remetente = new Apostador($users[$k][6], $users[$k][0], '', $users[$k][2], array(), array(), array(), 0, array(), array(), array());
+							$remetente = new Apostador($users[$k][6], $users[$k][0], $users[$k][2], '', array(), array(), array(), 0, array(), array(), array());
 							break;
 						}
 					}
@@ -257,10 +257,10 @@ class Apostador extends Usuario{
 	*/
 	function solicitarParticiparBolao($bolao) {
 		$dg = DataGetter::getInstance();
-		$solicitacao = '2;' . $this->username . ';' . $bolao->id . ';';
+		$solicitacao = '2;' . $this->cpf . ';' . $bolao->id . ';';
 		// escrever no arquivo solicitacoes_cpfuser do administrador do bolao
 		$dg->appendData('notificacoes_' . $bolao->cpfAdmin, $solicitacao);
-		$dg->appendData('solicitacoesfeitas_' . $this->username, $bolao->id . ';');
+		$dg->appendData('solicitacoesfeitas_' . $this->cpf, $bolao->id . ';');
 	}
 
 

@@ -95,6 +95,55 @@ class ControllerHomepage extends TelaUsuario{
 		return $retorno;
 	}
 
+	function exibirMeusBoloes(){
+		$user = $_SESSION["globalUser"];
+		$dg = DataGetter::getInstance();
+		$meusboloes = $dg->getData('boloes_'.$user->cpf);
+		$boloes = $dg->getData('bolao');
+		$retorno = "";
+		for ($i = 0; $i<count($meusboloes); $i++){
+			if ($meusboloes[$i][0]=="ativo"){
+				for ($j=0; $j<count($boloes); $j++){
+					if($meusboloes[$i][1]==$boloes[$j][0]){
+						$retorno = $retorno.'<li class="list-group-item" onclick = "pegarIdBolao('.$boloes[$j][0].')">
+							<h6>'.$boloes[$j][2].'</h6>
+							<div class="row">
+								<div class="col-7">
+									Campeonato: '.$boloes[$j][3].'
+								</div>
+								<div class="col-5">
+									Esporte: '.$boloes[$j][4].'
+								</div>
+							</div>
+							
+						</li>' . PHP_EOL;
+					}
+				}
+			}
+		}
+		for ($i = 0; $i<count($meusboloes); $i++){
+			if ($meusboloes[$i][0]!="ativo"){
+				for ($j=0; $j<count($boloes); $j++){
+					if($meusboloes[$i][1]==$boloes[$j][0]){
+						$retorno = $retorno.'<li class="list-group-item list-group-item-secondary" onclick = "pegarIdBolao('.$boloes[$j][0].')">
+							<h6>'.$boloes[$j][2].'</h6>
+							<div class="row">
+								<div class="col-7">
+									Campeonato: '.$boloes[$j][3].'
+								</div>
+								<div class="col-5">
+									Esporte: '.$boloes[$j][4].'
+								</div>
+							</div>
+							
+						</li>' . PHP_EOL;
+					}
+				}
+			}
+		}
+		return $retorno;
+	}
+
 	function solicitarParticiparBolao($idbolao){
 		$dg = DataGetter::getInstance();
 		$boloes = $dg->getData('bolao');

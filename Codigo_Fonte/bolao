@@ -1,4 +1,4 @@
 idbolao;cpf_administrador;nome;campeonato;esporte;cpfs_apostadores(lista de cpf separados por vírgula);pontos_postador(lista de pontos separados por vírgula);pts_acertar_placar;pts_acertar_vencedor;premio;ativo;
-3610;1234567;Bolão 1;camp;esp;1234,;;30;10;0;1;
-7499;1234567;Bolão 2;camp 2;esp 2;,1234;;;;0;1;
-8938;1234;Bolão 3;camp 3;esp 3;,1234567,;;30;3;0;1;
+808;1234567;Bolão 1;camp;esp;,1234;;20;10;0;0;
+14401;1234567;Bolão 2;camp;esp;;;30;15;0;1;
+11384;1234;Bolão fechado;camp;esp;;;30;10;0;1;

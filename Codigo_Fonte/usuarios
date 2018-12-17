@@ -1,4 +1,3 @@
 cpf_usuario;senha_usuario;nome_usuario;is_adm;saldo;resposta_seguranca;username;
 1234567;minhasenha;Luis Modesto;0;500;eu;luismodesto;
-1234;senha;Bruno Dias;0;500;eu;brunodias3;
-074788;12345;Bruno Dias da Silva;0;500;bruno;brunodias;
+1234;senha;Bruno Dias;0;500;ele;brunodias;

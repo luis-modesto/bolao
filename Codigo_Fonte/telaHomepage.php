@@ -61,6 +61,8 @@
 						$homepage->recusarNotificacao($c);
 					}
 				}
+				header('Location: ./telaHomepage.php');
+
 			}
 ?>
 	    
@@ -75,14 +77,25 @@
 				<div class="mb-5 col-8 offset-2">
 					<div class="resultados shadow">
 						<h5 id="titulo-lista-boloes" class="text-center">Bolões</h5>
-						<ul id="lista-boloes" class="list-group">
-							<?php
-								require_once "./ControllerHomepage.php";
-								$home = new ControllerHomepage();
-								echo $home->exibirBoloes();
-							?>
-						</ul>
-						<div class="row">
+						<div id="lista-boloes" class="border border-dark rounded">
+							<ul class="list-group">
+								<?php
+									require_once "./ControllerHomepage.php";
+									$home = new ControllerHomepage();
+									echo $home->exibirBoloes();
+								?>
+							</ul>
+						</div>
+						<div  style="display: none;" id="lista-meus-boloes" class="border border-dark rounded">
+							<ul class="list-group">
+								<?php
+									require_once "./ControllerHomepage.php";
+									$home = new ControllerHomepage();
+									echo $home->exibirMeusBoloes();
+								?>
+							</ul>
+						</div>
+						<div class="row mt-2">
 							<div class="col-3">
 								<form style ="text-align: left;" method = "post" action = "./telaHomepage.php">
 									<input type = "hidden" name = "bolaoEscolhido" id = "bolaoEscolhido"> 
@@ -110,18 +123,14 @@
 
 			function exibirMeusBoloes(){
 				document.getElementById('titulo-lista-boloes').innerHTML = "Meus Bolões";
-
-			}
-
-			function aceitarNotificacao(id){
-				document.getElementById(id).value = 1;
-				console.log(id + ': ' + document.getElementById(id).value);
-			}
-
-			function rejeitarNotificacao(id){
-				document.getElementById(id).value = 2;
+				document.getElementById('lista-boloes').style.display = "none";
+				document.getElementById('participar').style.display = "none";
+				document.getElementById('btn-meus-boloes').disabled = true;
+				document.getElementById('exibir').disabled = true;
+				document.getElementById('lista-meus-boloes').style.display = "block";
 			}
 		</script>
+		<script type="text/javascript" src="./TelaUsuario.js"></script>
 		 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 	    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>

@@ -17,7 +17,7 @@ class TelaUsuario{
 				$c = $user->convites[$i];
 				$b = $c->bolao;
 				$idBolao = $b->id;
-				$retorno = $retorno . '<li class="bg-light list-group-item">'.PHP_EOL.
+				$retorno = $retorno . '<li id="li-'.$idBolao.'" class="bg-light list-group-item">'.PHP_EOL.
 					'<div class="row">
 						<div class="col-12">'.
 							$c->exibirNotificacao().PHP_EOL.
@@ -25,19 +25,19 @@ class TelaUsuario{
 					</div>
 					<div class="row">
 						<div class="col-4 offset-8">
-							<button onclick="aceitarNotificacao(conv'.$idBolao.')" class="bg-light btn"><i style="font-size: 1.5em;" class="text-success far fa-check-circle"></i></button> 
-							<button onclick="rejeitarNotificacao(conv'.$idBolao.')" class="btn bg-light"><i style="font-size: 1.5em;" class="text-danger far fa-times-circle"></i></button>
+							<button id="acc-'.$idBolao.'" onclick="aceitarNotificacao(\''.$idBolao.'\')" class="bg-light btn"><i style="font-size: 1.5em;" class="text-success far fa-check-circle"></i></button> 
+							<button id="rec-'.$idBolao.'" onclick="rejeitarNotificacao(\''.$idBolao.'\')" class="btn bg-light"><i style="font-size: 1.5em;" class="text-danger far fa-times-circle"></i></button>
 						</div>
 					</div>
 					</li>'.PHP_EOL;
 					//adiciona input
-					$this->inputsNotific = $this->inputsNotific . '<input type = "hidden" value = "0"  name = "conv'.$idBolao.'" id = "conv'.$idBolao.'">'.PHP_EOL;
+					$this->inputsNotific = $this->inputsNotific . '<input type = "hidden" value = "0"  name = "notf'.$idBolao.'" id = "notf'.$idBolao.'">'.PHP_EOL;
 			}
 			for ($i=0; $i<count($user->solicitacoes); $i++){
 				$s = $user->solicitacoes[$i];
 				$b = $s->bolao;
 				$idBolao = $b->id;
-				$retorno = $retorno . '<li class="bg-light list-group-item">'.PHP_EOL.
+				$retorno = $retorno . '<li id="li-'.$idBolao.'" class="bg-light list-group-item">'.PHP_EOL.
 					'<div class="row">
 						<div class="col-12">'.
 							$s->exibirNotificacao().PHP_EOL.
@@ -45,13 +45,13 @@ class TelaUsuario{
 					</div>
 					<div class="row">
 						<div class="col-4 offset-8">
-							<button type="button" onclick="aceitarNotificacao(\'sol'.$idBolao.'\')" class="bg-light btn"><i style="font-size: 1.5em;" class="text-success far fa-check-circle"></i></button> 
-							<button type="button" onclick="rejeitarNotificacao(\'sol'.$idBolao.'\')" class="btn bg-light"><i style="font-size: 1.5em;" class="text-danger far fa-times-circle"></i></button>
+							<button id="acc-'.$idBolao.'" type="button" onclick="aceitarNotificacao(\''.$idBolao.'\')" class="bg-light btn"><i style="font-size: 1.5em;" class="text-success far fa-check-circle"></i></button> 
+							<button id="rec-'.$idBolao.'" type="button" onclick="rejeitarNotificacao(\''.$idBolao.'\')" class="btn bg-light"><i style="font-size: 1.5em;" class="text-danger far fa-times-circle"></i></button>
 						</div>
 					</div>
 					</li>'.PHP_EOL;
 					//adiciona input
-					$this->inputsNotific = $this->inputsNotific . '<input type = "hidden" value = "0"  name = "sol'.$idBolao.'" id = "sol'.$idBolao.'">'.PHP_EOL;
+					$this->inputsNotific = $this->inputsNotific . '<input type = "hidden" value = "0"  name = "notf'.$idBolao.'" id = "notf'.$idBolao.'">'.PHP_EOL;
 			}
 		$retorno = $retorno . '</ul>'.PHP_EOL;
 		return $retorno;
@@ -91,7 +91,7 @@ class TelaUsuario{
 								$this->inputsNotific . PHP_EOL .
 								'
 	        				<input type = "hidden" value = "1"  name = "responderNotificacoes" id = "responderNotificacoes"> 
-	        				<button type="submit" class="btn btn-success">Submeter</button>
+	        				<button disabled type="submit" id="btn-submeter" class="btn btn-success">Submeter</button>
 							</form>
 						</div>
 					</div>
