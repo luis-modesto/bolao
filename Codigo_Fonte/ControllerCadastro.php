@@ -7,13 +7,19 @@ class ControllerCadastro{
 
 	function criaConta($user, $resposta){
 		session_start();
-		if($user->criarConta($user->cpf, $user->nome, $user->senha, $resposta) == true){
+		if($user->criarConta($user->username, $user->cpf, $user->nome, $user->senha, $resposta) == true){
 			$_SESSION['globalUser'] = $user;
 			header('Location: ./telaHomepage.php');
 		}
 		else{
-			$_SESSION['message'] = "CPF ja cadastrado no sistema";
-			header('Location: ./index.php');
+			if($_SESSION['jatem'] == 'cpf'){
+				$_SESSION['message'] = "CPF já cadastrado no sistema.";
+				header('Location: ./index.php');
+			}
+			else{
+				$_SESSION['message'] = "Já existe um usuário com este username no sistema.";
+				header('Location: ./telaNewUser.php');
+			}
 		}
 	}
 }

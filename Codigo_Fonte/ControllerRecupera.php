@@ -9,9 +9,9 @@ class ControllerRecupera{
 			$_SESSION['message'] = "Esse cpf não está cadastrado no sistema.";
 		}
 		else{
-			$senha = $user->recuperarSenha($resposta);
-			if ($senha!=""){
-				$_SESSION['message'] = "Sua senha de acesso ao bolão é: " . $senha;
+			$dados = $user->recuperarAcesso($resposta);
+			if ($dados[0]!="" && $dados[1] != ""){
+				$_SESSION['message'] = "Sua senha de acesso ao bolão é: " . $dados[0] . " e seu username é: " . $dados[1] . ".";
 			}
 			else{
 				$_SESSION['message'] = "Essa não foi a resposta que voce colocou no cadastro.";

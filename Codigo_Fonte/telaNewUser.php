@@ -16,6 +16,13 @@
 <body style = "background-image: url('stadium2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center;">
     <div class="mt-5 container" style = "background-color: #f0f0f0; opacity: 0.9; position: relative; bottom: -40px; max-width: 500px; border-style: solid; border-radius: 7px; border-color: #C0C0C0;">
     	<h1><a style = "color: black; text-decoration: none;" href = "./index.php"> Bolão </a></h1>
+        <?php
+            session_start();
+            if (isset($_SESSION['message'])) {
+                echo '<div class = "container-fluid" style = "background-color: none;"> <div class = "text-center alert alert-danger" > <strong> ' . $_SESSION['message'] . '</strong> </div> </div>';
+                unset($_SESSION['message']);
+            }
+        ?>        
 		<form class="ml-auto" style="text-align: center;" method = "post" action="telaNewUser.php">
 			<div class="form-group">
                 <label for="cpf"> CPF:</label>
@@ -23,6 +30,11 @@
                     <input required type="text" name = "cpf" id="cpf">
                 </div>
                 <br>
+                <label for="username"> Username:</label>
+                <div class='rightTab'>
+                    <input required type="text" name = "username" id="username">
+                </div>
+                <br>                
                 <label for="nome"> Nome:</label>
                 <div class='rightTab'>
 				    <input required type="text" name = "nome" id="nome">
@@ -45,8 +57,8 @@
 <?php
     require_once "./Apostador.php";
     require_once "./ControllerCadastro.php";
-    if(isset($_POST['cpf']) && isset($_POST['nome']) && isset($_POST['senha']) && isset($_POST['resposta'])){
-        $user = new Apostador($_POST['cpf'], $_POST['nome'], $_POST['senha'], array(), array(), array(), 500, array(), array(), array());
+    if(isset($_POST['username']) && isset($_POST['nome']) && isset($_POST['senha']) && isset($_POST['resposta'])){
+        $user = new Apostador($_POST['username'], $_POST['cpf'], $_POST['nome'], $_POST['senha'], array(), array(), array(), 500, array(), array(), array());
         $resposta = $_POST['resposta'];
         $telaCadastro = new ControllerCadastro();
         $telaCadastro->criaConta($user, $resposta);

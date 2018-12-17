@@ -40,7 +40,7 @@
                     <input type="text" name = "resposta" id="respostaSeguranca">
                 </div>
 			</div>
-			<button type="submit" class="mb-3 btn btn-midnight" >Recuperar senha</button>
+			<button type="submit" class="mb-3 btn btn-midnight" >Recuperar conta</button>
 		</form>
 
 	</div>
@@ -60,9 +60,9 @@
 	if(isset($_POST['cpf']) && isset($_POST['resposta'])){
 		$cpf = $_POST['cpf'];
 		if ($cpf=="06721598567"){
-			$user = new Administrador($cpf, '', '');
+			$user = new Administrador('', $cpf, '', '');
 		} else {
-			$user = new Apostador($cpf, '', '', array(), array(), array(), 500, array(), array(), array());
+			$user = new Apostador('', $cpf, '', '', array(), array(), array(), 500, array(), array(), array());
 		}
 		$resposta = $_POST['resposta'];
 		$telaSenha = new ControllerRecupera();

@@ -21,7 +21,7 @@ class Solicitacao extends Notificacao {
     function exibirNotificacao(){
         $user = $this->usuarioRemetente;
         $bolao = $this->bolao;
-        $retorno = '<strong>'.$user->cpf.'</strong> deseja participar do bolão <strong>'.$bolao->nome.'</strong>'.PHP_EOL;
+        $retorno = '<strong>'. $user->username .'</strong> deseja participar do bolão <strong>'.$bolao->nome.'</strong>'.PHP_EOL;
         return $retorno;    
     }
 }

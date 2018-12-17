@@ -6,6 +6,7 @@ require_once "./DataGetter.php";
 */
 abstract class Usuario {
 
+	public $username;
 	public $cpf;
 	public $nome;
 	public $senha;
@@ -14,18 +15,25 @@ abstract class Usuario {
 	/**
 	*Registra informacoes necessarias para login - cpf, nome, senha e resposta de seguranca.
 	*/
-	function criarConta($cpf, $nome, $senha, $respostaSeguranca) {
+	function criarConta($username, $cpf, $nome, $senha, $respostaSeguranca) {
 		$dg = DataGetter::getInstance();
-		$user = $cpf . ';' . $senha . ';' . $nome . ';0;500;' . $respostaSeguranca . ';';
+		$user = $cpf . ';' . $senha . ';' . $nome . ';0;500;' . $respostaSeguranca . ';' . $username . ';';
 		$usersCadastrados = $dg->getData('usuarios');
-		$jaTem = false;
+		$jaTemCPF = false;
+		$jaTemUsername = false;
 		for($i=0; $i<count($usersCadastrados); $i++){
 			if($cpf == $usersCadastrados[$i][0]){
-				$jatem = true;
+				$_SESSION['jatem'] = "cpf";
+				$jaTemCPF = true;
+				break;
+			}
+			else if($username == $usersCadastrados[$i][6]){
+				$jaTemUsername = true;
+				$_SESSION['jatem'] = "username";
 				break;
 			}
 		}
-		if($jatem == false){
+		if($jaTemCPF == false && $jaTemUsername == false){
 			$dg->appendData('usuarios', $user);
 			$dg->setData('apostas_' . $this->cpf, array());
 			$dg->setData('notificacoes_' . $this->cpf, array());
@@ -80,9 +88,12 @@ abstract class Usuario {
 	/**
 	*Retorna a senha do usuario atual, caso a resposta passada como parametro for igual a respostaSeguranca passada pelo usuario no momento em que ele criou a conta
 	*/
-	function recuperarSenha($resposta){
+	function recuperarAcesso($resposta){
 		if ($resposta==$this->respostaSeguranca){
-			return $this->senha;
+			$dadosAcesso = array();
+			array_push($dadosAcesso, $this->senha);
+			array_push($dadosAcesso, $this->username);
+			return $dadosAcesso;
 		}
 		return "";
 	}

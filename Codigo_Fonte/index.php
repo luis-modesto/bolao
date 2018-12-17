@@ -25,9 +25,9 @@
 		?>
 		<form class="ml-auto" style="text-align: center;" method = "post" action = "index.php">
 			<div class="form-group">
-				<label for="cpf">CPF:</label>
+				<label for="cpf">Username:</label>
 				<div class='rightTab'>
-					<input type="text" name = "cpf" id="cpf">
+					<input type="text" name = "username" id="username">
 				</div>
 				<br>
 				<label for="senha">Senha:</label>
@@ -35,7 +35,7 @@
 					<input type="password" name = "senha" id="senha">	
 				</div>
 				<div class="linkhome"><a href="./telaNewUser.php">Ainda não possuo cadastro</a></div>
-				<div class="linkhome"><a href="./telaForgotPassword.php">Esqueci minha senha</a></div>
+				<div class="linkhome"><a href="./telaForgotPassword.php">Esqueci meu username ou senha</a></div>
 			</div>
 			<button type="submit" class="mb-3 btn btn-midnight">Login</button>
 		</form>
@@ -54,22 +54,22 @@
 		require_once "./Administrador.php";
 		require_once "./Apostador.php";
 
-		if(isset($_POST['cpf']) && isset($_POST['senha'])){
-			$cpf = $_POST['cpf'];
+		if(isset($_POST['username']) && isset($_POST['senha'])){
+			$username = $_POST['username'];
 			$senha = $_POST['senha'];
 
-			if($cpf != '' && $senha != ''){
-				if ($cpf=="06721598567"){
-					$user = new Administrador($cpf, '', $senha);
+			if($username != '' && $senha != ''){
+				if ($username=="useradmin"){
+					$user = new Administrador($username, '', '', $senha);
 				} else {
-					$user = new Apostador($cpf, '', $senha, array(), array(), array(), 500, array(), array(), array());
+					$user = new Apostador($username, '', '', $senha, array(), array(), array(), 500, array(), array(), array());
 				}
 				$telaLogin = new ControllerLogin();
 				$telaLogin->login($user);
 			}
 			else{
 				session_start();
-				$_SESSION['message'] = "Preencha os campos de CPF e senha.";
+				$_SESSION['message'] = "Preencha os campos de username e senha.";
 				header('Location: ./index.php');
 			}
 		}

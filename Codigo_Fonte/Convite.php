@@ -21,7 +21,7 @@ class Convite extends Notificacao{
     function exibirNotificacao(){
         $user = $this->usuarioRemetente;
         $bolao = $this->bolao;
-        $retorno = '<strong>'.$user->cpf.'</strong> te convidou para o bolão <strong>'.$bolao->nome.'</strong>'.PHP_EOL;
+        $retorno = '<strong>'.$user->username.'</strong> te convidou para o bolão <strong>'.$bolao->nome.'</strong>'.PHP_EOL;
         return $retorno;   
     }
 }

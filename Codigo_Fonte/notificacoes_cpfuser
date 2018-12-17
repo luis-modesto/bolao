@@ -1,1 +1,1 @@
-tipo_notificacao;user_remetente;id_bolao
+tipo_notificacao;cpf_remetente;id_bolao;username_remetente;

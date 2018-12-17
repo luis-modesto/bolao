@@ -116,6 +116,7 @@ class TelaUsuario{
 		}
 
 		$user->cpf = "";
+		$user->username = "";
 		$user->nome = "";
 		$user->senha = "";
 

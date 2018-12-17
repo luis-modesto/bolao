@@ -26,7 +26,8 @@ class Apostador extends Usuario{
 	*boloesEncerrados, que contem informacoes dos boloes que esse Apostador participou mas que ja se finalizaram todos os jogos e o vencedor geral ja foi declarado; saldo, que representa o quanto de cash o Apostador tem disponivel para fazer apostas;
 	*apostas, que contem informacoes de todas as apostas que o Apostador ja fez; convites, que contem os convites que o Apostador recebeu e ainda nao respondeu; e solicitacoes, que contem as solicitacoes que o Apostador recebeu e ainda nao respondeu.
 	*/
-	function __construct($cpf, $nome, $senha, $boloesCriados, $boloesParticipa, $boloesEncerrados, $saldo, $apostas, $convites, $solicitacoes){
+	function __construct($username, $cpf, $nome, $senha, $boloesCriados, $boloesParticipa, $boloesEncerrados, $saldo, $apostas, $convites, $solicitacoes){
+		$this->username = $username;
 		$this->cpf = $cpf;
 		$this->nome = $nome;
 		$this->senha = $senha;
@@ -39,11 +40,14 @@ class Apostador extends Usuario{
 		$this->solicitacoes = $solicitacoes;
 		$dg = DataGetter::getInstance();
 		$users = $dg->getData('usuarios');
-		for ($i = 0; $i<count($users); $i++){
-			if ($this->cpf==$users[$i][0] && $this->nome == '' && $this->senha == ''){
-				$this->respostaSeguranca = $users[$i][5];
-				$this->senha = $users[$i][1];
-				break;
+		if($this->cpf != '' && $this->username == '' && $this->nome == '' && $this->senha == ''){
+			for ($i = 0; $i<count($users); $i++){
+				if ($this->cpf==$users[$i][0]){
+					$this->respostaSeguranca = $users[$i][5];
+					$this->senha = $users[$i][1];
+					$this->username = $users[$i][6];
+					break;
+				}
 			}
 		}
 	} 
@@ -52,11 +56,13 @@ class Apostador extends Usuario{
 	/**
 	*Metodo concreto que implementa o metodo abstrato em Usuario. Carrega informacoes do apostador e o registra como usuario atual do sistema, caso cpf e senha sejam compativeis
 	*/
-	function efetuarLogin($cpf, $senha) {
+	function efetuarLogin($username, $senha) {
 		$dg = DataGetter::getInstance();
 		$users = $dg->getData('usuarios');
 		for ($i = 0; $i<count($users); $i++){
-			if ($cpf==$users[$i][0] && $senha==$users[$i][1]){
+			if ($username==$users[$i][6] && $senha==$users[$i][1]){
+				$this->cpf =$users[$i][0];
+				$cpf = $this->cpf;
 				$this->nome = $users[$i][2];
 				$this->saldo = intval($users[$i][4]);
 				
@@ -109,7 +115,7 @@ class Apostador extends Usuario{
 				for ($j = 0; $j<count($notificacoes); $j++){
 					for ($k = 0; $k<count($users); $k++){
 						if ($users[$k][0]==$notificacoes[$j][1]){
-							$remetente = new Apostador($users[$k][0], '', $users[$k][2], array(), array(), array(), 0, array(), array(), array());
+							$remetente = new Apostador($users[$k][6], $users[$k][0], '', $users[$k][2], array(), array(), array(), 0, array(), array(), array());
 							break;
 						}
 					}
@@ -251,10 +257,10 @@ class Apostador extends Usuario{
 	*/
 	function solicitarParticiparBolao($bolao) {
 		$dg = DataGetter::getInstance();
-		$solicitacao = '2;' . $this->cpf . ';' . $bolao->id . ';';
+		$solicitacao = '2;' . $this->username . ';' . $bolao->id . ';';
 		// escrever no arquivo solicitacoes_cpfuser do administrador do bolao
 		$dg->appendData('notificacoes_' . $bolao->cpfAdmin, $solicitacao);
-		$dg->appendData('solicitacoesfeitas_' . $this->cpf, $bolao->id . ';');
+		$dg->appendData('solicitacoesfeitas_' . $this->username, $bolao->id . ';');
 	}
 
 

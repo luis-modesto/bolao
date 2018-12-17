@@ -11,16 +11,20 @@ class Administrador extends Usuario {
 	/**
 	*Construtor que inicializa uma instancia de Administrador, preenchendo os atributos cpf, nome e senha do usuario
 	*/
-    function __constructor($cpf, $nome, $senha){
-        $this->cpf = $cpf;
+    function __constructor($username, $cpf, $nome, $senha){
+    	$this->username = $username;
 		$this->nome = $nome;
 		$this->senha = $senha;
 		$dg = DataGetter::getInstance();
 		$users = $dg->getData('usuarios');
-		for ($i = 0; $i<count($users); $i++){
-			if ($this->cpf==$users[$i][0] && $this->senha==$users[$i][1]){
-				$this->respostaSeguranca = $users[$i][5];
-				break;
+		if($this->cpf != '' && $this->username == '' && $this->nome == '' && $this->senha == ''){
+			for ($i = 0; $i<count($users); $i++){
+				if ($this->cpf==$users[$i][0]){
+					$this->respostaSeguranca = $users[$i][5];
+					$this->senha = $users[$i][1];
+					$this->username = $users[$i][6];
+					break;
+				}
 			}
 		}
     }
@@ -29,12 +33,13 @@ class Administrador extends Usuario {
 	/**
 	*Metodo concreto que implementa o metodo abstrato em Usuario. Carrega informacoes do administrador e o registra como usuario atual do sistema, caso cpf e senha sejam compativeis
 	*/
-	function efetuarLogin($cpf, $senha) {
+	function efetuarLogin($username, $senha) {
 		$dg = DataGetter::getInstance();
 		$users = $dg->getData('usuarios');
 		for ($i = 0; $i<count($users); $i++){
-			if ($cpf==$users[$i][0] && $senha==$users[$i][1]){
+			if ($username==$users[$i][6] && $senha==$users[$i][1]){
 				$this->nome = $users[$i][2];
+				$this->cpf = $users[$i][0];
 				return true;
 			}
 		}
