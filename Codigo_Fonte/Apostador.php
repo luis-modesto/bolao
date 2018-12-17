@@ -246,7 +246,7 @@ class Apostador extends Usuario{
 			}
 			$dg->setData('bolao', $boloes);
 
-			$dg->appendData('boloes_' . $this->cpf, 'ativo;' . $idBolao); //adiciona a boloes que participa
+			$dg->appendData('boloes_' . $this->cpf, 'ativo;' . $idBolao . ';'); //adiciona a boloes que participa
 		}
 		$dg->setData('notificacoes_' . $this->cpf, $novasNot);
 	}
@@ -308,7 +308,7 @@ class Apostador extends Usuario{
 			}
 			$dg->setData('bolao', $boloes);
 			$u = $solicitacao->usuarioRemetente;
-			$dg->appendData('boloes_' . $u->cpf, 'ativo;' . $idBolao); //adiciona a boloes que participa
+			$dg->appendData('boloes_' . $u->cpf, 'ativo;' . $idBolao . ';'); //adiciona a boloes que participa
 		}
 		$dg->setData('notificacoes_' . $this->cpf, $novasNot);
 		$dg->setData('solicitacoesfeitas_' . $remetente->cpf, $novasSoli);

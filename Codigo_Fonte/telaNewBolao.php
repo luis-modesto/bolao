@@ -42,9 +42,9 @@
                     $s = $user->solicitacoes[$i];
                     $b = $s->bolao;
                     $idBolao = $b->id;
-                    if ($_POST['sol'.$idBolao]==1){
+                    if ($_POST['notf'.$idBolao]==1){
                         $homepage->aceitarNotificacao($s);
-                    } else if($_POST['sol'.$idBolao]==2){
+                    } else if($_POST['notf'.$idBolao]==2){
                         $homepage->recusarNotificacao($s);
                     }
                 }
@@ -52,9 +52,9 @@
                     $c = $user->convites[$i];
                     $b = $c->bolao;
                     $idBolao = $b->id;
-                    if ($_POST['conv'.$idBolao]==1){
+                    if ($_POST['notf'.$idBolao]==1){
                         $homepage->aceitarNotificacao($c);
-                    } else if($_POST['conv'.$idBolao]==2){
+                    } else if($_POST['notf'.$idBolao]==2){
                         $homepage->recusarNotificacao($c);
                     }
                 }
