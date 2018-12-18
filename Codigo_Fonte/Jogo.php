@@ -27,14 +27,5 @@ class Jogo {
 		$this->resultado = $resultado;
 		$this->valorAposta = $valorAposta;
 	}
-
-
-	/**
-	*Retorna resultado do jogo para exibicao
-	*/
-	function exibirResultado() {
-		return $this->resultado;
-	}
-
 }
 ?>

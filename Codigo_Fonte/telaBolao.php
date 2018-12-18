@@ -6,11 +6,8 @@
 	<meta charset="utf-8">
 	<meta name="view-port" content="width=width-device, initial-scale=1.0, shrink-to-fit=no">
 	<title>Bolão</title>
-
 	<link rel="stylesheet" type="text/css" href="./estilo.css">
-
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
-
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 
@@ -88,9 +85,13 @@
 							</form>
 						</div>
 						<div class = "text-right offset-7 col-2">
-							<form style="text-align: left;" action="./telaNewGame.php">
-								<button class="mt-2 btn btn-info" style="padding-right: 5px;">Criar Jogo</button>
-							</form>
+							<?php
+								if($_SESSION['ehAdm'] == true){
+								echo '<form style="text-align: left;" action="./telaNewGame.php">
+										<button class="mt-2 btn btn-info" style="padding-right: 5px;">Criar Jogo</button>
+									</form>';
+								}
+							?>
 						</div>
 					</div>
 				</div>

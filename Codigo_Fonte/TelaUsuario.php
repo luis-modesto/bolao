@@ -121,6 +121,7 @@ class TelaUsuario{
 		$user->senha = "";
 
 		$_SESSION["globalUser"] = $user;
+		session_unset();
 	}
 }
 

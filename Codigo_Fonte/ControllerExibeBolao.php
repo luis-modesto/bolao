@@ -37,6 +37,7 @@ class ControllerExibeBolao extends TelaUsuario{
 		$retorno = "";
 		for ($i = 0; $i<count($boloes); $i++){
 			if (intval($boloes[$i][0])==intval($idBolao)){
+				$_SESSION['nomeBolao'] = $boloes[$i][2];
 				$user = $_SESSION['globalUser'];
 				$retorno = '<div class = "col-4">
 								<h4 class="text-left ml-2">'. $boloes[$i][2] . '</h4>
@@ -101,12 +102,12 @@ class ControllerExibeBolao extends TelaUsuario{
 		$boloes = $dg->getData('bolao');
 		$apostas = $dg->getData('apostas_'. $_SESSION['globalUser']->cpf);
 		$retorno = "";
-		$ehAdm = false;
+		$_SESSION['ehAdm'] = false;
 		$jaApostou = false;
 		for($i=0; $i<count($boloes); $i++){
 			if($idBolao == $boloes[$i][0]){
 				if($_SESSION['globalUser']->cpf == $boloes[$i][1]){
-					$ehAdm = true;
+					$_SESSION['ehAdm'] = true;
 				}
 				break;
 			}
@@ -118,7 +119,7 @@ class ControllerExibeBolao extends TelaUsuario{
 						<div class = "text-center col-7">'.
 							$jogos[$i][3] . '
 							<input readonly type = "text" name = "ptTime1' . $jogos[$i][0] . '" '; 
-							if($ehAdm == false && $this->dataPassou($jogos[$i][1]) == false){
+							if($_SESSION['ehAdm'] == false && $this->dataPassou($jogos[$i][1]) == false){
 								for($j=0; $j<count($apostas); $j++){
 									if($apostas[$j][0] == $jogos[$i][0]){
 										$jaApostou == true;
@@ -139,23 +140,23 @@ class ControllerExibeBolao extends TelaUsuario{
 							$retorno = $retorno . ' style = "text-align: center; width: 1.8em;">
 							X
 							<input readonly type = "text" name = "ptTime2' . $jogos[$i][0] . '" ';
-							if(($ehAdm == false && $jaApostou == true && $this->dataPassou($jogos[$i][1]) == false) || $ehAdm == true){
+							if(($_SESSION['ehAdm'] == false && $jaApostou == true && $this->dataPassou($jogos[$i][1]) == false) || $_SESSION['ehAdm'] == true){
 								$retorno = $retorno . 'value = "' . $ptTime2 . '"';
 							}
-							$retorno = $retorno . ' style = "text-align: center; width: 1.8em;">. '
+							$retorno = $retorno . ' style = "text-align: center; width: 1.8em;"> '
 							. $jogos[$i][4] .'
 							</div>
 							<div class = "text-right col-2" style = "padding-top: 2.5px;">
 								<i class="text-warning fas fa-coins" style = "font-size: 1em;"></i>'. $jogos[$i][7] . '
 							</div>' . PHP_EOL;
 			$retorno = $retorno . '<div class = "col-1">' . PHP_EOL;
-			if($ehAdm == true && $this->dataPassou($jogos[$i][1])){
+			if($_SESSION['ehAdm'] == true && $this->dataPassou($jogos[$i][1])){
 				$retorno = $retorno . '<button type = "button" title = "Cadastrar Resultados" class = "btn bg-light" style = "padding: 2px;"> <i class="fas fa-clipboard-check text-success" style = "font-size: 1.3em;"></i> </button>' . PHP_EOL;
 			}
-			else if($ehAdm == false && $jaApostou == false && $this->dataPassou($jogos[$i][2]) == false){
+			else if($_SESSION['ehAdm'] == false && $jaApostou == false && $this->dataPassou($jogos[$i][2]) == false){
 				$retorno = $retorno . '<button title = "Apostar" type = "button" class = "btn bg-light" style = "padding: 2px;"> <i class="fas fa-file-invoice-dollar text-success" style = "font-size: 1.3em;"></i> </button>' . PHP_EOL;
 			}
-			else if($ehAdm == false && $jaApostou == true && $apostaFeita->isEditavel() == true){
+			else if($_SESSION['ehAdm'] == false && $jaApostou == true && $apostaFeita->isEditavel() == true){
 				$retorno = $retorno . '<button title = "Editar Aposta" type = "button" class = "btn bg-light" style = "padding: 2px;"> <i class="fas fa-edit  text-info" style = "font-size: 1.1em;"></i> </button>' . PHP_EOL;
 			}
 			$retorno = $retorno . '</div>' . PHP_EOL;
