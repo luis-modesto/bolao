@@ -45,7 +45,7 @@ class ControllerExibeBolao extends TelaUsuario{
 								<h6>' . $boloes[$i][3] . '</h6>
 							</div>
 							<div class = "col-2" style = "padding-top: 8px;">
-								<h6>' . $boloes[i][4] . '</h6>
+								<h6>' . $boloes[$i][4] . '</h6>
 							</div>' . PHP_EOL;
 				if($user->cpf != $boloes[$i][1]){
 					$apostadores = explode(',', $boloes[$i][5]);
@@ -77,7 +77,7 @@ class ControllerExibeBolao extends TelaUsuario{
 				$apostadores = explode(',', $boloes[$i][5]);
 				for($j=0; $j<count($apostadores); $j++){
 					for($k=0; $k<count($usuarios); $k++){
-						if($usurios[$k][0] = $apostadores[$j]){				
+						if($usuarios[$k][0] == $apostadores[$j]){				
 							$retorno = $retorno . '<li class = "bg-light list-group-item">' . $usuarios[$k][6] . PHP_EOL; 
 							if($_SESSION['globalUser']->cpf == $boloes[$i][1]){
 								$retorno = $retorno . '<button title = "Excluir Apostador" type = "button" class = "btn bg-light" style = "padding: 1px;"> <i class="fas fa-user-slash text-danger" style = "font-size: 1em;"></i> </button>' . PHP_EOL;
@@ -104,7 +104,7 @@ class ControllerExibeBolao extends TelaUsuario{
 		$ehAdm = false;
 		$jaApostou = false;
 		for($i=0; $i<count($boloes); $i++){
-			if($idBolaoEscolhido == $boloes[$i][0]){
+			if($idBolao == $boloes[$i][0]){
 				if($_SESSION['globalUser']->cpf == $boloes[$i][1]){
 					$ehAdm = true;
 				}
@@ -143,7 +143,7 @@ class ControllerExibeBolao extends TelaUsuario{
 								$retorno = $retorno . 'value = "' . $ptTime2 . '"';
 							}
 							$retorno = $retorno . ' style = "text-align: center; width: 1.8em;">. '
-							$jogos[$i][4] .'
+							. $jogos[$i][4] .'
 							</div>
 							<div class = "text-right col-2" style = "padding-top: 2.5px;">
 								<i class="text-warning fas fa-coins" style = "font-size: 1em;"></i>'. $jogos[$i][7] . '
