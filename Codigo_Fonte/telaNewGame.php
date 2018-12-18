@@ -85,34 +85,34 @@
 				<div class="resultados shadow">
 					<h6 class="text-center">Novo Jogo</h6>
                         <div class="container-fluid">
-                                <form class="ml-auto" style="text-align: center;" method = "post" action="telaNewGame.php">
-                                    <div class="form-group">
-                                        <label for="timea"> Time A:</label>
-                                        <div class='rightTab'>
-                                            <input type="text" name = "time1" id="time1">
-                                        </div>
-                                        <br>
-                                        <label for="timeb"> Time B:</label>
-                                        <div class='rightTab'>
-                                            <input type="text" name = "time2" id="time2">
-                                        </div>
-                                        <br>
-                                        <label for="aposta">Valor da Aposta: </label>
-                                        <div class='rightTab'>
-                                            <input type="text" name = "aposta" id="aposta">
-										</div>
-										<br>
-										<label for="dataJogo">Data do Jogo: </label>
-                                        <div class='rightTab'>
-                                            <input type="text" name = "dataJogo" id="dataJogo">
-                                        </div>
-										<label for="dataLimite">Data Limite para Editar Aposta: </label>
-                                        <div class='rightTab'>
-                                            <input type="text" name = "dataLimite" id="dataLimite">
-                                        </div>                                        
+                            <form class="ml-auto" style="text-align: center;" method = "post" action="telaNewGame.php">
+                                <div class="form-group">
+                                    <label for="timea"> Time A:</label>
+	                                    <div class='rightTab'>
+	                                        <input type="text" name = "time1" id="time1">
+	                                    </div>
+                                    <br>
+                                    <label for="timeb"> Time B:</label>
+                                    <div class='rightTab'>
+                                        <input type="text" name = "time2" id="time2">
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Criar Jogo</button>
-                                </form>
+                                    <br>
+                                    <label for="aposta">Valor da Aposta: </label>
+                                    <div class='rightTab'>
+                                        <input type="text" name = "aposta" id="aposta">
+									</div>
+									<br>
+									<label for="dataJogo">Data do Jogo: </label>
+                                    <div class='rightTab'>
+                                        <input type="text" name = "dataJogo" id="dataJogo">
+                                    </div>
+									<label for="dataLimite">Data Limite para Editar Aposta: </label>
+                                    <div class='rightTab'>
+                                        <input type="text" name = "dataLimite" id="dataLimite">
+                                    </div>                                        
+                                </div>
+                                <button type="submit" class="btn btn-primary">Criar Jogo</button>
+                            </form>
 				</div>
 			</div>
 		</div>

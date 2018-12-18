@@ -233,14 +233,18 @@ class Apostador extends Usuario{
 				array_push($novasNot, $notificacoes[$i]);
 			}
 		}
+		$remetente - $convite->usuarioRemetente;
 		if($resposta == true){
 			// procurar bolao do convite que recebeu como parametro no arquivo de boloes
 			$boloes = $dg->getData('bolao');
 			for ($i = 0; $i<count($boloes); $i++){
 				if (intval($boloes[$i][0])==$idBolao){
 					$apostadores = explode(',', $boloes[$i][5]);
+					$pontuacoes = explode(',', $boloes[$i][6]);
+					array_push($pontuacoes, '0');
 					array_push($apostadores, $remetente->cpf);
 					$boloes[$i][5] = implode(',', $apostadores);
+					$boloes[$i][6] = implode(',', $pontuacoes);
 					break;
 				}
 			}
@@ -301,8 +305,11 @@ class Apostador extends Usuario{
 			for ($i = 0; $i<count($boloes); $i++){
 				if (intval($boloes[$i][0])==$idBolao){
 					$apostadores = explode(',', $boloes[$i][5]);
+					$pontuacoes = explode(',', $boloes[$i][6]);
+					array_push($pontuacoes, '0');
 					array_push($apostadores, $remetente->cpf);
 					$boloes[$i][5] = implode(',', $apostadores);
+					$boloes[$i][6] = implode(',', $pontuacoes);
 					break;
 				}
 			}

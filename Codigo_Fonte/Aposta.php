@@ -27,10 +27,10 @@ class Aposta {
 		$dialimite = $jogo->limiteEdicaoAposta[0] . $jogo->limiteEdicaoAposta[1]; // dialimite = 01
 		$meslimite = $jogo->limiteEdicaoAposta[3] . $jogo->limiteEdicaoAposta[4]; // meslimite = 03
 		$anolimite = $jogo->limiteEdicaoAposta[6] . $jogo->limiteEdicaoAposta[7] . $jogo->limiteEdicaoAposta[8] . $jogo->limiteEdicaoAposta[9]; //anolimite = 2019
-		$dialimite = intval($dialimite); // transformando as variáveis em inteiros, pois o dia, mes e ano do getDate() vêm em inteiro
+		$dialimite = intval($dialimite); // transformando as variáveis em inteiros
 		$meslimite = intval($meslimite);
 		$anolimite = intval($anolimite);
-		$mes = date("m"); //getMonth retorna o mês atual, entre 1 e 12
+		$mes = date("m"); //date("m") retorna o mês atual, entre 1 e 12
 		$mes = intval($mes);
 		if((intval(date("Y"))) > $anolimite){ // se ano atual tiver ultrapassado ano da data limite
 			return false; // não é possível editar 
