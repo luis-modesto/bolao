@@ -79,7 +79,7 @@ class ControllerExibeBolao extends TelaUsuario{
 					for($k=0; $k<count($usuarios); $k++){
 						if($usurios[$k][0] = $apostadores[$j]){				
 							$retorno = $retorno . '<li class = "bg-light list-group-item">' . $usuarios[$k][6] . PHP_EOL; 
-							if($_SESSION['globalUser']->cpf == $boloes[$i][1]{
+							if($_SESSION['globalUser']->cpf == $boloes[$i][1]){
 								$retorno = $retorno . '<button title = "Excluir Apostador" type = "button" class = "btn bg-light" style = "padding: 1px;"> <i class="fas fa-user-slash text-danger" style = "font-size: 1em;"></i> </button>' . PHP_EOL;
 							}
 							$retorno = $retorno . '</li>' . PHP_EOL;
@@ -92,6 +92,7 @@ class ControllerExibeBolao extends TelaUsuario{
 		}
 		return $retorno;
 	}
+
 	function exibirJogosBolao(){
 		$idBolao = $_SESSION['idBolaoEscolhido'];
 		// recupera informaçoes do bolao
@@ -161,6 +162,7 @@ class ControllerExibeBolao extends TelaUsuario{
 		}
 		return $retorno;
 	}
+
 	function dataPassou($dataJogo){
 		// a data do jogo vem no formato DD/MM/YYYY, por exemplo, 01/03/2019
 		$diaJogo = $dataJogo[0] . $dataJogo[1];
