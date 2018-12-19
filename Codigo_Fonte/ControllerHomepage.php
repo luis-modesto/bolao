@@ -106,7 +106,16 @@ class ControllerHomepage extends TelaUsuario{
 				for ($j=0; $j<count($boloes); $j++){
 					if($meusboloes[$i][1]==$boloes[$j][0]){
 						$retorno = $retorno.'<li class="list-group-item" id = "'.$boloes[$j][0]. '"onclick = "pegarIdBolao('.$boloes[$j][0].')">
-							<h6>'.$boloes[$j][2].'</h6>
+							<div class="row">
+								<div class="col-11">
+									<h6>'.$boloes[$j][2].'</h6>
+								</div>'.PHP_EOL;
+						if ($user->cpf==$boloes[$j][1]){
+							$retorno = $retorno . '<div class="col-1">
+									<i class="text-warning fas fa-star"></i>
+								</div>'.PHP_EOL;
+						}
+							$retorno = $retorno . '</div>
 							<div class="row">
 								<div class="col-7">
 									Campeonato: '.$boloes[$j][3].'
