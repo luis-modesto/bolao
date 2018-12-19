@@ -14,7 +14,7 @@
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 	</head>
 
-<body style = "background-image: url('stadium2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center;">
+<body style = "background-image: url('stadium2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: 0% 30%;">
 <?php
 	    	require_once "./TelaUsuario.php";
 	    	require_once "./ControllerHomepage.php";
@@ -98,14 +98,14 @@
 						<div class="row mt-2">
 							<div class="col-3">
 								<form style ="text-align: left;" method = "post" action = "./telaHomepage.php">
-									<input type = "hidden" name = "bolaoEscolhido" id = "bolaoEscolhido"> 
-									<button disabled type = "submit" class = "btn btn-success" id = "exibir"> Exibir Bolão </button>
+									<input type = "hidden" value = "-1" name = "bolaoEscolhido" id = "bolaoEscolhido"> 
+									<button disabled type = "submit" class = "btn btn-success" id = "exibir" style = "display: none;"> Exibir Bolão </button>
 								</form>
 							</div>
 							<div class="col-2 offset-7">
 								<form method = "post" action="telaHomepage.php">
 									<input type = "hidden" name = "bolaoParticipar" id = "bolaoParticipar"> 
-									<button style="position: relative; right: 26px;"disabled type="submit" class="btn btn-success" id = "participar">Participar</button>
+									<button style="position: relative; right: 26px;" disabled type="submit" class="btn btn-success" id = "participar">Participar</button>
 								</form>
 							</div>
 						</div>
@@ -115,13 +115,18 @@
 		</div>
 		<script type = "text/javascript">
 			function pegarIdBolao(idEscolhido){
-				document.getElementById('exibir').disabled = false;
 				document.getElementById('participar').disabled = false;
-				document.getElementById('bolaoEscolhido').value = idEscolhido; 
+				document.getElementById('exibir').disabled = false;
+				document.getElementById(String(idEscolhido)).style.backgroundColor = "#00FA9A";
+				if(document.getElementById('bolaoEscolhido').value != -1 && document.getElementById('bolaoEscolhido').value != idEscolhido){
+					document.getElementById(String(document.getElementById('bolaoEscolhido').value)).style.backgroundColor = "white";
+				}
+				document.getElementById('bolaoEscolhido').value = idEscolhido;
 				document.getElementById('bolaoParticipar').value = idEscolhido; 
 			}
 
 			function exibirMeusBoloes(){
+				document.getElementById('exibir').style.display = "block";
 				document.getElementById('titulo-lista-boloes').innerHTML = "Meus Bolões";
 				document.getElementById('lista-boloes').style.display = "none";
 				document.getElementById('participar').style.display = "none";

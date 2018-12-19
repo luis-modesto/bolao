@@ -13,7 +13,7 @@
 
 </head>
 
-<body style = "background-image: url('stadium2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center;">
+<body style = "background-image: url('stadium2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: 0% 30%;">
 <?php
     	require_once "./TelaUsuario.php";
 		require_once "./ControllerCriaJogo.php";
@@ -24,7 +24,7 @@
 
 		$telaJogo = new ControllerCriaJogo();
 		if(isset($_POST['dataJogo']) && isset($_POST['dataLimite']) && isset($_POST['time1']) && isset($_POST['time2']) && isset($_POST['aposta'])){
-			if($_POST['dataJogo'] != '//' && $_POST['dataLimite'] != '//' && $_POST['time1'] != '' && $_POST['time2'] != '' && $_POST['aposta'] != ''){
+			if($_POST['dataJogo'] != '' && $_POST['dataLimite'] != '' && $_POST['time1'] != '' && $_POST['time2'] != '' && $_POST['aposta'] != ''){
 				$dataJogo = $_POST['dataJogo'];
 				$dataLimite = $_POST['dataLimite'];
 				$time1 = $_POST['time1'];
@@ -32,6 +32,9 @@
 				$aposta = $_POST['aposta'];
 				$telaJogo->confirmarCriacaoJogo($dataJogo, $dataLimite, $time1, $time2, $aposta);
 				header('Location: ./telaBolao.php');
+			}
+			else if(strlen($_POST['dataJogo']) != 10 || strlen($_POST['dataLimite']) != 10){
+				$_SESSION['message'] = "Insira as datas no formato DD/MM/AAAA.";				
 			}
 			else{
 				$_SESSION['message'] = "Insira todas as informações do jogo.";
@@ -68,10 +71,9 @@
 
 		}
 ?>
-    <div class = "mt-5 container" style = "max-width: 900px; background-color: #f0f0f0; position: relative; bottom: -50px;">
+    <div class = "mt-5 container" style = "max-height: 150em; max-width: 900px; background: none; position: relative; padding-top: 20px;">
 		<div class="resultados shadow">
 			<?php
-				session_start();
 				if(isset($_SESSION['message'])){
 					echo '<div class = "container-fluid" style = "background-color: none;"> <div class = "text-center alert alert-danger" > <strong> ' . $_SESSION['message'] . '</strong> </div> </div>';
 					unset($_SESSION['message']);
@@ -123,6 +125,7 @@
 
 	<script type = "text/javascript">
     	$("#dataJogo, #dataLimite").mask("00/00/0000");		
+    	$("#aposta").mask("00000");
 	</script>
 </body>
 

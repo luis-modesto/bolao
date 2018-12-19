@@ -13,7 +13,7 @@
 	<link rel="stylesheet" type="text/css" href="./estilo.css">
 </head>
 
-<body style = "background-image: url('stadium2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center;">
+<body style = "background-image: url('stadium2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center; background-position: 0% 30%;">
 	<div class="mt-5 container" style =	"background-color: #f0f0f0; opacity: 0.9; position: relative; bottom: -40px; max-width: 500px; border-style: solid; border-radius: 7px; border-color: #C0C0C0;">
 		<h1>Bolão</h1>
 		<?php

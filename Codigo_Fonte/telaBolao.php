@@ -96,19 +96,13 @@
 					</div>
 				</div>
 			</div>
-			<div class = "col-3 mt-5">
-				<div class = "resultados shadow">
-					<ul class = "list-group">
-						<h6 class = "text-center"> Apostadores </h6>
-							<?php
-								require_once "./ControllerExibeBolao.php";
+			<?php
+				require_once "./ControllerExibeBolao.php";
 
-								$apostadoresBolao = new ControllerExibeBolao();
-								echo $apostadoresBolao->exibirApostadoresBolao();
-							?>
-					</ul>
-				</div>
-			</div>
+				$apostadoresBolao = new ControllerExibeBolao();
+				echo $apostadoresBolao->exibirApostadoresBolao();
+			?>
+
 		</div>
 	</div>
 		<script type="text/javascript" src="./TelaUsuario.js"></script>

@@ -75,6 +75,21 @@ class ControllerExibeBolao extends TelaUsuario{
 		$retorno = "";
 		for ($i = 0; $i<count($boloes); $i++){
 			if (intval($boloes[$i][0])==intval($idBolao)){
+				for($x=0; $x<count($usuarios); $x++){
+					if($usuarios[$x][0] == $boloes[$i][1]){
+						$usernameAdm = $usuarios[$x][6];
+						break;
+					}
+				}				
+				$retorno = $retorno . '<div class = "col-3 mt-5">
+								<div class = "resultados shadow">
+								<ul class = "list-group">
+								<h6 class = "text-center"> Administrador do Bolão</h6>
+								<li class = "bg-light list-group-item">' . $usernameAdm . '</li>
+								</ul>
+								<hr style = "border: 0.3px solid;">';
+				$retorno = $retorno . '<ul class = "list-group">
+								<h6 class = "text-center"> Apostadores </h6>';								 
 				$apostadores = explode(',', $boloes[$i][5]);
 				for($j=0; $j<count($apostadores); $j++){
 					for($k=0; $k<count($usuarios); $k++){
@@ -88,6 +103,9 @@ class ControllerExibeBolao extends TelaUsuario{
 						}
 					}
 				}
+				$retorno = $retorno . '</ul>
+									</div>
+								</div>';
 				break;
 			}
 		}
@@ -113,10 +131,10 @@ class ControllerExibeBolao extends TelaUsuario{
 			}
 		}
 		for ($i = 0; $i<count($jogos); $i++){
-			$retorno = 	$retorno . '<div class = "col-2" style = "padding-top: 2.5px;">'. 
+			$retorno = 	$retorno . '<div class = "mb-1 col-2" style = "padding-top: 2.5px;">'. 
 							$jogos[$i][1] .'
 						</div>
-						<div class = "text-center col-7">'.
+						<div class = "mb-1 text-center col-7">'.
 							$jogos[$i][3] . '
 							<input readonly type = "text" name = "ptTime1' . $jogos[$i][0] . '" '; 
 							if($_SESSION['ehAdm'] == false && $this->dataPassou($jogos[$i][1]) == false){
@@ -132,7 +150,7 @@ class ControllerExibeBolao extends TelaUsuario{
 									}				
 								}								
 							}
-							else{
+							else if($_SESSION['ehAdm'] == true || $this->dataPassou($jogos[$i][1]) == true){
 								$ptTime1 = $jogos[$i][5];
 								$ptTime2 = $jogos[$i][6];
 								$retorno = $retorno . 'value = "' . $ptTime1 . '"';								
@@ -140,13 +158,13 @@ class ControllerExibeBolao extends TelaUsuario{
 							$retorno = $retorno . ' style = "text-align: center; width: 1.8em;">
 							X
 							<input readonly type = "text" name = "ptTime2' . $jogos[$i][0] . '" ';
-							if(($_SESSION['ehAdm'] == false && $jaApostou == true && $this->dataPassou($jogos[$i][1]) == false) || $_SESSION['ehAdm'] == true){
+							if(($_SESSION['ehAdm'] == false && $jaApostou == true && $this->dataPassou($jogos[$i][1]) == false) || ($_SESSION['ehAdm'] == true) || $this->dataPassou($jogos[$i][1]) == true){
 								$retorno = $retorno . 'value = "' . $ptTime2 . '"';
 							}
 							$retorno = $retorno . ' style = "text-align: center; width: 1.8em;"> '
 							. $jogos[$i][4] .'
 							</div>
-							<div class = "text-right col-2" style = "padding-top: 2.5px;">
+							<div class = "mb-1 text-right col-2" style = "padding-top: 2.5px;">
 								<i class="text-warning fas fa-coins" style = "font-size: 1em;"></i>'. $jogos[$i][7] . '
 							</div>' . PHP_EOL;
 			$retorno = $retorno . '<div class = "col-1">' . PHP_EOL;

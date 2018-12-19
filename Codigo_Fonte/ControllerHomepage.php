@@ -72,7 +72,7 @@ class ControllerHomepage extends TelaUsuario{
 							$adm = $users[$j][2];
 						}
 					}
-					$retorno = $retorno.'<li class="list-group-item" onclick = "pegarIdBolao('.$boloes[$i][0].')">
+					$retorno = $retorno.'<li class="list-group-item" id = "'. $boloes[$i][0]. '"onclick = "pegarIdBolao('.$boloes[$i][0].')">
 						<h6>'.$boloes[$i][2].'</h6>
 						<div class="row">
 							<div class="col-12">
@@ -105,7 +105,7 @@ class ControllerHomepage extends TelaUsuario{
 			if ($meusboloes[$i][0]=="ativo"){
 				for ($j=0; $j<count($boloes); $j++){
 					if($meusboloes[$i][1]==$boloes[$j][0]){
-						$retorno = $retorno.'<li class="list-group-item" onclick = "pegarIdBolao('.$boloes[$j][0].')">
+						$retorno = $retorno.'<li class="list-group-item" id = "'.$boloes[$j][0]. '"onclick = "pegarIdBolao('.$boloes[$j][0].')">
 							<h6>'.$boloes[$j][2].'</h6>
 							<div class="row">
 								<div class="col-7">
