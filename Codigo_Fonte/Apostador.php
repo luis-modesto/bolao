@@ -290,15 +290,7 @@ class Apostador extends Usuario{
 				array_push($novasSoli, $solicitacoesF[$i]);
 			}
 		}
-		for ($i = 0; $i<count($this->solicitacoes); $i++){
-			$s = $this->solicitacoes[$i];
-			$bol = $s->bolao;
-			if ($idBolao==$bol->id){
-				$pos = $i;
-				break;
-			}
-		}
-		unset($this->solicitacoes[$pos]);
+		
 		if($resposta == true){
 			// procurar bolao da solicitacao que recebeu como parametro no arquivo de boloes
 			$boloes = $dg->getData('bolao');
