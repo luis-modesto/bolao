@@ -178,29 +178,30 @@ class Apostador extends Usuario{
 		$dg->appendData('apostas_' . $this->cpf, $aposta);
 		//desconta saldo
 		$this->saldo -= $jogo->valorAposta;
+		$users = $dg->getData('usuarios');
+		for($i=0; $i<count($users); $i++){
+			if($users[$i][0] == $this->cpf){
+				$users[$i][4] = $this->saldo;
+			}
+		}
+		$dg->setData('usuarios', $users);
 	}
 
 
 	/**
 	*Edita uma aposta ja existente - caso ainda essa aposta ainda esteja editavel - dada qual aposta se deseja editar e com qual placar a aposta deve ser atualizada
 	*/
-	function editarAposta($aposta, $novoPlacar) {
+	function editarAposta($jogo, $novoPlacar) {
 		$dg = DataGetter::getInstance();
-		if($aposta->isEditavel == true){
-			// procurar aposta no arquivo apostas_cpfuser
-			$matrizApostas = $dg->getData('apostas_' . $this->cpf);
-			for ($i = 0; $i<count($matrizApostas); $i++){
-				if (intval($matrizApostas[$i][0])==$aposta->idJogo){
-					$matrizApostas[$i][1] = $novoPlacar->pontosTime1;
-					$matrizApostas[$i][2] = $novoPlacar->pontosTime2;
-					break;
-				}
+		$apostas = $dg->getData('apostas_' . $this->cpf);
+		for($j=0; $j<count($apostas); $j++){
+			if($apostas[$j][0] == $jogo->id){
+				$apostas[$j][1] = $novoPlacar->pontosTime1;
+				$apostas[$j][2] = $novoPlacar->pontosTime2;				
+				break;
 			}
-			// escreve no arquivo apostas_cpfuser
-			$dg->setData('apostas_' . $this->cpf, $matrizApostas);
-			return true;
 		}
-		return false;
+		$dg->setData('apostas_' . $this->cpf, $apostas);
 	}
 
 
@@ -314,6 +315,7 @@ class Apostador extends Usuario{
 	}
 
 
+
 	/**
 	*Exclui um Apostador especifico da lista de Apostadores de um dado bolao cujo Apostador que chama essa funcao eh administrador. Exclui registros desse bolao da lista de boloes que o Apostador excluido participa
 	*/
@@ -369,29 +371,29 @@ class Apostador extends Usuario{
 	/**
 	*Registra o resultado de um jogo dado, pertencente a um bolao especifico do qual o Apostador que chama essa funcao eh administrador
 	*/
-	function cadastrarResultados($placar, $jogo, $bolao) {
+	function cadastrarResultados($placar, $jogo, $idBolao) {
 		$dg = DataGetter::getInstance();
 		$jogo->resultado = $placar;
-		$jogos = $dg->getData('jogos_' . $bolao);
+		$jogos = $dg->getData('jogos_' . $idBolao);
 		for ($i = 0; $i<count($jogos); $i++){
 			if (intval($jogos[$i][0])==$jogo->id){
 				$p = $jogo->resultado;
-				$jogoVetor = [8];
-				$jogoVetor[0] = $jogo->id;
-				$jogoVetor[1] = $jogo->data;
-				$jogoVetor[2] = $jogo->limiteEdicaoAposta;
-				$jogoVetor[3] = $jogo->time1;
-				$jogoVetor[4] = $jogo->time2;
-				$jogoVetor[5] = $p->pontosTime1;
-				$jogoVetor[6] = $p->pontosTime2;
-				$jogoVetor[7] = $jogo->valorAposta;
-
+				$jogoVetor = array();
+				array_push($jogoVetor, $jogo->id);
+				array_push($jogoVetor, $jogo->data);
+				array_push($jogoVetor, $jogo->limiteEdicaoAposta);
+				array_push($jogoVetor, $jogo->time1);
+				array_push($jogoVetor, $jogo->time2);
+				array_push($jogoVetor, $p->pontosTime1);
+				array_push($jogoVetor, $p->pontosTime2);
+				array_push($jogoVetor, $jogo->valorAposta);
+				array_push($jogoVetor, ';');
 				$jogos[$i] = $jogoVetor;
 				break;
 			}
 		}
 		// escreve no arquivo jogos_idBolao
-		$dg->setData('jogos_' . $bolao, $jogos);
+		$dg->setData('jogos_' . $idBolao, $jogos);
 	}
 
 	/**
