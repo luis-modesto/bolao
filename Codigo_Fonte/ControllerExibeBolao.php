@@ -4,6 +4,7 @@ require_once "./Apostador.php";
 require_once "./Aposta.php";
 require_once "./TelaUsuario.php";
 require_once "./Placar.php";
+require_once "./Bolao.php";
 
 class ControllerExibeBolao extends TelaUsuario{
 	function confirmarAposta($ptTime1,$ptTime2, $jogo){
@@ -29,7 +30,17 @@ class ControllerExibeBolao extends TelaUsuario{
 	function confirmarResultado($ptTime1, $ptTime2, $jogo, $idBolao){
 		$user = $_SESSION['globalUser'];
 		$placar = new Placar($ptTime1, $ptTime2);
+		$dg = DataGetter::getInstance();
+		$boloes = $dg->getData('bolao');
+		//$jogo->resultado = $placar;
+		for($j=0; $j<count($boloes); $j++){
+			if($boloes[$j][0] == $idBolao){
+				$bolao = new Bolao($boloes[$j][0], $boloes[$j][2], $boloes[$j][3], $boloes[$j][4], array(),$boloes[$j][1], explode(',', $boloes[$j][5]), explode(',', $boloes[$j][6]), intval($boloes[$j][7]), intval($boloes[$j][8]), intval($boloes[$j][9]), intval($boloes[$j][10]));
+				break;
+			}
+		}
 		$user->cadastrarResultados($placar, $jogo, $idBolao); //placar vai vir de um form, o jogo é o que foi selecionado 
+		$bolao->distribuirPontos($jogo);
 	}
 	function exibirInfosBolao(){
 		$idBolao = $_SESSION['idBolaoEscolhido'];
@@ -40,6 +51,7 @@ class ControllerExibeBolao extends TelaUsuario{
 		for ($i = 0; $i<count($boloes); $i++){
 			if (intval($boloes[$i][0])==intval($idBolao)){
 				$_SESSION['nomeBolao'] = $boloes[$i][2];
+				$_SESSION['estadoBolao'] = $boloes[$i][10];
 				$user = $_SESSION['globalUser'];
 				$retorno = '<div class = "col-4">
 								<h4 class="text-left ml-2">'. $boloes[$i][2] . '</h4>
@@ -61,8 +73,21 @@ class ControllerExibeBolao extends TelaUsuario{
 					}					
 					$retorno = $retorno . '<div class = "col-3" style = "padding-top: 8px;">
 						<h6> Pontuação: '. $pontuacaoUser . '</h6>
-					</div>'. PHP_EOL;
+					</div>';
 				}
+				else{
+					$retorno = $retorno . '<div class = "text-center col-3"> 
+							<button title = "Convidar Apostadores" type = "button" class = "btn" style="padding-top: 7px; background-color: rgba(200, 200, 200);"> <i class="fas fa-envelope" style = "color: #e63900; font-size: 1.4em"></i> </button>
+						</div>';
+				}
+				$retorno = $retorno . '</div> <div class = "row"> <div class = "text-';
+				if($boloes[$i][10] == 1){
+					$retorno = $retorno . 'primary col-10"> <strong> Ativo até: ' . $boloes[$i][11] . '</strong> </div> 
+					</div>' . PHP_EOL;
+				}
+				else{
+					$retorno = $retorno . 'danger ml-2 col-12"> <strong> Ativo até: ' . $boloes[$i][11] . '</strong> </div> </div>' . PHP_EOL;
+				}				
 				break;
 			}
 		}
@@ -93,14 +118,19 @@ class ControllerExibeBolao extends TelaUsuario{
 				$retorno = $retorno . '<ul class = "list-group">
 								<h6 class = "text-center"> Apostadores </h6>';								 
 				$apostadores = explode(',', $boloes[$i][5]);
-				for($j=0; $j<count($apostadores); $j++){
+				$pontuacoes = explode(',', $boloes[$i][6]);
+				for($j=1; $j<count($apostadores); $j++){
 					for($k=0; $k<count($usuarios); $k++){
 						if($usuarios[$k][0] == $apostadores[$j]){				
-							$retorno = $retorno . '<li class = "bg-light list-group-item">' . $usuarios[$k][6] . PHP_EOL; 
-							if($_SESSION['globalUser']->cpf == $boloes[$i][1]){
+							$retorno = $retorno . '<li class = "bg-light list-group-item"';
+							if($j == 1){
+								$retorno = $retorno . ' style = "border: 2.5px solid #D4AF37;"';
+							}
+							$retorno = $retorno . '><div class = "row"> <div class = "col-7"> ' . $usuarios[$k][6] . '</div> <div class = "text-left col-3">'. $pontuacoes[$j] . '</div>' . PHP_EOL; 
+							if($_SESSION['globalUser']->cpf == $boloes[$i][1] && $_SESSION['estadoBolao'] == 1){
 								$retorno = $retorno . '<button title = "Excluir Apostador" type = "button" class = "btn bg-light" style = "padding: 1px;"> <i class="fas fa-user-slash text-danger" style = "font-size: 1em;"></i> </button>' . PHP_EOL;
 							}
-							$retorno = $retorno . '</li>' . PHP_EOL;
+							$retorno = $retorno . '</div> </li>' . PHP_EOL;
 							break;
 						}
 					}
@@ -135,6 +165,7 @@ class ControllerExibeBolao extends TelaUsuario{
 			}
 		}
 		for ($i = 0; $i<count($jogos); $i++){
+			$jaTemResultado = false;
 			$jogoBolao = new Jogo($jogos[$i][0], $jogos[$i][1], $jogos[$i][2], $jogos[$i][3], $jogos[$i][4], '', $jogos[$i][7]);
 			array_push($_SESSION['jogosBolao'], $jogoBolao);
 			$retorno = 	$retorno . '<div class = "mb-1 col-2" style = "padding-top: 2.5px;">'. 
@@ -192,26 +223,6 @@ class ControllerExibeBolao extends TelaUsuario{
 			$retorno = $retorno . '</div>' . PHP_EOL;
 		}
 		return $retorno;
-	}
-
-	function dataPassou($dataJogo){
-		// a data do jogo vem no formato DD/MM/YYYY, por exemplo, 01/03/2019
-		$diaJogo = $dataJogo[0] . $dataJogo[1];
-		$mesJogo = $dataJogo[3] . $dataJogo[4];
-		$anoJogo = $dataJogo[6] . $dataJogo[7] . $dataJogo[8] . $dataJogo[9];
-		$diaJogo = intval($diaJogo); // transformando as variáveis em inteiros
-		$mesJogo = intval($mesJogo);
-		$anoJogo = intval($anoJogo);
-		if(intval(date("Y")) > $anoJogo){ // 
-			return true;  
-		}
-		if(intval(date("m")) > $mesJogo && intval(date("Y")) == $anoJogo){
-			return true; 
-		}
-		if(intval(date("d")) > $diaJogo  && intval(date("m")) >= $mesJogo  && intval(date("Y")) == $anoJogo){
-			return true; 
-		}
-		return false;
 	}	
 }
 ?>

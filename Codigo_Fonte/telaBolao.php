@@ -81,7 +81,6 @@
 							$infosBolao = new ControllerExibeBolao();
 							echo $infosBolao->exibirInfosBolao();
 						?>
-					</div>
 					<h5 class = "mt-3 text-center"> Jogos </h5>
 					<form method = "post" action = "./telaBolao.php">
 					<ul class = "list-group">
@@ -102,7 +101,7 @@
 					</form>
 						<div class = "text-right offset-7 col-2">
 							<?php
-								if($_SESSION['ehAdm'] == true){
+								if($_SESSION['ehAdm'] == true && $_SESSION['estadoBolao'] == 1){
 								echo '<form style="text-align: left;" action="./telaNewGame.php">
 										<button class="mt-2 btn btn-info" id = "criarJogo" style="padding-right: 5px;">Criar Jogo</button>
 									</form>';

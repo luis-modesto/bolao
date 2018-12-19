@@ -33,9 +33,6 @@
 				$telaJogo->confirmarCriacaoJogo($dataJogo, $dataLimite, $time1, $time2, $aposta);
 				header('Location: ./telaBolao.php');
 			}
-			else if(strlen($_POST['dataJogo']) != 10 || strlen($_POST['dataLimite']) != 10){
-				$_SESSION['message'] = "Insira as datas no formato DD/MM/AAAA.";				
-			}
 			else{
 				$_SESSION['message'] = "Insira todas as informações do jogo.";
 			}

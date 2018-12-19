@@ -123,6 +123,26 @@ class TelaUsuario{
 		$_SESSION["globalUser"] = $user;
 		session_unset();
 	}
+
+	function dataPassou($dataJogo){
+		// a data do jogo vem no formato DD/MM/YYYY, por exemplo, 01/03/2019
+		$diaJogo = $dataJogo[0] . $dataJogo[1];
+		$mesJogo = $dataJogo[3] . $dataJogo[4];
+		$anoJogo = $dataJogo[6] . $dataJogo[7] . $dataJogo[8] . $dataJogo[9];
+		$diaJogo = intval($diaJogo); // transformando as variáveis em inteiros
+		$mesJogo = intval($mesJogo);
+		$anoJogo = intval($anoJogo);
+		if(intval(date("Y")) > $anoJogo){ // 
+			return true;  
+		}
+		if(intval(date("m")) > $mesJogo && intval(date("Y")) == $anoJogo){
+			return true; 
+		}
+		if(intval(date("d")) > $diaJogo  && intval(date("m")) >= $mesJogo  && intval(date("Y")) == $anoJogo){
+			return true; 
+		}
+		return false;
+	}	
 }
 
 ?>

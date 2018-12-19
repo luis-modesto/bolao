@@ -72,8 +72,15 @@ class ControllerHomepage extends TelaUsuario{
 							$adm = $users[$j][2];
 						}
 					}
-					$retorno = $retorno.'<li class="list-group-item" id = "'. $boloes[$i][0]. '"onclick = "pegarIdBolao('.$boloes[$i][0].')">
+					$retorno = $retorno.'<li class="list-group-item" id = "'. $boloes[$i][0]. '"onclick = "pegarIdBolao('.$boloes[$i][0].')"> 
+					<div class = "row">
+						<div class = "col-7">
 						<h6>'.$boloes[$i][2].'</h6>
+						</div>
+						<div class = "text-primary col-5">
+						Ativo até: ' . $boloes[$i][11] . '
+						</div>
+					</div>
 						<div class="row">
 							<div class="col-12">
 								Adm: '.$adm.'
@@ -105,10 +112,13 @@ class ControllerHomepage extends TelaUsuario{
 			if ($meusboloes[$i][0]=="ativo"){
 				for ($j=0; $j<count($boloes); $j++){
 					if($meusboloes[$i][1]==$boloes[$j][0]){
-						$retorno = $retorno.'<li class="list-group-item" id = "'.$boloes[$j][0]. '"onclick = "pegarIdBolao('.$boloes[$j][0].')">
+						$retorno = $retorno.'<li class="list-group-item" id = "'.$boloes[$j][0]. '"onclick = "pegarIdBolao('.$boloes[$j][0].', 1)">
 							<div class="row">
-								<div class="col-11">
+								<div class="col-6">
 									<h6>'.$boloes[$j][2].'</h6>
+								</div> 
+								<div class = "text-primary col-5">
+									Ativo até: ' . $boloes[$j][11] . '
 								</div>'.PHP_EOL;
 						if ($user->cpf==$boloes[$j][1]){
 							$retorno = $retorno . '<div class="col-1">
@@ -134,9 +144,21 @@ class ControllerHomepage extends TelaUsuario{
 			if ($meusboloes[$i][0]!="ativo"){
 				for ($j=0; $j<count($boloes); $j++){
 					if($meusboloes[$i][1]==$boloes[$j][0]){
-						$retorno = $retorno.'<li class="list-group-item list-group-item-secondary" onclick = "pegarIdBolao('.$boloes[$j][0].')">
-							<h6>'.$boloes[$j][2].'</h6>
+						$retorno = $retorno.'<li class="list-group-item list-group-item-secondary" id = "'.$boloes[$j][0]. '" onclick = "pegarIdBolao('.$boloes[$j][0].', 0)">
 							<div class="row">
+								<div class="col-6">
+									<h6>'.$boloes[$j][2].'</h6>
+								</div> 
+								<div class = "text-danger col-5">
+									Ativo até: ' . $boloes[$j][11] . '
+								</div>'.PHP_EOL;
+							if ($user->cpf==$boloes[$j][1]){
+								$retorno = $retorno . '<div class="col-1">
+										<i class="text-warning fas fa-star"></i>
+									</div>'.PHP_EOL;
+							}
+							$retorno = $retorno . '</div> 
+								<div class="row">
 								<div class="col-7">
 									Campeonato: '.$boloes[$j][3].'
 								</div>

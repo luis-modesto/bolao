@@ -146,9 +146,9 @@ class Apostador extends Usuario{
 	/**
 	*Instancia e registra um novo bolao, do qual o Apostador que chama a funcao sera administrador
 	*/
-	function criarBolao($bolao) {
+	function criarBolao($bolao, $dataFinalizacao) {
 		$dg = DataGetter::getInstance();
-		$novoBolao = $bolao->id . ';' . $this->cpf . ';' . $bolao->nome . ';' . $bolao->campeonato . ';' . $bolao->esporte . ';'; 
+		$novoBolao = $bolao->id . ';' . $this->cpf . ';' . $bolao->nome . ';' . $bolao->campeonato . ';' . $bolao->esporte . ';' . $dataFinalizacao . ';'; 
 		for ($i = 0; $i<count($bolao->apostadores); $i++){
 			$novoBolao = $novoBolao . $bolao->apostadores[$i] . ',';
 		}
@@ -178,6 +178,21 @@ class Apostador extends Usuario{
 		$dg->appendData('apostas_' . $this->cpf, $aposta);
 		//desconta saldo
 		$this->saldo -= $jogo->valorAposta;
+		for($i=0; $i<count($this->boloesParticipa); $i++){
+			$bolao = $this->boloesParticipa;
+			if($bolao->id == $_SESSION['idBolaoEscolhido']){
+				$bolao->premio += $jogo->valorAposta;
+				break;
+			}
+		}
+		$boloes = $dg->getData('bolao');
+		for($i=0; $i<count($boloes); $i++){
+			if($boloes[$i][0] == $bolao->id){
+				$boloes[$i][9] = $bolao->premio;
+				$dg->setData('bolao', $boloes);
+				break;
+			}
+		}
 		$users = $dg->getData('usuarios');
 		for($i=0; $i<count($users); $i++){
 			if($users[$i][0] == $this->cpf){

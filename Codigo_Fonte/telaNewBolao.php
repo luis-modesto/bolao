@@ -22,14 +22,20 @@
         echo $tela->exibirNavBar('telaNewBolao');
         
         $telaBolao = new ControllerCriaBolao();
-        if(isset($_POST['nome']) && isset($_POST['campeonato']) && isset($_POST['esporte']) && isset($_POST['pontosPlacar']) && isset($_POST['pontosVencedor'])){
-            $nome = $_POST['nome'];
-            $campeonato = $_POST['campeonato'];
-            $esporte = $_POST['esporte'];
-            $pontosPlacar = $_POST['pontosPlacar'];
-            $pontosVencedor = $_POST['pontosVencedor'];     
-            $telaBolao->confirmarCriacaoBolao($nome, $campeonato, $esporte, $pontosPlacar, $pontosVencedor);
-            header('Location: ./telaBolao.php');
+        if(isset($_POST['nome']) && isset($_POST['campeonato']) && isset($_POST['esporte']) && isset($_POST['pontosPlacar']) && isset($_POST['pontosVencedor']) && isset($_POST['dataFinalizacao'])){
+            if($_POST['nome'] != '' && $_POST['campeonato'] != '' && $_POST['esporte'] != '' && $_POST['pontosPlacar'] != '' && $_POST['pontosVencedor'] != '' && $_POST['dataFinalizacao'] != ''){
+                $nome = $_POST['nome'];
+                $campeonato = $_POST['campeonato'];
+                $esporte = $_POST['esporte'];
+                $pontosPlacar = $_POST['pontosPlacar'];
+                $pontosVencedor = $_POST['pontosVencedor']; 
+                $dataFinalizacao = $_POST['dataFinalizacao'];
+                $telaBolao->confirmarCriacaoBolao($nome, $campeonato, $esporte, $pontosPlacar, $pontosVencedor);
+                header('Location: ./telaBolao.php');
+            }   
+            else{
+                $_SESSION['message'] = "Insira todas as informações necessárias.";
+            }
         }
         else if(isset($_POST['sair'])){
             $telaBolao->sair();
@@ -65,6 +71,12 @@
         <div class="row">
     			<div class="my-4 col-6 offset-3">
     				<div class="resultados shadow">
+                        <?php
+                            if(isset($_SESSION['message'])){
+                                echo '<div class = "container-fluid" style = "background-color: none;"> <div class = "text-center alert alert-danger" > <strong> ' . $_SESSION['message'] . '</strong> </div> </div>';
+                                unset($_SESSION['message']);
+                            }
+                        ?>                        
     					<h6 class="text-center">Novo Bolão</h6>
                         <div class="container-fluid">
                                 <form class="ml-auto" style="text-align: center;" method = "post" action="telaNewBolao.php">
@@ -93,6 +105,11 @@
                                         <div class='rightTab'>
                                             <input type="text" name = "pontosVencedor" id="pontosVencedor">
                                         </div>
+                                        <br>
+                                        <label for="dataFinalizacao">Data de Finalização:</label>
+                                        <div class='rightTab'>
+                                            <input type="text" name = "dataFinalizacao" id="dataFinalizacao">
+                                        </div>                                        
                                     </div>
                                     <button type="submit" class="btn btn-success">Criar Bolão</button>
                                 </form>
@@ -101,10 +118,16 @@
     			</div>
     	</div>
     </div>
-        <script type="text/javascript" src="./TelaUsuario.js"></script>
-     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="./TelaUsuario.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script> 
+
+    <script type = "text/javascript">
+        $("#dataFinalizacao").mask("00/00/0000");     
+    </script>        
 </body>
 
 </html>

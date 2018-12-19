@@ -126,12 +126,26 @@
 			</div>
 		</div>
 		<script type = "text/javascript">
-			function pegarIdBolao(idEscolhido){
+
+			let bolaoAnterior;
+
+			function pegarIdBolao(idEscolhido, ativo){
 				document.getElementById('participar').disabled = false;
 				document.getElementById('exibir').disabled = false;
 				document.getElementById(String(idEscolhido)).style.backgroundColor = "#00FA9A";
 				if(document.getElementById('bolaoEscolhido').value != -1 && document.getElementById('bolaoEscolhido').value != idEscolhido){
-					document.getElementById(String(document.getElementById('bolaoEscolhido').value)).style.backgroundColor = "white";
+					if(bolaoAnterior == 'ativo'){
+						document.getElementById(String(document.getElementById('bolaoEscolhido').value)).style.backgroundColor = "white";
+					}
+					else{
+						document.getElementById(String(document.getElementById('bolaoEscolhido').value)).style.backgroundColor = "initial";						
+					}
+				}
+				if(ativo == 0){
+					bolaoAnterior = 'inativo';
+				}
+				else{
+					bolaoAnterior = 'ativo';
 				}
 				document.getElementById('bolaoEscolhido').value = idEscolhido;
 				document.getElementById('bolaoParticipar').value = idEscolhido; 
