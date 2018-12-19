@@ -19,9 +19,8 @@
 	    	require_once "./TelaUsuario.php";
 	    	require_once "./ControllerHomepage.php";
 
-	    	$tela = new TelaUsuario();
-	    	echo $tela->exibirNavBar('telaHomepage');
-			//session_start();
+			session_start();
+
 			$homepage = new ControllerHomepage();
 
 			if(isset($_POST['bolaoEscolhido'])){
@@ -41,6 +40,7 @@
 			}
 			if(isset($_POST['responderNotificacoes'])){
 				$user = $_SESSION['globalUser'];
+				$novas = array();
 				for ($i=0; $i<count($user->solicitacoes); $i++){
 					$s = $user->solicitacoes[$i];
 					$b = $s->bolao;
@@ -49,8 +49,13 @@
 						$homepage->aceitarNotificacao($s);
 					} else if($_POST['notf'.$idBolao]==2){
 						$homepage->recusarNotificacao($s);
+					} else {
+						array_push($novas, $s);
 					}
 				}
+				$user->solicitacoes = $novas;
+
+				$novas = array();
 				for ($i=0; $i<count($user->convites); $i++){
 					$c = $user->convites[$i];
 					$b = $c->bolao;
@@ -59,11 +64,18 @@
 						$homepage->aceitarNotificacao($c);
 					} else if($_POST['notf'.$idBolao]==2){
 						$homepage->recusarNotificacao($c);
+					} else {
+						array_push($novas, $c);
 					}
 				}
+				$user->convites = $novas;
+
+				$_SESSION['globalUser'] = $user;
 				header('Location: ./telaHomepage.php');
 
 			}
+	    	$tela = new TelaUsuario();
+	    	echo $tela->exibirNavBar('telaHomepage');
 ?>
 	    
 	    <div class = "mt-5 container" style = "max-width: 900px; background-color: #f0f0f0; position: relative; bottom: -50px;">
