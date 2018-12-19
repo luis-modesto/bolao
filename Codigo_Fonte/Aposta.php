@@ -8,14 +8,14 @@ require_once "./Jogo.php";
 class Aposta {
 
 	public $placarApostado;
-	public $idJogo;
+	public $jogo;
 
 	/**
 	*Construtor que inicializa uma instancia de Aposta preenchendo os atributos placarApostado que deve ser um Placar e idJogo, um identificador que eh unico para cada jogo cadastrado no SisBolao
 	*/
-	function __construct($placarApostado, $idJogo){
+	function __construct($placarApostado, $jogo){
 		$this->placarApostado = $placarApostado;
-		$this->idJogo = $idJogo;
+		$this->jogo = $jogo;
 	}
 	
 	
@@ -24,9 +24,10 @@ class Aposta {
 	*/
 	function isEditavel() {
 		// a data limite de edição do jogo vem no formato DD/MM/YYYY, por exemplo, 01/03/2019
-		$dialimite = $jogo->limiteEdicaoAposta[0] . $jogo->limiteEdicaoAposta[1]; // dialimite = 01
-		$meslimite = $jogo->limiteEdicaoAposta[3] . $jogo->limiteEdicaoAposta[4]; // meslimite = 03
-		$anolimite = $jogo->limiteEdicaoAposta[6] . $jogo->limiteEdicaoAposta[7] . $jogo->limiteEdicaoAposta[8] . $jogo->limiteEdicaoAposta[9]; //anolimite = 2019
+		$dg = DataGetter::getInstance();
+		$dialimite = $this->jogo->limiteEdicaoAposta[0] . $this->jogo->limiteEdicaoAposta[1]; // dialimite = 01
+		$meslimite = $this->jogo->limiteEdicaoAposta[3] . $this->jogo->limiteEdicaoAposta[4]; // meslimite = 03
+		$anolimite = $this->jogo->limiteEdicaoAposta[6] . $this->jogo->limiteEdicaoAposta[7] . $this->jogo->limiteEdicaoAposta[8] . $this->jogo->limiteEdicaoAposta[9]; //anolimite = 2019
 		$dialimite = intval($dialimite); // transformando as variáveis em inteiros
 		$meslimite = intval($meslimite);
 		$anolimite = intval($anolimite);

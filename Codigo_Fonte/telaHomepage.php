@@ -78,8 +78,8 @@
 	    	echo $tela->exibirNavBar('telaHomepage');
 ?>
 	    
-	    <div class = "mt-5 container" style = "max-width: 900px; background-color: #f0f0f0; position: relative; bottom: -50px;">
-			<div class='mt-5 new-game'>
+	    <div class = "container" style = "max-width: 900px;  position: relative; bottom: -50px;">
+			<div class='new-game'>
 					<form style="text-align: center;" action="./telaNewBolao.php">
 						<button class = "mt-3 btn btn-info"> Criar novo bolão</button>
 					</form>
