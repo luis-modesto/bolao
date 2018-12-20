@@ -97,10 +97,10 @@ class TelaUsuario{
 			    2.5em;" id = "cabecalho"'; 
 
 			    if($user instanceof Apostador){
-			    	$retorno = $retorno . 'href = "./telaHomepage.php">SisBolão</a>';
+			    	$retorno = $retorno . 'href = "./telaHomepage.php">Bolão</a>';
 			    }
 			    else{
-			    	$retorno = $retorno . 'href = "./telaHomepageAdmin.php">SisBolão</a>';
+			    	$retorno = $retorno . 'href = "./telaHomepageAdmin.php">Bolão</a>';
 			    }
 			    $retorno = $retorno . '<button style="font-size: 1.5em;" class="text-danger btn ml-auto mr-4 bg-dark" type="button" id="btn-bugs" data-toggle="modal" ';
 			    if ($user instanceof Apostador){
