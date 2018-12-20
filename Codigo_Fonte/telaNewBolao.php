@@ -30,7 +30,8 @@
                 $pontosPlacar = $_POST['pontosPlacar'];
                 $pontosVencedor = $_POST['pontosVencedor']; 
                 $dataFinalizacao = $_POST['dataFinalizacao'];
-                $telaBolao->confirmarCriacaoBolao($nome, $campeonato, $esporte, $pontosPlacar, $pontosVencedor);
+                $criterio = $_POST['criterio'];
+                $telaBolao->confirmarCriacaoBolao($nome, $campeonato, $esporte, $pontosPlacar, $pontosVencedor, $dataFinalizacao, $criterio);
                 header('Location: ./telaBolao.php');
             }   
             else{
@@ -109,7 +110,17 @@
                                         <label for="dataFinalizacao">Data de Finalização:</label>
                                         <div class='rightTab'>
                                             <input type="text" name = "dataFinalizacao" id="dataFinalizacao">
-                                        </div>                                        
+                                        </div>  
+                                        <br>
+                                        <label for="criterio">Critério de Desempate:</label>
+                                            <div class="rightTab">
+                                                <select class="form-control" name="criterio" id="criterio">
+                                                    <option>Vencedor há mais tempo</option>
+                                                    <option>Menor saldo</option>
+                                                    <option>Maior saldo</option>
+                                                    <option>Mais placares acertados</option>
+                                                </select>
+                                            </div>                                  
                                     </div>
                                     <button type="submit" class="btn btn-success">Criar Bolão</button>
                                 </form>

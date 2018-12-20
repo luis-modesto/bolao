@@ -7,7 +7,7 @@ require_once "./TelaUsuario.php";
 
 
 class ControllerCriaBolao extends TelaUsuario{
-	function confirmarCriacaoBolao($nome, $campeonato, $esporte, $pontosPlacar, $pontosVencedor, $dataFinalizacao){
+	function confirmarCriacaoBolao($nome, $campeonato, $esporte, $pontosPlacar, $pontosVencedor, $dataFinalizacao, $criterio){
 		$user = $_SESSION['globalUser'];
 		$id = rand(); // randomiza um id pro bolao 
 		$dg = DataGetter::getInstance(); 
@@ -20,7 +20,7 @@ class ControllerCriaBolao extends TelaUsuario{
 		} //sai do for quando percorrer o vetor todinho e n encontrar o id que tinha antes
 		$_SESSION['idBolaoEscolhido'] = $id;
 		$b = new Bolao($id, $nome, $campeonato, $esporte, array(), $user->cpf, array(), array(), $pontosPlacar, $pontosVencedor, 0, 1);
-		$user->criarBolao($b, $dataFinalizacao);
+		$user->criarBolao($b, $dataFinalizacao, $criterio);
 	}
 }
 ?>

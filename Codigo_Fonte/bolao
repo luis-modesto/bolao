@@ -1,7 +1,3 @@
-idbolao;cpf_administrador;nome;campeonato;esporte;cpfs_apostadores(lista de cpf separados por vírgula);pontos_postador(lista de pontos separados por vírgula);pts_acertar_placar;pts_acertar_vencedor;premio;ativo;
-808;1234567;Bolão 1;camp;esp;,1234;,0;20;10;0;0;17/12/2018;
-14401;1234567;Bolão 2;camp;esp;,1234;,0;30;15;0;1;20/12/2018;
-11384;1234;Bolão fechado;camp;esp;,333333,1234567;,30,10;30;10;30;0;18/12/2018;
-16432;1234567;Bolao vai aceitar;camp;esp;,1234;,0;30;10;0;1;31/12/2018;
-18567;1234567;Bolão vai recusar;camp;esp;;;10;3;0;0;18/12/2018;
-28905;1234567;Bolao testar;campeonato;esporte;;;30;10;0;1;03/01/2019;
+idbolao;cpf_administrador;nome;campeonato;esporte;cpfs_apostadores;pontos_postador;pts_acertar_placar;pts_acertar_vencedor;premio;ativo;data_encerramento;criterio;
+4506;1234567;Bolão 1;camp;esp;,1234,222;,0,0;30;10;25;1;21/12/2018;
+25754;1234;Bolão 2;camp;esp;;;30;15;0;0;18/12/2018;

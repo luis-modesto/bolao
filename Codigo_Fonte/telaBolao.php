@@ -28,36 +28,53 @@
             header('Location: ./index.php');
 		}
 		if(isset($_POST['responderNotificacoes'])){
-				$user = $_SESSION['globalUser'];
-				for ($i=0; $i<count($user->solicitacoes); $i++){
-					$s = $user->solicitacoes[$i];
-					$b = $s->bolao;
-					$idBolao = $b->id;
-					if ($_POST['notf'.$idBolao]==1){
-						$homepage->aceitarNotificacao($s);
-					} else if($_POST['notf'.$idBolao]==2){
-						$homepage->recusarNotificacao($s);
-					}
+			$user = $_SESSION['globalUser'];
+			for ($i=0; $i<count($user->solicitacoes); $i++){
+				$s = $user->solicitacoes[$i];
+				$b = $s->bolao;
+				$idBolao = $b->id;
+				if ($_POST['notf'.$idBolao]==1){
+					$homepage->aceitarNotificacao($s);
+				} else if($_POST['notf'.$idBolao]==2){
+					$homepage->recusarNotificacao($s);
 				}
-				for ($i=0; $i<count($user->convites); $i++){
-					$c = $user->convites[$i];
-					$b = $c->bolao;
-					$idBolao = $b->id;
-					if ($_POST['notf'.$idBolao]==1){
-						$homepage->aceitarNotificacao($c);
-					} else if($_POST['notf'.$idBolao]==2){
-						$homepage->recusarNotificacao($c);
-					}
-				}
-				header('Location: ./telaHomepage.php');
 			}
+			for ($i=0; $i<count($user->convites); $i++){
+				$c = $user->convites[$i];
+				$b = $c->bolao;
+				$idBolao = $b->id;
+				if ($_POST['notf'.$idBolao]==1){
+					$homepage->aceitarNotificacao($c);
+				} else if($_POST['notf'.$idBolao]==2){
+					$homepage->recusarNotificacao($c);
+				}
+			}
+			header('Location: ./telaHomepage.php');
+		}
+
+		if(isset($_POST['convidarApostadores'])){
+			$apostadores = explode(',', $bolao[5]);
+			$dg = DataGetter::getInstance();
+			$usuarios = $dg->getData('usuarios');
+			$convidados = array();
+			for ($i = 0; $i<count($usuarios); $i++){
+				if ($usuarios[$i][0]!=$bolao[1] && array_search($usuarios[$i][0], $apostadores)==false){
+					if ($_POST['conv'.$usuarios[$i][0]]==1){
+						array_push($convidados, $usuarios[$i][0]);
+					}
+				}
+			}
+			$telaExibeBolao->enviarConvite($convidados);
+			header('Location: ./telaBolao.php');
+		}
+
 		for($i=0; $i<count($_SESSION['jogosBolao']); $i++){
 			if(isset($_POST['ptTime1' . $_SESSION['jogosBolao'][$i]->id]) && isset($_POST['ptTime2' . $_SESSION['jogosBolao'][$i]->id])){
 				if($_POST['ptTime1' . $_SESSION['jogosBolao'][$i]->id]!= '' && $_POST['ptTime2' . $_SESSION['jogosBolao'][$i]->id] != '' && $_POST['ptTime1' . $_SESSION['jogosBolao'][$i]->id]!= '-' && $_POST['ptTime2' . $_SESSION['jogosBolao'][$i]->id] != '-'){
-					if($_SESSION['operacao'] == "cadastrando aposta"){
+					if($_SESSION['operacao'.$_SESSION['jogosBolao'][$i]->id] == "cadastrando aposta"){
 						$telaExibeBolao->confirmarAposta($_POST['ptTime1' . $_SESSION['jogosBolao'][$i]->id], $_POST['ptTime2' . $_SESSION['jogosBolao'][$i]->id], $_SESSION['jogosBolao'][$i]);
 					}
-					else if($_SESSION['operacao'] == "editando aposta"){
+					else if($_SESSION['operacao'.$_SESSION['jogosBolao'][$i]->id] == "editando aposta"){
 						$telaExibeBolao->confirmarEdicaoAposta($_POST['ptTime1' . $_SESSION['jogosBolao'][$i]->id], $_POST['ptTime2' . $_SESSION['jogosBolao'][$i]->id], $_SESSION['jogosBolao'][$i]);
 					}
 					else{
@@ -68,7 +85,19 @@
 					$_SESSION['message'] = "Preencha o campo referente aos dois times.";
 				}
 			}
-		}	
+		}
+		if (isset($_POST['excluido'])){
+			$telaExibeBolao->confirmarExclusao($_POST['excluido']);
+		}
+
+		if(isset($_POST['mudarBotao'])){
+			if (!isset($_SESSION['placarExibir']) || $_SESSION['placarExibir']=="resultado"){
+				$_SESSION['placarExibir'] = "aposta";
+			} else {
+				$_SESSION['placarExibir'] = "resultado";
+			}
+		}
+		
 ?>
 	<div class="container mt-5">
 		<div class="row mt-5 ml-2">
@@ -80,17 +109,8 @@
 
 							$infosBolao = new ControllerExibeBolao();
 							echo $infosBolao->exibirInfosBolao();
+							echo $infosBolao->exibirJogosBolao();
 						?>
-					<h5 class = "mt-3 text-center"> Jogos </h5>
-					<form method = "post" action = "./telaBolao.php">
-					<ul class = "list-group">
-						<li class = "bg-light list-group-item"> 
-							<div class = "row">
-									<?php
-										require_once "./ControllerExibeBolao.php";
-										$jogosBolao = new ControllerExibeBolao();
-										echo $jogosBolao->exibirJogosBolao();
-									?>
 							</div>
 						</li>
 					</ul>
@@ -101,7 +121,7 @@
 					</form>
 						<div class = "text-right offset-7 col-2">
 							<?php
-								if($_SESSION['ehAdm'] == true && $_SESSION['estadoBolao'] == 1){
+								if($_SESSION['ehAdm'] == true && $_SESSION['bolaoGlobal']->ativo == 1){
 								echo '<form style="text-align: left;" action="./telaNewGame.php">
 										<button class="mt-2 btn btn-info" id = "criarJogo" style="padding-right: 5px;">Criar Jogo</button>
 									</form>';
@@ -137,6 +157,25 @@
 	    		document.getElementById('ptTime1' + String(idJogo)).disabled = false;
 	    		document.getElementById('ptTime2' + String(idJogo)).disabled = false;
 	    	}
+	    	function guardarConvidado(id){
+	    		if(document.getElementById('conv'+id).value==0){
+					document.getElementById('conv'+id).value = 1;
+					document.getElementById('btn-convidar').disabled = false;
+					document.getElementById('li-'+id).classList.remove('bg-light');
+					document.getElementById('btn-conv-'+id).classList.remove('bg-light');
+					document.getElementById('btn-conv-'+id).style.backgroundColor = "transparent";
+					document.getElementById('li-'+id).classList.add('list-group-item-success');
+				} else {
+					document.getElementById('conv'+id).value = 0;
+					document.getElementById('li-'+id).classList.remove('list-group-item-success');
+					document.getElementById('btn-conv-'+id).classList.add('bg-light');
+					document.getElementById('li-'+id).classList.add('bg-light');
+				}
+			}
+			function exibirModalExcluir(userExcluido, cpfExcluido){
+				document.getElementById('nomeExcluido').innerHTML = userExcluido;
+				document.getElementById('excluido').value = cpfExcluido;
+			}
 	    </script>
 </body>
 </html>

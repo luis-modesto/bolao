@@ -22,6 +22,7 @@ class Bolao{
 	public $premio;
 	public $ativo;
 	public $dataFinalizacao;
+	public $criterio;
 
 	/**
 	*Construtor que inicializa uma instancia de Bolao preenchendo os atributos: id, um identificador que eh unico para cada bolao cadastrado no SisBolao; nome dado a esse bolao; campeonato ao qual o bolao se refere; esporte dos jogos relacionados a esse bolao; jogos que acontecerao nesse bolao; e apostadores que podem registrar apostas referentes a jogos desse bolao
@@ -44,6 +45,7 @@ class Bolao{
 		for($i=0; $i<count($boloes); $i++){
 			if($boloes[$i][0] == $this->id){
 				$this->dataFinalizacao = $boloes[$i][11];
+				$this->criterio = $boloes[$i][12];
 				break;
 			}
 		}
@@ -61,6 +63,16 @@ class Bolao{
 				if (intval($apostas[$j][0])==$jogo->id){						
 					$p = $jogo->resultado;
 					if (intval($apostas[$j][1])==$p->pontosTime1 && intval($apostas[$j][2])==$p->pontosTime2){
+						$meusboloes = $dg->getData('boloes_'.$this->apostadores[$i]);
+						for ($k = 0; $k<count($meusboloes); $k++){
+							if ($meusboloes[$k][1]==$this->id){
+								$novoPt = intval($meusboloes[$k][2]);
+								$novoPt++;
+								$meusboloes[$k][2] = $novoPt;
+								$dg->setData('boloes_'.$this->apostadores[$i], $meusboloes);
+								break;
+							}
+						}
 						$this->pontApostador[$i] += $this->ptsAcertarPlacar;
 					} else if ((intval($apostas[$j][1]) == intval($apostas[$j][2]) && $p->pontosTime1 == $p->pontosTime2) || (intval($apostas[$j][1]) > intval($apostas[$j][2]) && $p->pontosTime1 > $p->pontosTime2) || (intval($apostas[$j][1]) < intval($apostas[$j][2]) && $p->pontosTime1 < $p->pontosTime2)){
 						$this->pontApostador[$i] += $this->ptsAcertarVencedor;
@@ -100,8 +112,28 @@ class Bolao{
 	*/
 	function determinarVencedor(){
 		$dg = DataGetter::getInstance();
-		$maior = 0;
-		$ganhador = $this->apostadores[1];
+		$podemGanhar = array();
+		$i = 1;
+		while($i<count($this->pontApostador)-1 && $this->pontApostador[$i]==$this->pontApostador[$i+1]){
+			$i++;
+			array_push($podemGanhar, $this->apostadores[$i]);
+		}
+
+		if ($criterio=="Menor saldo"){
+			$podemGanhar = ordMenorSaldo($podemGanhar);
+			$ganhador = $podemGanhar[0];
+		} else if ($criterio=="Maior saldo"){
+			$podemGanhar = ordMaiorSaldo($podemGanhar);
+			$ganhador = $podemGanhar[0];
+		} else if ($criterio=="Mais placares acertados"){
+			$$podemGanhar = ordMaisAcertos($podemGanhar);
+			$ganhador = $podemGanhar[0];
+		} else {
+			$ganhador = $this->apostadores[1];	
+		}
+
+		
+
 		$users = $dg->getData('usuarios');
 		for ($i = 0; $i<count($users); $i++){
 			if ($users[$i][0]==$ganhador){
@@ -116,6 +148,11 @@ class Bolao{
 		for($i=0; $i<count($boloes); $i++){
 			if($boloes[$i][0] == $this->id){
 				$boloes[$i][10] = 0;
+				$apostadores = explode(',', $boloes[$i][5]);
+				for ($j = 0; $j<count($podemGanhar); $j++){
+					$apostadores[$j+1] = $podemGanhar[$j];
+				}
+				$boloes[$i][5] = implode(',', $apostadores);
 				break;
 			}
 		}
@@ -129,9 +166,98 @@ class Bolao{
 				}
 			}
 		}
+
+		$boloesAdmin = $dg->getData('boloes_' . $this->cpfAdmin);
+		for($j=0; $j<count($boloesAdmin); $j++){
+			if($boloesAdmin[$j][1] == $this->id){
+				$boloesAdmin[$j][0] = "inativo";
+				$dg->setData('boloes_' . $this->cpfAdmin, $boloesAdmin);
+				break;
+			}
+		}
+
 		$dg->setData('bolao', $boloes);
 		$dg->setData('usuarios', $users);
 		return $ganhador;
+	}
+
+	private function ordMenorSaldo($podemGanhar){
+		$saldos = array();
+		$dg = DataGetter::getInstance();
+		$users = $dg->getData('usuarios');
+		for ($i = 0; $i<count($podemGanhar); $i++){
+			for ($j = 0; $j<count($users); $j++){
+				if ($users[$j][0]==$podemGanhar[$i]){
+					array_push($saldos, $users[$j][4]);
+					break;
+				}
+			}
+		}
+		for($i=0; $i<count($podemGanhar); $i++){
+			for($j = $i+1; $j<count($podemGanhar); $j++){
+				if($saldos[$j] < $saldos[$i]){
+					$aux = $saldos[$i];
+					$saldos[$i] = $saldos[$j];
+					$saldos[$j] = $aux;
+					$auxCPF = $podemGanhar[$i];
+					$podemGanhar[$i] = $podemGanhar[$j];
+					$podemGanhar[$j] = $auxCPF;					
+				}
+			}
+		}
+		return $podemGanhar;
+	}
+	private function ordMaiorSaldo($podemGanhar){
+		$saldos = array();
+		$dg = DataGetter::getInstance();
+		$users = $dg->getData('usuarios');
+		for ($i = 0; $i<count($podemGanhar); $i++){
+			for ($j = 0; $j<count($users); $j++){
+				if ($users[$j][0]==$podemGanhar[$i]){
+					array_push($saldos, $users[$j][4]);
+					break;
+				}
+			}
+		}
+		for($i=0; $i<count($podemGanhar); $i++){
+			for($j = $i+1; $j<count($podemGanhar); $j++){
+				if($saldos[$j] > $saldos[$i]){
+					$aux = $saldos[$i];
+					$saldos[$i] = $saldos[$j];
+					$saldos[$j] = $aux;
+					$auxCPF = $podemGanhar[$i];
+					$podemGanhar[$i] = $podemGanhar[$j];
+					$podemGanhar[$j] = $auxCPF;					
+				}
+			}
+		}
+		return $podemGanhar;
+	}
+	private function ordMaisAcertos($podemGanhar){
+		$dg = DataGetter::getInstance();
+		$acertos = array();
+		for ($i = 0; $i<count($podemGanhar); $i++){
+			$meusboloes = $dg->getData('boloes_'.$podemGanhar[$i]);
+			for ($j = 0; $j<count($meusboloes); $j++){
+				if ($meusboloes[$j][1]==$this->id){
+					array_push($acertos, $meusboloes[$j][2]);
+					break;
+				}
+			}
+		}
+		for($i=0; $i<count($podemGanhar); $i++){
+			for($j = $i+1; $j<count($podemGanhar); $j++){
+				if($acertos[$j] > $acertos[$i]){
+					$aux = $acertos[$i];
+					$acertos[$i] = $acertos[$j];
+					$acertos[$j] = $aux;
+					$auxCPF = $podemGanhar[$i];
+					$podemGanhar[$i] = $podemGanhar[$j];
+					$podemGanhar[$j] = $auxCPF;					
+				}
+			}
+		}
+		return $podemGanhar;
 	}
 
 }

@@ -75,9 +75,9 @@
 					echo '<div class = "container-fluid" style = "background-color: none;"> <div class = "text-center alert alert-danger" > <strong> ' . $_SESSION['message'] . '</strong> </div> </div>';
 					unset($_SESSION['message']);
 				}
-			?>
-			<?php 
-				echo '<a href = "./telaBolao.php" style = "text-decoration: none;"><h5 class = "text-left">' . $_SESSION['nomeBolao'] . '</h5></a>';
+				require_once "./Bolao.php";
+				
+				echo '<a href = "./telaBolao.php" style = "text-decoration: none;"><h5 class = "text-left">' . $_SESSION['bolaoGlobal']->nome . '</h5></a>';
 			?>
 			<h6 class="text-center">Novo Jogo</h6>
 	        <div class="container-fluid">

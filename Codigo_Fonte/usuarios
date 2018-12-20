@@ -1,7 +1,5 @@
 cpf_usuario;senha_usuario;nome_usuario;is_adm;saldo;resposta_seguranca;username;
-1234567;minhasenha;Luis Modesto;0;450;eu;luismodesto;
-1234;senha;Bruno Dias;0;500;ele;brunodias;
-333333;senha;Teste;0;530;teste;userteste;
-123123;teste1;teste1;0;500;teste;teste1;
-1231234;teste2;teste2;0;500;teste1;teste2;
-1234123;teste3;teste3;0;500;teste2;teste3;
+1234567;senha;Luis Modesto;0;500;eu;luismodesto;
+1234;senha;Bruno Dias;0;435;eu;brunodias;
+111;senha;teste1;0;500;eu;teste1;
+222;senha;teste2;0;500;eu;teste2;

@@ -21,6 +21,8 @@
 
 			session_start();
 
+			unset($_SESSION['placarExibir']);
+
 			$homepage = new ControllerHomepage();
 
 			if(isset($_POST['bolaoEscolhido'])){

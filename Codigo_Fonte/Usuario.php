@@ -39,6 +39,7 @@ abstract class Usuario {
 			$dg->setData('notificacoes_' . $this->cpf, array());
 			$dg->setData('boloes_' . $this->cpf, array());
 			$dg->setData('solicitacoesfeitas_' . $this->cpf, array());
+			$dg->setData('convitesfeitos_' . $this->cpf, array());
 			return true;		
 		}
 		return false;

@@ -17,9 +17,9 @@
 	<div class="mt-5 container" style =	"background-color: #f0f0f0; opacity: 0.9; position: relative; bottom: -40px; max-width: 500px; border-style: solid; border-radius: 7px; border-color: #C0C0C0;">
 		<h1>Bolão</h1>
 		<?php
-			require_once "./ControllerLogin.php";
-
 			session_start();
+
+			require_once "./ControllerLogin.php";
 			if (isset($_SESSION['message'])) {
 				echo '<div class = "container-fluid" style = "background-color: none;"> <div class = "text-center alert alert-danger" > <strong> ' . $_SESSION['message'] . '</strong> </div> </div>';
 				unset($_SESSION['message']);

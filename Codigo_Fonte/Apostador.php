@@ -146,9 +146,9 @@ class Apostador extends Usuario{
 	/**
 	*Instancia e registra um novo bolao, do qual o Apostador que chama a funcao sera administrador
 	*/
-	function criarBolao($bolao, $dataFinalizacao) {
+	function criarBolao($bolao, $dataFinalizacao, $criterio) {
 		$dg = DataGetter::getInstance();
-		$novoBolao = $bolao->id . ';' . $this->cpf . ';' . $bolao->nome . ';' . $bolao->campeonato . ';' . $bolao->esporte . ';' . $dataFinalizacao . ';'; 
+		$novoBolao = $bolao->id . ';' . $this->cpf . ';' . $bolao->nome . ';' . $bolao->campeonato . ';' . $bolao->esporte . ';'; 
 		for ($i = 0; $i<count($bolao->apostadores); $i++){
 			$novoBolao = $novoBolao . $bolao->apostadores[$i] . ',';
 		}
@@ -157,9 +157,9 @@ class Apostador extends Usuario{
 			$novoBolao = $novoBolao . $bolao->$pontApostador[$i] . ',';
 		}
 		$novoBolao = $novoBolao . ';';
-		$novoBolao = $novoBolao . $bolao->ptsAcertarPlacar . ';' . $bolao->ptsAcertarVencedor . ';' . $bolao->premio . ';' . $bolao->ativo . ';';
+		$novoBolao = $novoBolao . $bolao->ptsAcertarPlacar . ';' . $bolao->ptsAcertarVencedor . ';' . $bolao->premio . ';' . $bolao->ativo . ';'. $dataFinalizacao . ';' . $criterio . ';';
 
-		$bolaouser = 'ativo;' . $bolao->id . ';';
+		$bolaouser = 'ativo;' . $bolao->id . ';0;';
 		// escreve bolao no arquivo bolao
 		$dg->appendData('bolao', $novoBolao);
 		// escerve bolaouser no arquivo boloes_cpfuser
@@ -179,8 +179,8 @@ class Apostador extends Usuario{
 		//desconta saldo
 		$this->saldo -= $jogo->valorAposta;
 		for($i=0; $i<count($this->boloesParticipa); $i++){
-			$bolao = $this->boloesParticipa;
-			if($bolao->id == $_SESSION['idBolaoEscolhido']){
+			$bolao = $this->boloesParticipa[$i];
+			if($bolao->id == $_SESSION['bolaoGlobal']->id){
 				$bolao->premio += $jogo->valorAposta;
 				break;
 			}
@@ -223,13 +223,14 @@ class Apostador extends Usuario{
 	/**
 	*Registra convites a outros Apostadores para um bolao do qual eh administrador, dados os apostadores que se deseja convidar e o bolao que eles devem aceitar ou nao participar
 	*/
-	function convidarApostadores($apostadores, $bolao) {
+	function convidarApostadores($apostadores, $idBolao) {
 		$dg = DataGetter::getInstance();
 		for($i=0; $i<count($apostadores); $i++){
-			$convite = '1;' . $this->cpf . ';' . $bolao->id . ';';
+			$convite = '1;' . $this->cpf . ';' . $idBolao . ';';
 			// escreve no arquivo convites_cpfuser
 			for ($i = 0; $i<count($apostadores); $i++){
 				$dg->appendData('notificacoes_' . $apostadores[$i], $convite);
+				$dg->appendData('convitesfeitos_' . $this->cpf, $apostadores[$i] . ';' . $idBolao . ';');
 			}
 		}
 	}
@@ -238,7 +239,7 @@ class Apostador extends Usuario{
 	/**
 	*Registra o Apostador que chama essa funcao como participante de um novo bolao, caso a resposta ao convite para esse bolao seja true. Exclui registros desse convite
 	*/
-	function responderConviteBolao($convite, $resposta) {
+	function responderConvite($convite, $resposta) {
 		$bol = $convite->bolao;
 		$idBolao = $bol->id;
 		$dg = DataGetter::getInstance();
@@ -249,7 +250,16 @@ class Apostador extends Usuario{
 				array_push($novasNot, $notificacoes[$i]);
 			}
 		}
-		$remetente - $convite->usuarioRemetente;
+
+		$remetente = $convite->usuarioRemetente;
+		$convitesF = $dg->getData('convitesfeitos_' . $remetente->cpf);
+		$novosConv = array();
+		for ($i = 0; $i<count($convitesF); $i++){
+			if (intval($convitesF[$i][1])!=$idBolao && $convitesF[$i][0]!=$this->cpf){
+				array_push($novosConv, $convitesF[$i]);
+			}
+		}
+
 		if($resposta == true){
 			// procurar bolao do convite que recebeu como parametro no arquivo de boloes
 			$boloes = $dg->getData('bolao');
@@ -258,7 +268,7 @@ class Apostador extends Usuario{
 					$apostadores = explode(',', $boloes[$i][5]);
 					$pontuacoes = explode(',', $boloes[$i][6]);
 					array_push($pontuacoes, '0');
-					array_push($apostadores, $remetente->cpf);
+					array_push($apostadores, $this->cpf);
 					$boloes[$i][5] = implode(',', $apostadores);
 					$boloes[$i][6] = implode(',', $pontuacoes);
 					break;
@@ -266,9 +276,10 @@ class Apostador extends Usuario{
 			}
 			$dg->setData('bolao', $boloes);
 
-			$dg->appendData('boloes_' . $this->cpf, 'ativo;' . $idBolao . ';'); //adiciona a boloes que participa
+			$dg->appendData('boloes_' . $this->cpf, 'ativo;' . $idBolao . ';0;'); //adiciona a boloes que participa
 		}
 		$dg->setData('notificacoes_' . $this->cpf, $novasNot);
+		$dg->setData('convitesfeitos_' . $remetente->cpf, $novosConv);
 	}
 
 
@@ -323,7 +334,7 @@ class Apostador extends Usuario{
 			}
 			$dg->setData('bolao', $boloes);
 			$u = $solicitacao->usuarioRemetente;
-			$dg->appendData('boloes_' . $u->cpf, 'ativo;' . $idBolao . ';'); //adiciona a boloes que participa
+			$dg->appendData('boloes_' . $u->cpf, 'ativo;' . $idBolao . ';0;'); //adiciona a boloes que participa
 		}
 		$dg->setData('notificacoes_' . $this->cpf, $novasNot);
 		$dg->setData('solicitacoesfeitas_' . $remetente->cpf, $novasSoli);
@@ -340,21 +351,18 @@ class Apostador extends Usuario{
 		$boloes = $dg->getData('bolao');
 		for ($j = 0; $j<count($boloes); $j++){
 			if ($idBolao==$boloes[$j][0]){
-				$cpfs_apostadores = $boloes[$j][5]; // string com tds os cpfs do bolao
-				$cpf = '';
-				$novo_cpfs_apostadores = '';
+				$cpfs_apostadores = explode(',', $boloes[$j][5]); // string com tds os cpfs do bolao
+				$novo_cpfs_apostadores = array();
+				$pts_apostadores = explode(',', $boloes[$j][5]); // string com tds os cpfs do bolao
+				$novo_pts_apostadores = array();
 				for($i=0; $i<count($cpfs_apostadores); $i++){
-					if($cpfs_apostadores[$i] != ','){
-						$cpf = $cpf . $cpfs_apostadores[$i];
-					}
-					else if($cpfs_apostadores[$i] == ','){ // achou virgula significa que um novo cpf esta por vir e n achamos o que procuramos ainda
-						if($cpf != $cpfApostador){
-							$novo_cpfs_apostadores = $novo_cpfs_apostadores . $cpf . ',';
-						}
-						$cpf = ''; // zera o cpf atual
+					if($cpfs_apostadores[$i] != $cpfApostador){
+						array_push($novo_cpfs_apostadores, $cpfs_apostadores[$i]);
+						array_push($novo_pts_apostadores, $pts_apostadores[$i]);
 					}
 				}
-				$boloes[$j][5] = $novo_cpfs_apostadores;
+				$boloes[$j][5] = implode(',', $novo_cpfs_apostadores);
+				$boloes[$j][6] = implode(',', $novo_pts_apostadores);
 				// substitui cpfs_apostadores no arquivo do bolao por novo_cpfs_apostadores
 				$dg->setData('bolao', $boloes);
 				break;

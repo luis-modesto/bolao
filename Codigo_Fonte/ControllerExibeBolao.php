@@ -7,6 +7,8 @@ require_once "./Placar.php";
 require_once "./Bolao.php";
 
 class ControllerExibeBolao extends TelaUsuario{
+	private $inputConv = '';
+
 	function confirmarAposta($ptTime1,$ptTime2, $jogo){
 		$user = $_SESSION['globalUser']; //global
 		$placar = new Placar($ptTime1, $ptTime2);
@@ -17,15 +19,13 @@ class ControllerExibeBolao extends TelaUsuario{
 		$novoPlacar = new Placar($ptTime1, $ptTime2);
 		$user->editarAposta($jogo, $novoPlacar);
 	}
-	function confirmarExclusao(){
+	function confirmarExclusao($excluido){
 		$user = $_SESSION['globalUser']; //global
-		$userExcluido = new Apostador(); //talvez so precise pegar o cpf pela informacao da tela mesmo, e nao uma instancia de Apostador
-		$user->excluirApostadorBolao($idBolao, $userExcluido->cpf);
+		$user->excluirApostadorBolao($_SESSION['bolaoGlobal']->id, $excluido);
 	}
-	function enviarConvite(){
+	function enviarConvite($apostadores){
 		$user = $_SESSION['globalUser']; //global
-		$apostadores = array(); // preencher o array com a lista de apostadores q foram selecionados para o convite
-		$user->convidarApostadores($apostadores, $bolao); //preencher lista de apostadores com lista que Administrador do bolao foi selecionando
+		$user->convidarApostadores($apostadores, $_SESSION['bolaoGlobal']->id); //preencher lista de apostadores com lista que Administrador do bolao foi selecionando
 	}
 	function confirmarResultado($ptTime1, $ptTime2, $jogo, $idBolao){
 		$user = $_SESSION['globalUser'];
@@ -42,6 +42,42 @@ class ControllerExibeBolao extends TelaUsuario{
 		$user->cadastrarResultados($placar, $jogo, $idBolao); //placar vai vir de um form, o jogo é o que foi selecionado 
 		$bolao->distribuirPontos($jogo);
 	}
+
+	function exibirApostadores($bolao){
+		$user = $_SESSION['globalUser'];
+		$apostadores = explode(',', $bolao[5]);
+		$dg = DataGetter::getInstance();
+		$usuarios = $dg->getData('usuarios');
+
+		$convites = $dg->getData('convitesfeitos_'.$user->cpf);
+		$retorno = '<ul class="list-group">'.PHP_EOL;
+		for ($i = 0; $i<count($usuarios); $i++){
+			$convidei = false;
+			for ($j = 0; $j<count($convites); $j++){
+				if ($convites[$j][0]==$usuarios[$i][0] && $convites[$j][1]==$bolao[0]){
+					$convidei = true;
+					break;
+				}
+			}
+			if ($convidei==false && $usuarios[$i][0]!=$bolao[1] && array_search($usuarios[$i][0], $apostadores)==false){
+				$retorno = $retorno . '<li id="li-'.$usuarios[$i][0].'" class="bg-light list-group-item">'.PHP_EOL.
+					'<div class="row">
+						<div class="col-10">'.
+							$usuarios[$i][6].PHP_EOL.
+					'	</div>
+						<div class="col-2">
+							<button id="btn-conv-'.$usuarios[$i][0].'" onclick="guardarConvidado(\''.$usuarios[$i][0].'\')" class="bg-light btn"><i style="font-size: 1.5em;" class="text-success far fa-check-circle"></i></button>
+						</div>
+					</div>
+					</li>'.PHP_EOL;
+					//adiciona input
+					$this->inputConv = $this->inputConv . '<input type = "hidden" value = "0"  name = "conv'.$usuarios[$i][0].'" id = "conv'.$usuarios[$i][0].'">'.PHP_EOL;
+			}
+		}
+		$retorno = $retorno . '</ul>'.PHP_EOL;
+		return $retorno;
+	}
+
 	function exibirInfosBolao(){
 		$idBolao = $_SESSION['idBolaoEscolhido'];
 		// recupera informaçoes do bolao
@@ -50,8 +86,7 @@ class ControllerExibeBolao extends TelaUsuario{
 		$retorno = "";
 		for ($i = 0; $i<count($boloes); $i++){
 			if (intval($boloes[$i][0])==intval($idBolao)){
-				$_SESSION['nomeBolao'] = $boloes[$i][2];
-				$_SESSION['estadoBolao'] = $boloes[$i][10];
+				$_SESSION['bolaoGlobal'] = new Bolao($boloes[$i][0], $boloes[$i][2], $boloes[$i][3], $boloes[$i][4], array(),$boloes[$i][1], explode(',', $boloes[$i][5]), explode(',', $boloes[$i][6]), intval($boloes[$i][7]), intval($boloes[$i][8]), intval($boloes[$i][9]), intval($boloes[$i][10]));
 				$user = $_SESSION['globalUser'];
 				$retorno = '<div class = "col-4">
 								<h4 class="text-left ml-2">'. $boloes[$i][2] . '</h4>
@@ -75,9 +110,29 @@ class ControllerExibeBolao extends TelaUsuario{
 						<h6> Pontuação: '. $pontuacaoUser . '</h6>
 					</div>';
 				}
-				else{
+				else if ($_SESSION['bolaoGlobal']->ativo==1){
 					$retorno = $retorno . '<div class = "text-center col-3"> 
-							<button title = "Convidar Apostadores" type = "button" class = "btn" style="padding-top: 7px; background-color: rgba(200, 200, 200);"> <i class="fas fa-envelope" style = "color: #e63900; font-size: 1.4em"></i> </button>
+							<button title = "Convidar Apostadores" type = "button" class = "btn" style="padding-top: 7px; background-color: rgba(200, 200, 200);"  data-toggle="modal" data-target="#convidar"> <i class="fas fa-envelope" style = "color: #e63900; font-size: 1.4em"></i> </button>
+						</div>
+						<div id="convidar" class="modal fade" role="dialog">
+							<div class="modal-dialog modal-dialog-centered">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title">Convidar Apostadores</h4>
+									</div>
+									<div class="modal-body">'.
+										$this->exibirApostadores($boloes[$i])
+									.'</div>
+									<div class="modal-footer">
+										<form method="post" action="./telaBolao.php">'. PHP_EOL.
+											$this->inputConv . PHP_EOL .
+											'
+				        				<input type = "hidden" value = "1"  name = "convidarApostadores" id = "convidarApostadores"> 
+				        				<button disabled type="submit" id="btn-convidar" class="btn btn-success">Confirmar</button>
+										</form>
+									</div>
+								</div>
+							</div>
 						</div>';
 				}
 				$retorno = $retorno . '</div> <div class = "row"> <div class = "text-';
@@ -93,8 +148,9 @@ class ControllerExibeBolao extends TelaUsuario{
 		}
 		return $retorno;
 	}
+
 	function exibirApostadoresBolao(){
-		$idBolao = $_SESSION['idBolaoEscolhido'];
+		$idBolao = $_SESSION['bolaoGlobal']->id;
 		// recupera informaçoes do bolao
 		$dg = DataGetter::getInstance();
 		$boloes = $dg->getData('bolao');
@@ -127,17 +183,34 @@ class ControllerExibeBolao extends TelaUsuario{
 								$retorno = $retorno . ' style = "border: 2.5px solid #D4AF37;"';
 							}
 							$retorno = $retorno . '><div class = "row"> <div class = "col-7"> ' . $usuarios[$k][6] . '</div> <div class = "text-left col-3">'. $pontuacoes[$j] . '</div>' . PHP_EOL; 
-							if($_SESSION['globalUser']->cpf == $boloes[$i][1] && $_SESSION['estadoBolao'] == 1){
-								$retorno = $retorno . '<button title = "Excluir Apostador" type = "button" class = "btn bg-light" style = "padding: 1px;"> <i class="fas fa-user-slash text-danger" style = "font-size: 1em;"></i> </button>' . PHP_EOL;
+							if($_SESSION['globalUser']->cpf == $boloes[$i][1] && $_SESSION['bolaoGlobal']->ativo == 1){
+								$retorno = $retorno . '<button onclick="exibirModalExcluir(\''.$usuarios[$k][6].'\', \''.$apostadores[$j].'\')" data-toggle="modal" data-target="#modalExcluir" title = "Excluir Apostador" type = "button" class = "btn bg-light" style = "padding: 1px;"> <i class="fas fa-user-slash text-danger" style = "font-size: 1em;"></i> </button>
+								' . PHP_EOL;
+
 							}
-							$retorno = $retorno . '</div> </li>' . PHP_EOL;
+							$retorno = $retorno . '</li>' . PHP_EOL;
 							break;
 						}
 					}
 				}
 				$retorno = $retorno . '</ul>
+									<div id="modalExcluir" class="modal fade" role="dialog">
+										<div class="modal-dialog modal-dialog-centered">
+											<div class="modal-content">
+												<div class="modal-body">
+													Tem certeza que deseja excluir <strong id="nomeExcluido" style="color: red;"></strong>?
+												</div>
+												<div class="modal-footer">
+													<form method="post" action="./telaBolao.php">
+							        				<input type = "hidden" value = ""  name = "excluido" id = "excluido"> 
+							        				<button type="submit" class="btn btn-danger">Excluir</button>
+													</form>
+												</div>
+											</div>
+										</div>
 									</div>
-								</div>';
+								</div>
+							</div>';
 				break;
 			}
 		}
@@ -145,13 +218,12 @@ class ControllerExibeBolao extends TelaUsuario{
 	}
 
 	function exibirJogosBolao(){
-		$idBolao = $_SESSION['idBolaoEscolhido'];
+		$idBolao = $_SESSION['bolaoGlobal']->id;
 		// recupera informaçoes do bolao
 		$dg = DataGetter::getInstance();
 		$jogos = $dg->getData('jogos_'.$idBolao);
 		$boloes = $dg->getData('bolao');
 		$apostas = $dg->getData('apostas_'. $_SESSION['globalUser']->cpf);
-		$retorno = "";
 		$_SESSION['ehAdm'] = false;
 		$jaApostou = false;
 		$jaTemResultado = false;
@@ -164,7 +236,37 @@ class ControllerExibeBolao extends TelaUsuario{
 				break;
 			}
 		}
+
+		$retorno = '<div class="row my-2">
+			<div class="col-3">
+				<form method="post" action="./telaBolao.php">
+					<input type = "hidden" value = "0"  name = "mudarBotao" id = "mudarBotao">';
+		if ($_SESSION['ehAdm']==false){
+			$retorno = $retorno. '<button style="background-color: #B76E53;" class="btn" type="input" id="alternar">';
+			if (!isset($_SESSION['placarExibir']) || $_SESSION['placarExibir']=="resultado"){
+				$retorno = $retorno . "Apostas";
+			} else {
+				$retorno = $retorno . "Resultados";
+			}
+			$retorno = $retorno . '</button>';
+		}
+		$retorno = $retorno	. '</form>
+			</div>
+			<div class="col-6">
+		<h5 class = "mt-2 text-center">';		
+		if (!isset($_SESSION['placarExibir']) || $_SESSION['placarExibir']=="resultado"){
+			$retorno = $retorno . "Resultados";
+		} else {
+			$retorno = $retorno . "Apostas";
+		}		
+		$retorno = $retorno . '</h5> </div> </div>
+					<form method = "post" action = "./telaBolao.php">
+					<ul class = "list-group">
+						<li class = "bg-light list-group-item"> 
+							<div class = "row">';
+
 		for ($i = 0; $i<count($jogos); $i++){
+			$jaApostou = false;
 			$jaTemResultado = false;
 			$jogoBolao = new Jogo($jogos[$i][0], $jogos[$i][1], $jogos[$i][2], $jogos[$i][3], $jogos[$i][4], '', $jogos[$i][7]);
 			array_push($_SESSION['jogosBolao'], $jogoBolao);
@@ -174,7 +276,17 @@ class ControllerExibeBolao extends TelaUsuario{
 						<div class = "mb-1 text-center col-7">'.
 							$jogoBolao->time1 . '
 							<input disabled type = "text" id = "ptTime1'. $jogoBolao->id . '" name = "ptTime1' . $jogoBolao->id . '" '; 
-							if($_SESSION['ehAdm'] == false && $this->dataPassou($jogoBolao->data) == false){
+							$ptTime1 = "";
+							$ptTime2 = "";
+							if(!isset($_SESSION['placarExibir']) || $_SESSION['placarExibir']=="resultado"){
+								$ptTime1 = $jogos[$i][5];
+								$ptTime2 = $jogos[$i][6];
+								if($ptTime1 != '-' && $ptTime2 != '-'){
+									$jaTemResultado = true;
+								}
+								$retorno = $retorno . 'value = "' . $ptTime1 . '"';								
+							}
+							else if($_SESSION['placarExibir']=="aposta"){
 								for($j=0; $j<count($apostas); $j++){
 									if($apostas[$j][0] == $jogoBolao->id){
 										$jaApostou = true;
@@ -187,37 +299,26 @@ class ControllerExibeBolao extends TelaUsuario{
 									}				
 								}								
 							}
-							else if($_SESSION['ehAdm'] == true || $this->dataPassou($jogoBolao->data) == true){
-								$ptTime1 = $jogos[$i][5];
-								$ptTime2 = $jogos[$i][6];
-								if($ptTime1 != '-' && $ptTime2 != '-'){
-									$jaTemResultado = true;
-								}
-								$retorno = $retorno . 'value = "' . $ptTime1 . '"';								
-							}
+							 
 							$retorno = $retorno . ' style = "text-align: center; width: 1.8em;">
 							X
-							<input disabled type = "text" id = "ptTime2'. $jogoBolao->id . '" name = "ptTime2' . $jogoBolao->id . '" ';
-							if(($_SESSION['ehAdm'] == false && $jaApostou == true && $this->dataPassou($jogoBolao->data) == false) || ($_SESSION['ehAdm'] == true) || $this->dataPassou($jogoBolao->data) == true){
-								$retorno = $retorno . 'value = "' . $ptTime2 . '"';
-							}
-							$retorno = $retorno . ' style = "text-align: center; width: 1.8em;"> '
+							<input disabled type = "text" id = "ptTime2'. $jogoBolao->id . '" name = "ptTime2' . $jogoBolao->id . '" value = "' . $ptTime2 . '" style = "text-align: center; width: 1.8em;"> '
 							. $jogoBolao->time2 .'
 							</div>
 							<div class = "mb-1 text-right col-2" style = "padding-top: 2.5px;">
 								<i class="text-warning fas fa-coins" style = "font-size: 1em;"></i>'. $jogoBolao->valorAposta . '
-							</div>' . PHP_EOL;
-			$retorno = $retorno . '<div class = "col-1">' . PHP_EOL;
-			if($_SESSION['ehAdm'] == true && $this->dataPassou($jogoBolao->data) && $jaTemResultado == false){
-				$_SESSION['operacao'] = "resultado";
+							</div>
+							<div class = "col-1">' . PHP_EOL;
+			if((!isset($_SESSION['placarExibir']) || $_SESSION['placarExibir']=="resultado") && $_SESSION['ehAdm'] == true && $this->dataPassou($jogoBolao->data) && $jaTemResultado == false){
+				$_SESSION['operacao'.$jogoBolao->id] = "resultado";
 				$retorno = $retorno . '<button type = "button"  onclick = "permiteEditarResultado('. $jogoBolao->id . ')" title = "Cadastrar Resultados" class = "btn bg-light" style = "padding: 2px;"> <i class="fas fa-clipboard-check text-success" style = "font-size: 1.3em;"></i> </button>' . PHP_EOL;
 			}
-			else if($_SESSION['ehAdm'] == false && $jaApostou == false && $this->dataPassou($jogoBolao->limiteEdicaoAposta) == false){
-				$_SESSION['operacao'] = "cadastrando aposta"; 
+			else if(isset($_SESSION['placarExibir']) && $_SESSION['placarExibir']=="aposta" && $_SESSION['ehAdm'] == false && $jaApostou == false && $this->dataPassou($jogoBolao->limiteEdicaoAposta) == false){
+				$_SESSION['operacao'.$jogoBolao->id] = "cadastrando aposta"; 
 				$retorno = $retorno . '<button type = "button"  onclick = "permiteEditarResultado('. $jogoBolao->id . ')" title = "Cadastrar Aposta" class = "btn bg-light" style = "padding: 2px;"> <i class="fas fa-file-invoice-dollar text-success" style = "font-size: 1.3em;"></i> </button>' . PHP_EOL;
 			}
-			else if($_SESSION['ehAdm'] == false && $jaApostou == true && $apostaFeita->isEditavel() == true && $this->dataPassou($jogoBolao->data) == false){
-				$_SESSION['operacao'] = "editando aposta"; 
+			else if(isset($_SESSION['placarExibir']) && $_SESSION['placarExibir']=="aposta" && $_SESSION['ehAdm'] == false && $jaApostou == true && $apostaFeita->isEditavel() == true && $this->dataPassou($jogoBolao->data) == false){
+				$_SESSION['operacao'.$jogoBolao->id] = "editando aposta"; 
 				$retorno = $retorno . '<button type = "button"  onclick = "permiteEditarResultado('. $jogoBolao->id . ')" title = "Editar Aposta" class = "btn bg-light" style = "padding: 2px;"> <i class="fas fa-edit  text-info" style = "font-size: 1.1em;"></i> </button>' . PHP_EOL;
 			}
 			$retorno = $retorno . '</div>' . PHP_EOL;
