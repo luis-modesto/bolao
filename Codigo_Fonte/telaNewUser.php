@@ -68,7 +68,7 @@
 ?>
 
     <script type = "text/javascript">
-        $("#cpf").mask("000000000");
+        $("#cpf").mask("00000000000");
     </script>
     
 </body>
