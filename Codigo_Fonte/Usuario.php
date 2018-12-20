@@ -63,16 +63,6 @@ abstract class Usuario {
 
 
 	/**
-	*Registra informacoes dadas pelo usuario sobre possivel bug no SisBolao
-	*/
-	function reportarBugs($texto) {
-		$dg = DataGetter::getInstance();
-		$b = $this->cpf . ';' . $texto . ';'; 
-		$dg->appendData('bugs', $b);
-	}
-
-
-	/**
 	*Metodo abstrato a ser implementado pelas classes filhas. O login deve recuperar e exibir informacoes diferentes para Apostador e Administrador
 	*/
 	abstract function efetuarLogin($cpf, $senha);

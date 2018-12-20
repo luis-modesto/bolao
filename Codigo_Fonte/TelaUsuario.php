@@ -4,6 +4,7 @@ require_once "./Administrador.php";
 require_once "./Apostador.php";
 require_once "./Convite.php";
 require_once "./Solicitacao.php";
+require_once "./Bug.php";
 
 class TelaUsuario{
 
@@ -56,14 +57,13 @@ class TelaUsuario{
 		$retorno = $retorno . '</ul>'.PHP_EOL;
 		return $retorno;
 	}
-
 	function exibirBugs(){
 		$user = $_SESSION['globalUser'];
 		// recuperar lista de notificações do usuario 
 		$retorno = '<ul class="list-group">'.PHP_EOL;
 		for ($i=0; $i<count($user->bugs); $i++){
 			$b = $user->bugs[$i];
-			$retorno = $retorno . '<li id="li-'.$b->id.'" class="bg-light list-group-item">'.PHP_EOL.
+			$retorno = $retorno . '<li id="li-'. $b->id .'" class="bg-light list-group-item">'.PHP_EOL.
 				'<div class="row">
 					<div class="col-12">'.
 						$b->exibirNotificacao().PHP_EOL.
@@ -83,7 +83,7 @@ class TelaUsuario{
 	}
 
 	function exibirNavBar($tela){
-	    session_start();
+		session_start();
 	    $user = $_SESSION["globalUser"];
 		$retorno = '<header>
 	    	<nav style="color: #C0C0C0;" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">'. PHP_EOL .$user->nome . PHP_EOL;
@@ -94,23 +94,30 @@ class TelaUsuario{
                     </div>';
                 }
 			    $retorno = $retorno . '<a class="ml-auto" style="color: #C0C0C0; text-decoration: none; font-size: 
-			    2.5em;" id = "cabecalho" href = "./telaHomepage.php">SisBolão</a>
+			    2.5em;" id = "cabecalho"'; 
 
-			    <button style="font-size: 1.5em;" class="text-danger btn ml-auto mr-4 bg-dark" type="button" id="btn-bugs" data-toggle="modal" ';
-			    if ($user->cpf!="06721598567"){
-			    	$retorno = $retorno . 'data-target="#reportarBugs"><i class="far fa-bug"></i></button>';
+			    if($user instanceof Apostador){
+			    	$retorno = $retorno . 'href = "./telaHomepage.php">SisBolão</a>';
+			    }
+			    else{
+			    	$retorno = $retorno . 'href = "./telaHomepageAdmin.php">SisBolão</a>';
+			    }
+			    $retorno = $retorno . '<button style="font-size: 1.5em;" class="text-danger btn ml-auto mr-4 bg-dark" type="button" id="btn-bugs" data-toggle="modal" ';
+			    if ($user instanceof Apostador){
+			    	$retorno = $retorno . 'data-target="#reportarBugs"><i class="fas fa-bug"></i></button> <button style="font-size: 1.5em;" class="text-primary btn mr-4 bg-dark" type="button" id="btn-notificacoes" data-toggle="modal" data-target="#notificacoes"><i class="fas fa-bell"></i></button>';
 			    } else {
-			    	$retorno = $retorno . 'data-target="#verBugs"><i class="far fa-bug"></i></button>';
+			    	$retorno = $retorno . 'data-target="#verBugs"><i class="fas fa-bug"></i></button>';
 			    }
 
-			    $retorno = $retorno . '<button style="font-size: 1.5em;" class="text-primary btn mr-4 bg-dark" type="button" id="btn-notificacoes" data-toggle="modal" data-target="#notificacoes"><i class="fas fa-bell"></i></button>
 
-		    	<form style="text-align: right;" class="form-inline my-2 my-lg-0"  method = "post" action="./'.$tela.'.php">
+		    	$retorno = $retorno . '<form style="text-align: right;" class="form-inline my-2 my-lg-0"  method = "post" action="./'.$tela.'.php">
 	        		<input type = "hidden" value = "1"  name = "sair" id = "sair"> 
 	            	<button  style="color: #C0C0C0;" type="submit"  class = "mr-sm-2 my-2 my-sm-0 btn bg-dark"> Sair </button>
 	            </form>
-			</nav>
-			<div id="notificacoes" class="modal fade" role="dialog">
+			</nav>';
+
+		if ($user instanceof Apostador) {
+			$retorno = $retorno . '	<div id="notificacoes" class="modal fade" role="dialog">
 				<div class="modal-dialog modal-dialog-centered">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -129,9 +136,8 @@ class TelaUsuario{
 						</div>
 					</div>
 				</div>
-			</div>'.PHP_EOL;
-		if ($user->cpf!="06721598567") {
-			$retorno = $retorno . '<div id="reportarBugs" class="modal fade" role="dialog">
+			</div> 
+			<div id="reportarBugs" class="modal fade" role="dialog">
 					<div class="modal-dialog modal-dialog-centered">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -139,20 +145,24 @@ class TelaUsuario{
 							</div>
 							<form method="post" action="./'.$tela.'.php">
 								<div class="modal-body">
-									<label for="telaBug">Em qual tela ocorreu o bug?</label>
-                                    <div class="rightTab">
-                                        <select class="form-control" name="telaBug" id="telaBug">
-                                            <option>Homepage</option>
-                                            <option>Exibir Bolão</option>
-                                            <option>Criar Bolão</option>
-                                            <option>Criar Jogo</option>
-                                            <option>Login</option>
-                                            <option>Cadastrar Usuário</option>
-                                            <option>Recuperar Senha</option>
-                                        </select>
-                                    </div> 
+									<div class = "row">
+										<div class = "col-6">
+											<label style = "width: 100%;" for="telaBug">Em qual tela ocorreu o bug?</label>
+										</div>
+	                                    <div class="col-6 rightTab">
+	                                        <select class="form-control" name="telaBug" id="telaBug">
+	                                            <option>Homepage</option>
+	                                            <option>Exibir Bolão</option>
+	                                            <option>Criar Bolão</option>
+	                                            <option>Criar Jogo</option>
+	                                            <option>Login</option>
+	                                            <option>Cadastrar Usuário</option>
+	                                            <option>Recuperar Senha</option>
+	                                        </select>
+	                                    </div> 
+	                                </div>
                                     <label for="textoBug"></label>
-                                    <div class="rightTab">
+                                    <div class="text-center">
                                     	<textarea class="form-control" rows="5" name="textoBug"  id="textoBug"></textarea>
                                     </div>     
 								</div>
@@ -213,6 +223,7 @@ class TelaUsuario{
 
 		$_SESSION["globalUser"] = $user;
 		session_unset();
+		header('Location: ./index.php');
 	}
 
 	function dataPassou($dataJogo){

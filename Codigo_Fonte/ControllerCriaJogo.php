@@ -8,6 +8,7 @@ require_once "./Placar.php";
 class ControllerCriaJogo extends TelaUsuario{
 
 	function confirmarCriacaoJogo($dataJogo, $dataLimite, $time1, $time2, $aposta){
+		session_start();
 		$user = $_SESSION['globalUser']; //global 
 		// id do bolao vai estar armazenado em idBolaoEscolhido, pq se for num bolao que a pessoa acabou de criar, o id dele eh armazenado la na classe de criar bolao e se for um q ela escolheu pra colocar o id eh armazenado no controller de exibiçao do bolao
 		$idjogo = rand();

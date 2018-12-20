@@ -54,6 +54,17 @@ class Apostador extends Usuario{
 
 
 	/**
+	*Registra informacoes dadas pelo usuario sobre possivel bug no SisBolao
+	*/
+	function reportarBugs($texto, $tela, $id) {
+		$dg = DataGetter::getInstance();
+		$b = $id . ';' . $this->cpf . ';' . $texto . ';' . $tela . ';'; 
+		$dg->appendData('bugs', $b);
+	}
+
+
+
+	/**
 	*Metodo concreto que implementa o metodo abstrato em Usuario. Carrega informacoes do apostador e o registra como usuario atual do sistema, caso cpf e senha sejam compativeis
 	*/
 	function efetuarLogin($username, $senha) {

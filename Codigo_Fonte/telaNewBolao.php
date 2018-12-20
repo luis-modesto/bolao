@@ -19,7 +19,28 @@
         require_once "./ControllerCriaBolao.php";
             
         $telaBolao = new ControllerCriaBolao();
-
+ 
+        if(isset($_POST['nome']) && isset($_POST['campeonato']) && isset($_POST['esporte']) && isset($_POST['pontosPlacar']) && isset($_POST['pontosVencedor']) && isset($_POST['dataFinalizacao'])){
+            if($_POST['nome'] != '' && $_POST['campeonato'] != '' && $_POST['esporte'] != '' && $_POST['pontosPlacar'] != '' && $_POST['pontosVencedor'] != '' && $_POST['dataFinalizacao'] != ''){
+                $nome = $_POST['nome'];
+                $campeonato = $_POST['campeonato'];
+                $esporte = $_POST['esporte'];
+                $pontosPlacar = $_POST['pontosPlacar'];
+                $pontosVencedor = $_POST['pontosVencedor']; 
+                $dataFinalizacao = $_POST['dataFinalizacao'];
+                $criterio = $_POST['criterio'];
+                $telaBolao->confirmarCriacaoBolao($nome, $campeonato, $esporte, $pontosPlacar, $pontosVencedor, $dataFinalizacao, $criterio);
+                header('Location: ./telaBolao.php');
+            }   
+            else{
+                $_SESSION['message'] = "Insira todas as informações necessárias.";
+            }
+        }
+        else if(isset($_POST['sair'])){
+            $telaBolao->sair();
+            header('Location: ./index.php');
+        }
+        
         if(isset($_POST['responderNotificacoes'])){
             $user = $_SESSION['globalUser'];
             $novas = array();
@@ -59,29 +80,9 @@
 
         $tela = new TelaUsuario();
         echo $tela->exibirNavBar('telaNewBolao');
-        
-        if(isset($_POST['nome']) && isset($_POST['campeonato']) && isset($_POST['esporte']) && isset($_POST['pontosPlacar']) && isset($_POST['pontosVencedor']) && isset($_POST['dataFinalizacao'])){
-            if($_POST['nome'] != '' && $_POST['campeonato'] != '' && $_POST['esporte'] != '' && $_POST['pontosPlacar'] != '' && $_POST['pontosVencedor'] != '' && $_POST['dataFinalizacao'] != ''){
-                $nome = $_POST['nome'];
-                $campeonato = $_POST['campeonato'];
-                $esporte = $_POST['esporte'];
-                $pontosPlacar = $_POST['pontosPlacar'];
-                $pontosVencedor = $_POST['pontosVencedor']; 
-                $dataFinalizacao = $_POST['dataFinalizacao'];
-                $criterio = $_POST['criterio'];
-                $telaBolao->confirmarCriacaoBolao($nome, $campeonato, $esporte, $pontosPlacar, $pontosVencedor, $dataFinalizacao, $criterio);
-                header('Location: ./telaBolao.php');
-            }   
-            else{
-                $_SESSION['message'] = "Insira todas as informações necessárias.";
-            }
-        }
-        else if(isset($_POST['sair'])){
-            $telaBolao->sair();
-            header('Location: ./index.php');
-        }
+       
 ?>
-        <div class = "mt-5 container" style = " position: relative; bottom: -40px;">
+        <div class = " container" style = " position: relative; bottom: -40px;">
         <div class="row">
     			<div class="my-4 col-6 offset-3">
     				<div class="resultados shadow">
@@ -150,7 +151,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script> 
 
     <script type = "text/javascript">
-        $("#dataFinalizacao").mask("00/00/0000");     
+        $("#dataFinalizacao").mask("00/00/0000");
+        $("#pontosPlacar, #pontosVencedor").mask("00000000");             
     </script>        
 </body>
 

@@ -18,13 +18,15 @@
 <?php
 	    	require_once "./TelaUsuario.php";
 	    	require_once "./ControllerHomepage.php";
-
-			session_start();
-
+	    	session_start();
 			unset($_SESSION['placarExibir']);
 
 			$homepage = new ControllerHomepage();
 
+			if(isset($_POST['sair'])){
+				$homepage->sair();
+				header('Location: ./index.php');
+			}
 			if(isset($_POST['bolaoEscolhido'])){
 				$_SESSION['idBolaoEscolhido'] = $_POST['bolaoEscolhido'];
 				$idbolao = $_SESSION['idBolaoEscolhido'];
@@ -36,9 +38,8 @@
 				$homepage->solicitarParticiparBolao($idbolao);
 				header('Location: ./telaHomepage.php');
 			}
-			if(isset($_POST['sair'])){
-				$homepage->sair();
-				header('Location: ./index.php');
+			if (isset($_POST['telabug']) && isset($_POST['textobug'])){
+				$homepage->reportarBug($_POST['textobug'], $_POST['telabug']);
 			}
 			if(isset($_POST['responderNotificacoes'])){
 				$user = $_SESSION['globalUser'];
@@ -83,9 +84,9 @@
 	    <div class = "container" style = "max-width: 900px;  position: relative; bottom: -50px;">
 			<div class='new-game'>
 					<form style="text-align: center;" action="./telaNewBolao.php">
-						<button class = "mt-3 btn btn-info"> Criar novo bolão</button>
+						<button class = "mt-5 btn btn-info"> Criar novo bolão</button>
 					</form>
-				<button id="btn-meus-boloes"  class = "ml-3 mt-3 btn btn-info" onclick = "exibirMeusBoloes()"> Meus bolões</button>
+				<button id="btn-meus-boloes"  class = "ml-3 mt-5 btn btn-info" onclick = "exibirMeusBoloes()"> Meus bolões</button>
 			</div>
 			<div class="row mt-3">
 				<div class="mb-5 col-8 offset-2">

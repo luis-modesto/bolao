@@ -14,10 +14,34 @@
 </head>
 
 <body style = "background-image: url('stadium2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center; background-position: 0% 30%;">
+	 <?php
+	 	require_once "./ControllerLogin.php";
+		require_once "./Administrador.php";
+		require_once "./Apostador.php";
+
+		session_start();
+
+		if(isset($_POST['username']) && isset($_POST['senha'])){
+			$username = $_POST['username'];
+			$senha = $_POST['senha'];
+			$telaLogin = new ControllerLogin();
+			if($username != '' && $senha != ''){
+				if ($username == "useradmin"){
+					$a = $username . ' ' . $senha;
+					$user = new Administrador($username, '06721598567', '', $senha);
+				} else {
+					$user = new Apostador($username, '', '', $senha, array(), array(), array(), 500, array(), array(), array());
+				}
+				$telaLogin->login($user);
+			}
+			else{
+				$_SESSION['message'] = "Preencha os campos de username e senha.";
+			}
+		}
+	?>
 	<div class="mt-5 container" style =	"background-color: #f0f0f0; opacity: 0.9; position: relative; bottom: -40px; max-width: 500px; border-style: solid; border-radius: 7px; border-color: #C0C0C0;">
 		<h1>Bolão</h1>
 		<?php
-			session_start();
 
 			require_once "./ControllerLogin.php";
 			if (isset($_SESSION['message'])) {
@@ -51,32 +75,6 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 	 crossorigin="anonymous"></script>	
 
-	 <?php
-	 	require_once "./ControllerLogin.php";
-		require_once "./Administrador.php";
-		require_once "./Apostador.php";
-
-		if(isset($_POST['username']) && isset($_POST['senha'])){
-			$username = $_POST['username'];
-			$senha = $_POST['senha'];
-
-			$telaLogin = new ControllerLogin();
-			if($username != '' && $senha != ''){
-				$telaLogin->verificaBoloes();
-				if ($username=="useradmin"){
-					$user = new Administrador($username, '', '', $senha);
-				} else {
-					$user = new Apostador($username, '', '', $senha, array(), array(), array(), 500, array(), array(), array());
-				}
-				$telaLogin->login($user);
-			}
-			else{
-				session_start();
-				$_SESSION['message'] = "Preencha os campos de username e senha.";
-				header('Location: ./index.php');
-			}
-		}
-	?>
 </body>
 
 </html>

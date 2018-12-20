@@ -3,16 +3,23 @@
 require_once "./Usuario.php";
 require_once "./TelaUsuario.php";
 require_once "./Bolao.php";
+require_once "./Apostador.php";
+require_once "./Administrador.php";
 
 class ControllerLogin{
 	function login($user){
 		if($user->efetuarLogin($user->username, $user->senha) == true){
 			$_SESSION['globalUser'] = $user;
-			header('Location: ./telaHomepage.php');
+			$this->verificaBoloes();
+			if($user instanceof Apostador){
+				header('Location: ./telaHomepage.php');
+			}
+			else{
+				header('Location: ./telaHomepageAdmin.php');
+			}
 		}
 		else{
 			$_SESSION['message'] = "Combinação de usuário e senha inválida.";
-			header('Location: ./index.php');
 		}
 	}
 	function verificaBoloes(){

@@ -20,8 +20,10 @@
 
 		$telaExibeBolao = new ControllerExibeBolao();
 
-    	$tela = new TelaUsuario();
-    	echo $tela->exibirNavBar('telaBolao');
+		if(isset($_POST['sair'])){
+			$telaExibeBolao->sair();
+            header('Location: ./index.php');
+		}
 		
 		if(isset($_POST['responderNotificacoes'])){
 			$user = $_SESSION['globalUser'];
@@ -60,19 +62,16 @@
 
 		}    	
 
-		if(isset($_POST['sair'])){
-			$telaExibeBolao->sair();
-            header('Location: ./index.php');
-		}
+    	$tela = new TelaUsuario();
+    	echo $tela->exibirNavBar('telaBolao');
 
 
 		if(isset($_POST['convidarApostadores'])){
-			$apostadores = explode(',', $bolao[5]);
 			$dg = DataGetter::getInstance();
 			$usuarios = $dg->getData('usuarios');
 			$convidados = array();
 			for ($i = 0; $i<count($usuarios); $i++){
-				if ($usuarios[$i][0]!=$bolao[1] && array_search($usuarios[$i][0], $apostadores)==false){
+				if ($usuarios[$i][0]!=$_SESSION['bolaoGlobal']->cpfAdmin && array_search($usuarios[$i][0], $_SESSION['bolaoGlobal']->apostadores)==false){
 					if ($_POST['conv'.$usuarios[$i][0]]==1){
 						array_push($convidados, $usuarios[$i][0]);
 					}

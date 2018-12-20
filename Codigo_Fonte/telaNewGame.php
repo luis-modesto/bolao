@@ -18,9 +18,29 @@
     	require_once "./TelaUsuario.php";
 		require_once "./ControllerCriaJogo.php";
 
-		session_start();
 		$telaJogo = new ControllerCriaJogo();
 
+		if(isset($_POST['sair'])){
+			$telaJogo->sair();
+            header('Location: ./index.php');
+		}
+		
+			
+
+		if(isset($_POST['dataJogo']) && isset($_POST['dataLimite']) && isset($_POST['time1']) && isset($_POST['time2']) && isset($_POST['aposta'])){
+			if($_POST['dataJogo'] != '' && $_POST['dataLimite'] != '' && $_POST['time1'] != '' && $_POST['time2'] != '' && $_POST['aposta'] != ''){
+				$dataJogo = $_POST['dataJogo'];
+				$dataLimite = $_POST['dataLimite'];
+				$time1 = $_POST['time1'];
+				$time2 = $_POST['time2'];
+				$aposta = $_POST['aposta'];
+				$telaJogo->confirmarCriacaoJogo($dataJogo, $dataLimite, $time1, $time2, $aposta);
+				header('Location: ./telaBolao.php');
+			}
+			else{
+				$_SESSION['message'] = "Insira todas as informações do jogo.";
+			}
+		}
 		if(isset($_POST['responderNotificacoes'])){
 			$user = $_SESSION['globalUser'];
 			$novas = array();
@@ -56,29 +76,10 @@
 			$_SESSION['globalUser'] = $user;
 			header('Location: ./telaNewGame.php');
 
-		}		
+		}	
     	$tela = new TelaUsuario();
     	echo $tela->exibirNavBar('telaNewGame');
 
-		if(isset($_POST['dataJogo']) && isset($_POST['dataLimite']) && isset($_POST['time1']) && isset($_POST['time2']) && isset($_POST['aposta'])){
-			if($_POST['dataJogo'] != '' && $_POST['dataLimite'] != '' && $_POST['time1'] != '' && $_POST['time2'] != '' && $_POST['aposta'] != ''){
-				$dataJogo = $_POST['dataJogo'];
-				$dataLimite = $_POST['dataLimite'];
-				$time1 = $_POST['time1'];
-				$time2 = $_POST['time2'];
-				$aposta = $_POST['aposta'];
-				$telaJogo->confirmarCriacaoJogo($dataJogo, $dataLimite, $time1, $time2, $aposta);
-				header('Location: ./telaBolao.php');
-			}
-			else{
-				$_SESSION['message'] = "Insira todas as informações do jogo.";
-			}
-		}
-
-		else if(isset($_POST['sair'])){
-			$telaJogo->sair();
-            header('Location: ./index.php');
-		}
 ?>
     <div class = "mt-5 container" style = "max-height: 150em; max-width: 900px; background: none; position: relative; padding-top: 20px;">
 		<div class="resultados shadow">

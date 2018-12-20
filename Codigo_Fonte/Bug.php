@@ -1,5 +1,8 @@
 <?php
 require_once "./Notificacao.php";
+require_once "./Usuario.php";
+require_once "./Apostador.php";
+require_once "./Administrador.php";
 
 /**
 *Classe que representa uma notificacao do tipo solicitacao. Uma solicitacao a participar de um bolao

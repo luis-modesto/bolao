@@ -8,6 +8,7 @@ require_once "./TelaUsuario.php";
 
 class ControllerCriaBolao extends TelaUsuario{
 	function confirmarCriacaoBolao($nome, $campeonato, $esporte, $pontosPlacar, $pontosVencedor, $dataFinalizacao, $criterio){
+		session_start();
 		$user = $_SESSION['globalUser'];
 		$id = rand(); // randomiza um id pro bolao 
 		$dg = DataGetter::getInstance(); 

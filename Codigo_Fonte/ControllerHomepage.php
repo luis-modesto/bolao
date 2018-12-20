@@ -31,6 +31,34 @@ class ControllerHomepage extends TelaUsuario{
 		}
 	}                 
 
+	function exibirUsuarios(){
+		$dg = DataGetter::getInstance();
+		$retorno = "";
+		$usuarios = $dg->getData('usuarios');
+		for($i=0; $i<count($usuarios); $i++){
+			if($usuarios[$i][0] != '06721598567'){
+				$retorno = $retorno . '<li class = "list-group-item"> <div class = "row"> <div class = "col-9">' . $usuarios[$i][6] . '</div> <div class = "col-3"> <button onclick="exibirModalExcluir(\''.$usuarios[$i][6].'\', \''.$usuarios[$i][0].'\')" data-toggle="modal" data-target="#modalExcluir" title = "Excluir Conta do Usuário" type = "button" class = "btn bg-light" style = "padding: 1px;"> <i class="fas fa-user-slash text-danger" style = "font-size: 1em;"></i> </button> </div> </div> </li>' . PHP_EOL;
+				$retorno = $retorno . '</ul>
+										<div id="modalExcluir" class="modal fade" role="dialog">
+											<div class="modal-dialog modal-dialog-centered">
+												<div class="modal-content">
+													<div class="modal-body">
+														Tem certeza que deseja excluir a conta de <strong id="nomeExcluido" style="color: red;"></strong>?
+													</div>
+													<div class="modal-footer">
+														<form method="post" action="./telaHomepageAdmin.php">
+								        				<input type = "hidden" value = ""  name = "userExcluido" id = "userExcluido"> 
+								        				<button type="submit" class="btn btn-danger">Excluir</button>
+														</form>
+													</div>
+												</div>
+											</div>
+										</div>';
+			}
+		}
+		return $retorno;
+	}
+
 	function exibirBoloes(){
 		$dg = DataGetter::getInstance();
 		$boloes = $dg->getData('bolao');
@@ -194,6 +222,32 @@ class ControllerHomepage extends TelaUsuario{
 		}
 		$user = $_SESSION['globalUser'];
 		$user->solicitarParticiparBolao($bolao);
+	}
+
+	function confirmarExclusaoUsuario($excluido){
+		session_start();
+		$user = $_SESSION['globalUser'];
+		$user->excluirContaUsuario($excluido);
+	}
+
+	function confirmarExclusaoBolao($excluido){
+		session_start();
+		$user = $_SESSION['globalUser'];
+		$user->excluirBolao($excluido);
+	}
+	function reportarBug($texto, $tela){
+		session_start();
+		$user = $_SESSION['globalUser'];
+		$id = rand();
+		$dg = DataGetter::getInstance();
+		$bugs = $dg->getData('bug'); //instancia o vetor de boloes do usuario
+		for($i=0; $i<count($bugs); $i++){ // começa a percorrer o vetor de jogos do bolao
+			if($bugs[$i][0] == $id){ // se encontrar o id que tinha randomizado antes
+				$idjogo = rand(); //randomiza de novo
+				$i = 0; //começa a procurar do começo
+			} 
+		} 
+		$user->reportarBug($texto, $tela, $id);
 	}
 }
 ?>

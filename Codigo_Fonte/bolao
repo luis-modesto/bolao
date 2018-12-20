@@ -1,10 +1,4 @@
-idbolao;cpf_administrador;nome;campeonato;esporte;cpfs_apostadores;pontos_postador;pts_acertar_placar;pts_acertar_vencedor;premio;ativo;data_encerramento;criterio;
-11116;12345;Bolão 1;Copa ;Futebol;,333333,07478868576,1234567,111111,2222222,4444444;,60,60,60,30,0,0;30;15;700;0;19/12/2018;Vencedor há mais tempo;
-2188;12345;Bolão 2;Campeoanto;Esporte;,07478868576,1234567,111111,2222222,333333,4444444;,80,80,30,0,0,0;20;10;350;0;19/12/2018;Menor saldo;
-5429;12345;Bolão 3;Campeonato;Esporte;,07478868576,1234567,111111,2222222,333333,4444444;,0,0,0,0,0,0;40;20;0;1;31/12/2018;Maior saldo;
-31701;12345;Bolão 4;Campeonato;Esporte;,07478868576,1234567,111111,2222222,333333,4444444;,0,0,0,0,0,0;50;30;0;1;31/12/2018;Mais placares acertados;
-182;071541615;bla;bla;bla;,07478868576;,0;123;123;0;0;01/03/18;Mais placares acertados;
-29111;07478868576;bolaozinho;campenato;esportes;,1234567;,0;30;15;0;1;21/12/2018;Vencedor há mais tempo;
-23844;1234567;bolão bruno;campeonato;eporte;,07478868576;,0;30;20;0;1;30/12/2018;Vencedor há mais tempo;
-23586;1234567;bolão 20;campeonato;esporte;;;20;20;0;0;12/12/2018;Vencedor há mais tempo;
-18099;1234567;bolao 34;campeonato;esporte;,07478868576;,0;40;40;0;1;12/01/2019;Vencedor há mais tempo;
+13926;074788;Bolão 3;campeonato;esporte;;;30;5;0;1;31/12/2018;Vencedor há mais tempo;
+15200;074788;Bolão 3;campeonato;esporte;;;30;5;0;1;31/12/2018;Vencedor há mais tempo;
+14361;074788;Bolão 5;campeonato;esporte;;;30;15;0;1;31/12/2018;Menor saldo;
+16980;074788;por favor;campeonato;esporte;;;30;30;0;1;31/12/2018;Vencedor há mais tempo;

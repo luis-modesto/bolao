@@ -2,44 +2,44 @@
 require_once "./Usuario.php";
 require_once "./Bolao.php";
 require_once "./DataGetter.php";
+require_once "./Bug.php";
 
 /**
 *Classe que representa um usario especial que tem funcoes no sistema diferentes da classe Apostador
 */
 class Administrador extends Usuario {
 
+	public $bugs;
+
 	/**
 	*Construtor que inicializa uma instancia de Administrador, preenchendo os atributos cpf, nome e senha do usuario
 	*/
-    function __constructor($username, $cpf, $nome, $senha){
+    function __construct($username, $cpf, $nome, $senha){
     	$this->username = $username;
+		$this->cpf = $cpf;
 		$this->nome = $nome;
 		$this->senha = $senha;
-		$dg = DataGetter::getInstance();
-		$users = $dg->getData('usuarios');
-		if($this->cpf != '' && $this->username == '' && $this->nome == '' && $this->senha == ''){
-			for ($i = 0; $i<count($users); $i++){
-				if ($this->cpf==$users[$i][0]){
-					$this->respostaSeguranca = $users[$i][5];
-					$this->senha = $users[$i][1];
-					$this->username = $users[$i][6];
-					break;
-				}
-			}
-		}
+		$this->respostaSeguranca = '';
+		$this->bugs = array();
     }
 
 
 	/**
-	*Metodo concreto que implementa o metodo abstrato em Usuario. Carrega informacoes do administrador e o registra como usuario atual do sistema, caso cpf e senha sejam compativeis
+	*Metodo concreto que implementa o metodo abstrato em Usuario. Carrega informacoes do administrador e o registra como usuario atual do sistema, caso username e senha sejam compativeis
 	*/
 	function efetuarLogin($username, $senha) {
 		$dg = DataGetter::getInstance();
 		$users = $dg->getData('usuarios');
 		for ($i = 0; $i<count($users); $i++){
-			if ($username==$users[$i][6] && $senha==$users[$i][1]){
+			if ($username == $users[$i][6] && $senha == $users[$i][1]){
 				$this->nome = $users[$i][2];
 				$this->cpf = $users[$i][0];
+				$bugsSistema = $dg->getData('bugs');
+				for($j=0; $j<count($bugsSistema); $j++){
+					$userReportou = new Apostador($bugsSistema[$j][1], '', '', '', array(), array(), array(), '', array(), array(), array());
+					$bug = new Bug($bugsSistema[$j][0], $userReportou, $bugsSistema[$j][2], $bugsSistema[$j][3]);
+					array_push($this->bugs, $bug);
+				}
 				return true;
 			}
 		}
@@ -50,39 +50,31 @@ class Administrador extends Usuario {
 	/**
 	*Exclui um bolao dos registros do SisBolao. Apaga dados de um bolao de arquivos gerais e arquivos voltados para usuarios especificos
 	*/
-	function excluirBolao($bolao) {
+	function excluirBolao($idBolao) {
 		$dg = DataGetter::getInstance();
 		$boloes = $dg->getData('bolao');
 		$novosboloes = array();
 		$apostadores = array();
 		for ($j = 0; $j<count($boloes); $j++){
-			if ($bolao->id==intval($boloes[$j][0])){
-				$cpfs_apostadores = $boloes[$j][5]; // string com tds os cpfs do bolao
-				$cpf = '';
-				for($i=0; $i<count($cpfs_apostadores); $i++){
-					if($cpfs_apostadores[$i] != ','){
-						$cpf += $cpfs_apostadores[$i];
-					} else if($cpfs_apostadores[$i] == ','){ // achou virgula significa que um novo cpf esta por vir
-						array_push($apostadores, $cpf);
-						$cpf = ''; // zera o cpf atual
-					}
-				}
-			} else {
+			if ($idBolao==intval($boloes[$j][0])){
+				$apostadores = explode(',', $boloes[$j][5]); // apostadores que participam do bolao excluido
+			}
+			else {
 				array_push($novosboloes, $boloes[$j]);
 			}
 		}
 		$dg->setData('bolao', $novosboloes);
 
 		//resgata boloes que o usuario excluido participa
-		for ($i = 0; $i<count($apostadores); $i++){
-			$boloesuser = $dg->getData('boloes_' + $apostadores[$i]);
-			$novosboloesuser = [];
+		for ($i = 1; $i<count($apostadores); $i++){
+			$boloesuser = $dg->getData('boloes_' . $apostadores[$i]);
+			$novosboloesuser = array();
 			for ($j = 0; $j<count($boloesuser); $j++){
-				if (intval($boloesuser[$j][1])!=$bolao->id){
+				if (intval($boloesuser[$j][1])!=$idBolao){
 					array_push($novosboloesuser, $boloesuser[$j]);
 				}
 			}
-			$dg->setData('boloes_' + $apostadores[$i], $novosboloesuser);
+			$dg->setData('boloes_' . $apostadores[$i], $novosboloesuser);
 		}
 	}
 
@@ -95,7 +87,7 @@ class Administrador extends Usuario {
 		$users = $dg->getData('usuarios');
 		$novosusuarios = array();
 		for ($i = 0; $i<count($users); $i++){
-			if ($usuario->cpf!=$users[$i][0]){
+			if ($usuario!=$users[$i][0]){
 				array_push($novosusuarios, $users[$i]);
 			}
 		}
