@@ -6,6 +6,8 @@ require_once "./Notificacao.php";
 */
 class Convite extends Notificacao{
     
+    public $bolao;
+    
 	/**
 	*Construtor que inicializa uma instancia de Convite, preenchendo os atributos usuarioRemetente indicando qual usuario enviou o convite e o bolao ao qual o Apostador esta sendo convidado
 	*/

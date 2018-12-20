@@ -4,16 +4,19 @@ require_once "./Notificacao.php";
 /**
 *Classe que representa uma notificacao do tipo solicitacao. Uma solicitacao a participar de um bolao
 */
-class Solicitacao extends Notificacao {
+class Bug extends Notificacao {
    
-    public $bolao;
+    public $texto;
+    public $tela;
     
 	/**
 	*Construtor que inicializa uma instancia de Solicitacao, preenchendo os atributos usuarioRemetente indicando qual usuario enviou a solicitacao e o bolao a que a solicitacao se refere
 	*/
-    function __construct($usuarioRemetente, $bolao){
+    function __construct($id, $usuarioRemetente, $texto, $tela){
+        $this->id = $id;
         $this->usuarioRemetente = $usuarioRemetente;
-        $this->bolao = $bolao;
+        $this->texto = $texto;
+        $this->tela = $tela;
     }
 
 
@@ -22,8 +25,10 @@ class Solicitacao extends Notificacao {
     */
     function exibirNotificacao(){
         $user = $this->usuarioRemetente;
-        $bolao = $this->bolao;
-        $retorno = '<strong>'. $user->username .'</strong> deseja participar do bolão <strong>'.$bolao->nome.'</strong>'.PHP_EOL;
+        $retorno = '<strong>'. $user->username .'</strong> reportou um bug na tela <strong>'.$this->tela.'</strong>:
+        <div style="border: solid 2px;">'. 
+            $this->texto
+        .'</div>'.PHP_EOL;
         return $retorno;    
     }
 }

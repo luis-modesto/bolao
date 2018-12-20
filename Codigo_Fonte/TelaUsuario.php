@@ -57,6 +57,31 @@ class TelaUsuario{
 		return $retorno;
 	}
 
+	function exibirBugs(){
+		$user = $_SESSION['globalUser'];
+		// recuperar lista de notificações do usuario 
+		$retorno = '<ul class="list-group">'.PHP_EOL;
+		for ($i=0; $i<count($user->bugs); $i++){
+			$b = $user->bugs[$i];
+			$retorno = $retorno . '<li id="li-'.$b->id.'" class="bg-light list-group-item">'.PHP_EOL.
+				'<div class="row">
+					<div class="col-12">'.
+						$b->exibirNotificacao().PHP_EOL.
+				'	</div>
+				</div>
+				<div class="row">
+					<div class="text right col-4 offset-8">
+						<button id="btn-sol-'.$b->id.'" onclick="resolverBug(\''.$b->id.'\')" class="bg-light btn"><i style="font-size: 1.5em;" class="text-success far fa-check-circle"></i></button> 
+					</div>
+				</div>
+				</li>'.PHP_EOL;
+				//adiciona input
+				$this->inputsNotific = $this->inputsNotific . '<input type = "hidden" value = "0"  name = "sol'.$b->id.'" id = "sol'.$b->id.'">'.PHP_EOL;
+		}
+		$retorno = $retorno . '</ul>'.PHP_EOL;
+		return $retorno;
+	}
+
 	function exibirNavBar($tela){
 	    session_start();
 	    $user = $_SESSION["globalUser"];
@@ -140,35 +165,24 @@ class TelaUsuario{
 				</div>
 		    </header>';
 		} else {
+			$this->inputsNotific = "";
 			$retorno = $retorno . '<div id="verBugs" class="modal fade" role="dialog">
 					<div class="modal-dialog modal-dialog-centered">
 						<div class="modal-content">
 							<div class="modal-header">
 								<h4 class="modal-title">Bugs</h4>
 							</div>
-							<form method="post" action="./'.$tela.'.php">
-								<div class="modal-body">
-									<label for="telaBug">Em qual tela ocorreu o bug?</label>
-                                    <div class="rightTab">
-                                        <select class="form-control" name="telaBug" id="telaBug">
-                                            <option>Homepage</option>
-                                            <option>Exibir Bolão</option>
-                                            <option>Criar Bolão</option>
-                                            <option>Criar Jogo</option>
-                                            <option>Login</option>
-                                            <option>Cadastrar Usuário</option>
-                                            <option>Recuperar Senha</option>
-                                        </select>
-                                    </div> 
-                                    <label for="textoBug"></label>
-                                    <div class="rightTab">
-                                    	<textarea class="form-control" rows="5" name="textoBug"  id="textoBug"></textarea>
-                                    </div>     
-								</div>
-								<div class="modal-footer">
-			        				<button type="submit" id="btn-submeter-bug" class="btn btn-success">Submeter</button>
-								</div>
-							</form>
+							<div class="modal-body">'.
+								$this->exibirBugs()
+							.'</div>
+							<div class="modal-footer">
+								<form method="post" action="./'.$tela.'.php">'. PHP_EOL.
+									$this->inputsNotific . PHP_EOL .
+									'
+		        				<input type = "hidden" value = "1"  name = "resolverBugs" id = "resolverBugs"> 
+		        				<button disabled type="submit" id="btn-resolver-bug" class="btn btn-success">Submeter</button>
+								</form>
+							</div>
 						</div>
 					</div>
 				</div>
