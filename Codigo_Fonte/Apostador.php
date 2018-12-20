@@ -265,6 +265,8 @@ class Apostador extends Usuario{
 			$boloes = $dg->getData('bolao');
 			for ($i = 0; $i<count($boloes); $i++){
 				if (intval($boloes[$i][0])==$idBolao){
+					$bolao = new Bolao($boloes[$i][0], $boloes[$i][2], $boloes[$i][3], $boloes[$i][4], array(), $boloes[$i][1], explode(',', $boloes[$i][5]), explode(',', $boloes[$i][6]), intval($boloes[$i][7]), intval($boloes[$i][8]), intval($boloes[$i][9]), intval($boloes[$i][10]));
+					array_push($this->boloesParticipa, $bolao);				
 					$apostadores = explode(',', $boloes[$i][5]);
 					$pontuacoes = explode(',', $boloes[$i][6]);
 					array_push($pontuacoes, '0');

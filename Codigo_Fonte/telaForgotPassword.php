@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">    
 	<title>Bolão</title>
 	<link rel="stylesheet" type="text/css" href="./estilo.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script> 	
 </head>
 
 <body style = "background-image: url('stadium2.jpg'); background-repeat: no-repeat; background-size: cover; background-position: 0% 30%;">
@@ -68,7 +70,12 @@
 		$telaSenha = new ControllerRecupera();
 		$telaSenha->recuperaSenha($user, $resposta);
 	}
-	?>	 
+	?>
+
+    <script type = "text/javascript">
+        $("#cpf").mask("000000000");
+    </script>	 
+    
 </body>
 
 </html>

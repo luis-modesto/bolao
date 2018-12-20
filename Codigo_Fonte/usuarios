@@ -1,5 +1,8 @@
-cpf_usuario;senha_usuario;nome_usuario;is_adm;saldo;resposta_seguranca;username;
-1234567;senha;Luis Modesto;0;500;eu;luismodesto;
-1234;senha;Bruno Dias;0;435;eu;brunodias;
-111;senha;teste1;0;500;eu;teste1;
-222;senha;teste2;0;500;eu;teste2;
+07478868576;12345;Bruno Dias;0;710;eu;brunodias3;
+1234567;12345;Luis Modesto;0;1080;eu;luismodesto;
+12345;12345;Teste Bolao;0;500;teste1;criadorbolao;
+111111;12345;Teste ;0;270;teste bolao;teste1;
+2222222;12345;teste2;0;360;teste1;teste2;
+333333;12345;teste 3;0;360;teste2;teste3;
+4444444;12345;teste4;0;360;teste3;teste4;
+071541615;33672324;victor;0;500;mamae;vscardel;

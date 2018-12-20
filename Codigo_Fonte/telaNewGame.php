@@ -19,10 +19,47 @@
 		require_once "./ControllerCriaJogo.php";
 
 		session_start();
+		$telaJogo = new ControllerCriaJogo();
+
+		if(isset($_POST['responderNotificacoes'])){
+			$user = $_SESSION['globalUser'];
+			$novas = array();
+			for ($i=0; $i<count($user->solicitacoes); $i++){
+				$s = $user->solicitacoes[$i];
+				$b = $s->bolao;
+				$idBolao = $b->id;
+				if ($_POST['notf'.$idBolao]==1){
+					$telaJogo->aceitarNotificacao($s);
+				} else if($_POST['notf'.$idBolao]==2){
+					$telaJogo->recusarNotificacao($s);
+				} else {
+					array_push($novas, $s);
+				}
+			}
+			$user->solicitacoes = $novas;
+
+			$novas = array();
+			for ($i=0; $i<count($user->convites); $i++){
+				$c = $user->convites[$i];
+				$b = $c->bolao;
+				$idBolao = $b->id;
+				if ($_POST['notf'.$idBolao]==1){
+					$telaJogo->aceitarNotificacao($c);
+				} else if($_POST['notf'.$idBolao]==2){
+					$telaJogo->recusarNotificacao($c);
+				} else {
+					array_push($novas, $c);
+				}
+			}
+			$user->convites = $novas;
+
+			$_SESSION['globalUser'] = $user;
+			header('Location: ./telaNewGame.php');
+
+		}		
     	$tela = new TelaUsuario();
     	echo $tela->exibirNavBar('telaNewGame');
 
-		$telaJogo = new ControllerCriaJogo();
 		if(isset($_POST['dataJogo']) && isset($_POST['dataLimite']) && isset($_POST['time1']) && isset($_POST['time2']) && isset($_POST['aposta'])){
 			if($_POST['dataJogo'] != '' && $_POST['dataLimite'] != '' && $_POST['time1'] != '' && $_POST['time2'] != '' && $_POST['aposta'] != ''){
 				$dataJogo = $_POST['dataJogo'];
@@ -41,31 +78,6 @@
 		else if(isset($_POST['sair'])){
 			$telaJogo->sair();
             header('Location: ./index.php');
-		}
-		if(isset($_POST['responderNotificacoes'])){
-			$user = $_SESSION['globalUser'];
-			for ($i=0; $i<count($user->solicitacoes); $i++){
-				$s = $user->solicitacoes[$i];
-				$b = $s->bolao;
-				$idBolao = $b->id;
-				if ($_POST['notf'.$idBolao]==1){
-					$homepage->aceitarNotificacao($s);
-				} else if($_POST['notf'.$idBolao]==2){
-					$homepage->recusarNotificacao($s);
-				}
-			}
-			for ($i=0; $i<count($user->convites); $i++){
-				$c = $user->convites[$i];
-				$b = $c->bolao;
-				$idBolao = $b->id;
-				if ($_POST['notf'.$idBolao]==1){
-					$homepage->aceitarNotificacao($c);
-				} else if($_POST['notf'.$idBolao]==2){
-					$homepage->recusarNotificacao($c);
-				}
-			}
-			header('Location: ./telaHomepage.php');
-
 		}
 ?>
     <div class = "mt-5 container" style = "max-height: 150em; max-width: 900px; background: none; position: relative; padding-top: 20px;">

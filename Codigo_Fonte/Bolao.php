@@ -81,18 +81,7 @@ class Bolao{
 			}
 		}
 		//atualiza esse bolao no arquivo
-		for($i=1; $i<count($this->pontApostador); $i++){
-			for($j = $i+1; $j<count($this->pontApostador); $j++){
-				if($this->pontApostador[$j] > $this->pontApostador[$i]){
-					$aux = $this->pontApostador[$i];
-					$this->pontApostador[$i] = $this->pontApostador[$j];
-					$this->pontApostador[$j] = $aux;
-					$auxCPF = $this->apostadores[$i];
-					$this->apostadores[$i] = $this->apostadores[$j];
-					$this->apostadores[$j] = $auxCPF;					
-				}
-			}
-		}
+
 		$pt = implode(',', $this->pontApostador);
 		$usuarios = implode(',', $this->apostadores);
 		$boloes = $dg->getData('bolao');
@@ -103,6 +92,44 @@ class Bolao{
 				break;
 			}
 		}
+		$podemGanhar = array();
+		$i = 1;
+		array_push($podemGanhar, $this->apostadores[1]);
+		while($i<count($this->pontApostador)-1 && $this->pontApostador[1]==$this->pontApostador[$i+1]){
+			array_push($podemGanhar, $this->apostadores[$i+1]);
+			$i++;
+		}
+		$_SESSION['message'] = $podemGanhar[0] . ' ' . $podemGanhar[1];
+		if ($this->criterio=="Menor saldo"){
+			$podemGanhar = $this->ordMenorSaldo($podemGanhar);
+		} else if ($this->criterio=="Maior saldo"){
+			$podemGanhar = $this->ordMaiorSaldo($podemGanhar);
+		} else if ($this->criterio=="Mais placares acertados"){
+			$$podemGanhar = $this->ordMaisAcertos($podemGanhar);
+		} else {
+			for($i=1; $i<count($this->pontApostador); $i++){
+				for($j = $i+1; $j<count($this->pontApostador); $j++){
+					if($this->pontApostador[$j] > $this->pontApostador[$i]){
+						$aux = $this->pontApostador[$i];
+						$this->pontApostador[$i] = $this->pontApostador[$j];
+						$this->pontApostador[$j] = $aux;
+						$auxCPF = $this->apostadores[$i];
+						$this->apostadores[$i] = $this->apostadores[$j];
+						$this->apostadores[$j] = $auxCPF;					
+					}
+				}
+			}			
+		}		
+		for($i=0; $i<count($boloes); $i++){
+			if($boloes[$i][0] == $this->id){
+				$apostadores = explode(',', $boloes[$i][5]);
+				for ($j = 0; $j<count($podemGanhar); $j++){
+					$apostadores[$j+1] = $podemGanhar[$j];
+				}
+				$boloes[$i][5] = implode(',', $apostadores);
+				break;
+			}
+		}		
 		$dg->setData('bolao', $boloes);
 	}
 
@@ -112,28 +139,7 @@ class Bolao{
 	*/
 	function determinarVencedor(){
 		$dg = DataGetter::getInstance();
-		$podemGanhar = array();
-		$i = 1;
-		while($i<count($this->pontApostador)-1 && $this->pontApostador[$i]==$this->pontApostador[$i+1]){
-			$i++;
-			array_push($podemGanhar, $this->apostadores[$i]);
-		}
-
-		if ($criterio=="Menor saldo"){
-			$podemGanhar = ordMenorSaldo($podemGanhar);
-			$ganhador = $podemGanhar[0];
-		} else if ($criterio=="Maior saldo"){
-			$podemGanhar = ordMaiorSaldo($podemGanhar);
-			$ganhador = $podemGanhar[0];
-		} else if ($criterio=="Mais placares acertados"){
-			$$podemGanhar = ordMaisAcertos($podemGanhar);
-			$ganhador = $podemGanhar[0];
-		} else {
-			$ganhador = $this->apostadores[1];	
-		}
-
-		
-
+		$ganhador = $this->apostadores[1];
 		$users = $dg->getData('usuarios');
 		for ($i = 0; $i<count($users); $i++){
 			if ($users[$i][0]==$ganhador){
@@ -148,11 +154,6 @@ class Bolao{
 		for($i=0; $i<count($boloes); $i++){
 			if($boloes[$i][0] == $this->id){
 				$boloes[$i][10] = 0;
-				$apostadores = explode(',', $boloes[$i][5]);
-				for ($j = 0; $j<count($podemGanhar); $j++){
-					$apostadores[$j+1] = $podemGanhar[$j];
-				}
-				$boloes[$i][5] = implode(',', $apostadores);
 				break;
 			}
 		}

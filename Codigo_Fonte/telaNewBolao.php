@@ -17,11 +17,49 @@
 <?php
         require_once "./TelaUsuario.php";
         require_once "./ControllerCriaBolao.php";
+            
+        $telaBolao = new ControllerCriaBolao();
+
+        if(isset($_POST['responderNotificacoes'])){
+            $user = $_SESSION['globalUser'];
+            $novas = array();
+            for ($i=0; $i<count($user->solicitacoes); $i++){
+                $s = $user->solicitacoes[$i];
+                $b = $s->bolao;
+                $idBolao = $b->id;
+                if ($_POST['notf'.$idBolao]==1){
+                    $telaBolao->aceitarNotificacao($s);
+                } else if($_POST['notf'.$idBolao]==2){
+                    $telaBolao->recusarNotificacao($s);
+                } else {
+                    array_push($novas, $s);
+                }
+            }
+            $user->solicitacoes = $novas;
+
+            $novas = array();
+            for ($i=0; $i<count($user->convites); $i++){
+                $c = $user->convites[$i];
+                $b = $c->bolao;
+                $idBolao = $b->id;
+                if ($_POST['notf'.$idBolao]==1){
+                    $telaBolao->aceitarNotificacao($c);
+                } else if($_POST['notf'.$idBolao]==2){
+                    $telaBolao->recusarNotificacao($c);
+                } else {
+                    array_push($novas, $c);
+                }
+            }
+            $user->convites = $novas;
+
+            $_SESSION['globalUser'] = $user;
+            header('Location: ./telaNewBolao.php');
+
+        }
 
         $tela = new TelaUsuario();
         echo $tela->exibirNavBar('telaNewBolao');
         
-        $telaBolao = new ControllerCriaBolao();
         if(isset($_POST['nome']) && isset($_POST['campeonato']) && isset($_POST['esporte']) && isset($_POST['pontosPlacar']) && isset($_POST['pontosVencedor']) && isset($_POST['dataFinalizacao'])){
             if($_POST['nome'] != '' && $_POST['campeonato'] != '' && $_POST['esporte'] != '' && $_POST['pontosPlacar'] != '' && $_POST['pontosVencedor'] != '' && $_POST['dataFinalizacao'] != ''){
                 $nome = $_POST['nome'];
@@ -42,31 +80,6 @@
             $telaBolao->sair();
             header('Location: ./index.php');
         }
-        if(isset($_POST['responderNotificacoes'])){
-                $user = $_SESSION['globalUser'];
-                for ($i=0; $i<count($user->solicitacoes); $i++){
-                    $s = $user->solicitacoes[$i];
-                    $b = $s->bolao;
-                    $idBolao = $b->id;
-                    if ($_POST['notf'.$idBolao]==1){
-                        $homepage->aceitarNotificacao($s);
-                    } else if($_POST['notf'.$idBolao]==2){
-                        $homepage->recusarNotificacao($s);
-                    }
-                }
-                for ($i=0; $i<count($user->convites); $i++){
-                    $c = $user->convites[$i];
-                    $b = $c->bolao;
-                    $idBolao = $b->id;
-                    if ($_POST['notf'.$idBolao]==1){
-                        $homepage->aceitarNotificacao($c);
-                    } else if($_POST['notf'.$idBolao]==2){
-                        $homepage->recusarNotificacao($c);
-                    }
-                }
-                header('Location: ./telaHomepage.php');
-
-            }
 ?>
         <div class = "mt-5 container" style = " position: relative; bottom: -40px;">
         <div class="row">
