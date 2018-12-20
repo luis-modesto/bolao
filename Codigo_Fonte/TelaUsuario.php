@@ -68,9 +68,17 @@ class TelaUsuario{
                     	'.$user->saldo.'
                     </div>';
                 }
-			    $retorno = $retorno . '<a class="ml-auto" style="color: #C0C0C0; text-decoration: none; font-size: 2.5em;" id = "cabecalho" href = "./telaHomepage.php">SisBolão</a>
+			    $retorno = $retorno . '<a class="ml-auto" style="color: #C0C0C0; text-decoration: none; font-size: 
+			    2.5em;" id = "cabecalho" href = "./telaHomepage.php">SisBolão</a>
 
-			    <button style="font-size: 1.5em;" class="text-primary btn ml-auto mr-4 bg-dark" type="button" id="btn-notificacoes" data-toggle="modal" data-target="#notificacoes"><i class="fas fa-bell"></i></button>
+			    <button style="font-size: 1.5em;" class="text-danger btn ml-auto mr-4 bg-dark" type="button" id="btn-bugs" data-toggle="modal" ';
+			    if ($user->cpf!="06721598567"){
+			    	$retorno = $retorno . 'data-target="#reportarBugs"><i class="far fa-bug"></i></button>';
+			    } else {
+			    	$retorno = $retorno . 'data-target="#verBugs"><i class="far fa-bug"></i></button>';
+			    }
+
+			    $retorno = $retorno . '<button style="font-size: 1.5em;" class="text-primary btn mr-4 bg-dark" type="button" id="btn-notificacoes" data-toggle="modal" data-target="#notificacoes"><i class="fas fa-bell"></i></button>
 
 		    	<form style="text-align: right;" class="form-inline my-2 my-lg-0"  method = "post" action="./'.$tela.'.php">
 	        		<input type = "hidden" value = "1"  name = "sair" id = "sair"> 
@@ -96,8 +104,77 @@ class TelaUsuario{
 						</div>
 					</div>
 				</div>
-			</div>
-	    </header>';
+			</div>'.PHP_EOL;
+		if ($user->cpf!="06721598567") {
+			$retorno = $retorno . '<div id="reportarBugs" class="modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">Reportar Bug</h4>
+							</div>
+							<form method="post" action="./'.$tela.'.php">
+								<div class="modal-body">
+									<label for="telaBug">Em qual tela ocorreu o bug?</label>
+                                    <div class="rightTab">
+                                        <select class="form-control" name="telaBug" id="telaBug">
+                                            <option>Homepage</option>
+                                            <option>Exibir Bolão</option>
+                                            <option>Criar Bolão</option>
+                                            <option>Criar Jogo</option>
+                                            <option>Login</option>
+                                            <option>Cadastrar Usuário</option>
+                                            <option>Recuperar Senha</option>
+                                        </select>
+                                    </div> 
+                                    <label for="textoBug"></label>
+                                    <div class="rightTab">
+                                    	<textarea class="form-control" rows="5" name="textoBug"  id="textoBug"></textarea>
+                                    </div>     
+								</div>
+								<div class="modal-footer">
+			        				<button type="submit" id="btn-submeter-bug" class="btn btn-success">Submeter</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+		    </header>';
+		} else {
+			$retorno = $retorno . '<div id="verBugs" class="modal fade" role="dialog">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">Bugs</h4>
+							</div>
+							<form method="post" action="./'.$tela.'.php">
+								<div class="modal-body">
+									<label for="telaBug">Em qual tela ocorreu o bug?</label>
+                                    <div class="rightTab">
+                                        <select class="form-control" name="telaBug" id="telaBug">
+                                            <option>Homepage</option>
+                                            <option>Exibir Bolão</option>
+                                            <option>Criar Bolão</option>
+                                            <option>Criar Jogo</option>
+                                            <option>Login</option>
+                                            <option>Cadastrar Usuário</option>
+                                            <option>Recuperar Senha</option>
+                                        </select>
+                                    </div> 
+                                    <label for="textoBug"></label>
+                                    <div class="rightTab">
+                                    	<textarea class="form-control" rows="5" name="textoBug"  id="textoBug"></textarea>
+                                    </div>     
+								</div>
+								<div class="modal-footer">
+			        				<button type="submit" id="btn-submeter-bug" class="btn btn-success">Submeter</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+		    </header>';
+		}
+		
 	    return $retorno;
 	}
 
